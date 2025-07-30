@@ -1,0 +1,130 @@
+image: 33578522838/clpq-environment:latest
+
+stages:
+  - deploy # just for testing
+  - basicLogic
+  - validate1
+  - ValidationStep
+  - validate2
+  - Benchmarking
+  - validate3
+
+before_script:
+  - apt-get update && apt-get install -y zip curl jq
+
+###################
+# Stage 1: Always-run basicLogic
+###################
+basicTests:
+  stage: basicLogic
+  script:
+    - ./tests/compile_c_prolog.sh
+    - ./tests/RUN_PROLOG_test.sh clpq clp
+    - ./tests/compile_c_setlog.sh
+    - ./tests/RUN_SETLOG_test.sh abz18 abz
+  artifacts:
+    paths:
+      - tests/logs/log_*
+    expire_in: 1 week
+
+###################
+# Stage 2: Validate after basicLogic
+###################
+validate_after_basic:
+  stage: validate1
+  needs:
+    - basicTests
+  script:
+    - ./tests/validate.sh
+  artifacts:
+    paths:
+      - tests/logs/log_*
+    expire_in: 1 week
+
+###################
+# Stage 3: ValidationStep (Manual)
+###################
+mediumTests:
+  stage: ValidationStep
+  when: manual
+  allow_failure: true
+  script:
+    - ./tests/compile_c_setlog.sh
+    - ./tests/RUN_SETLOG_test.sh card nfs
+    - ./tests/compile_c_setlog.sh
+    - ./tests/RUN_SETLOG_test.sh intervals int
+  artifacts:
+    paths:
+      - tests/logs/log_*
+    expire_in: 1 week
+
+###################
+# Stage 4: Validate after ValidationStep
+###################
+validate_after_medium:
+  stage: validate2
+  needs:
+    - mediumTests
+  script:
+    - ./tests/validate.sh
+  artifacts:
+    paths:
+      - tests/logs/log_*
+    expire_in: 1 week
+
+###################
+# Stage 5: Benchmarking (Manual)
+###################
+hardTests:
+  stage: Benchmarking
+  when: manual
+  allow_failure: true
+  script:
+    - ./tests/compile_c_setlog.sh
+    - ./tests/RUN_SETLOG_NO_LIMITS.sh card crd
+    - ./tests/compile_c_setlog.sh
+    - ./tests/RUN_SETLOG_NO_LIMITS.sh intervals int
+  artifacts:
+    paths:
+      - tests/logs/log_*
+    expire_in: 1 week
+
+###################
+# Stage 6: Validate after Benchmarking
+###################
+validate_after_hard:
+  stage: validate3
+  needs:
+    - hardTests
+  script:
+    - ./tests/validate.sh
+  artifacts:
+    paths:
+      - tests/logs/log_*
+    expire_in: 1 week
+
+###################
+# Stage 7: Push release to github
+
+###################
+push_release:
+  stage: deploy
+  tags: [juno]
+  script:
+    - apt-get install -y git
+    - apt-get update && apt-get install -y rsync
+    - DATE_SUFFIX=$(date +'%Y%m%d%H%M%S')
+
+    - git config --global user.email "${GITHUB_MAIL}"
+    - git config --global user.name "${GITHUB_USER}"
+
+    - git clone "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Yaraslaw/linprog-test.git" TMP-github_repo
+
+    - rsync -av --delete --exclude 'TMP-github_repo/' --exclude '**/.git/**' ./ ./TMP-github_repo/    
+    - cd TMP-github_repo
+    - git add -A
+
+    - git commit -m "Release ${DATE_SUFFIX}" || echo "No changes to commit"
+    - git push origin main
+
+    

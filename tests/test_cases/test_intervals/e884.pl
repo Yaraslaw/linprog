@@ -1,0 +1,3 @@
+nint({X}) &
+integer(X)
+

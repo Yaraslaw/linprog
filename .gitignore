@@ -1,0 +1,10 @@
+testing_env/logs.txt
+*.so
+*.o
+.vscode/*
+*.DS_Store
+tests/log*
+.vscode/*
+benchmarking/MIPLIB/benchmark/*
+package
+

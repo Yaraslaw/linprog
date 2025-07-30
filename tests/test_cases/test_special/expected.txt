@@ -1,0 +1,471 @@
+e001:success:size:test
+e002:failure:size:test
+e003:success:size:test
+e004:success:size:test
+e005:failure:size:test
+e006:failure:size:test
+e007:failure:size:test
+e008:failure:size:test
+e009:failure:size:test
+e010:failure:size:test
+e011:failure:size:test
+e012:success:size:test
+e013:failure:size:test
+e014:failure:size:test
+e015:failure:size:test
+e016:failure:size:test
+e017:success:size:test
+e018:success:size:test
+e019:success:size:test
+e020:success:size:test
+e021:success:size:test
+e022:success:size:test
+e023:failure:size:test
+e024:failure:size:test
+e025:success:size:test
+e026:failure:size:test
+e027:success:size:test
+e028:success:size:test
+e029:success:size:test
+e030:failure:size:test
+e031:success:size:test
+e032:success:size:test
+e033:success:size:test
+e034:success:size:test
+e035:success:size:test:clpq problem, change order
+e036:success:size:test
+e037:success:size:test
+e038:failure:size:test
+e039:success:size:test
+e040:success:size:test
+e041:success:size:test
+e042:success:size:test
+e043:success:size:test
+e044:success:size:test
+e045:success:size:test
+e046:success:size:test
+e047:success:size:test
+e048:success:size:test:only one solution A = {}; see 187
+e049:success:size:test
+e050:success:size:test
+e051:success:size:test
+e052:success:size:test
+e053:success:size:test
+e054:success:size:test
+e055:success:size:test
+e056:success:size:test
+e057:success:size:test
+e058:success:size:test
+e059:success:size:test:clpq problem, change order
+e060:success:size:test:clpq problem, change order
+e061:success:size:test
+e062:success:size:test
+e063:success:size:test:clpq problem, change order
+e064:success:size:test:clpq problem, change order
+e065:success:size:test
+e066:success:size:test:clpq problem, change order
+e067:success:size:test:clpq problem, change order
+e068:success:size:test:clpq problem, change order
+e069:success:size:test
+e070:success:size:test
+e071:failure:size:test
+e072:success:size:test
+e073:success:size:test
+e074:success:size:test
+e075:success:size:test
+e076:success:size:test
+e077:success:size:test
+e078:success:size:test
+e079:success:size:test
+e080:success:size:test
+e081:failure:size:cvc4, cade07-vc1
+e082:failure:size:cvc4, cade07-vc2
+e083:failure:size:cvc4, cade07-vc2a
+e084:success:size:cvc4, cade07-vc2b
+e085:failure:size:cvc4, cade07-vc3
+e086:failure:size:cvc4, cade07-vc3a
+e087:success:size:cvc4, cade07-vc3b
+e088:failure:size:cvc4, cade07-vc4
+e089:success:size:cvc4, cade07-vc4b
+e090:failure:size:cvc4, cade07-vc5
+e091:success:size:cvc4, cade07-vc5b
+e092:failure:size:cvc4, cade07-vc6
+e093:failure:size:cvc4, cade07-vc6a:failure:
+e094:failure:size:cvc4, cade07-vc6a un/inters
+e095:success:size:cvc4, cade07-vc6b:success:7 s
+e096:failure:size:cvc4, cade07-vc6b un/inters
+e097:success:size:cvc4, cade07-vc6c:success:7 s
+e098:failure:size:cvc4, cade07-vc6c un/inters
+e099:success:size:cvc4, cade07-vc6 un/inters
+e100:success:cvc4, x in A1 \/...\/ A21
+e183:success:size:test
+e184:failure:size:test
+e185:success:size:test
+e186:failure:size:test
+e187:success:size:test:solved form; see 188
+e188:success:size:test:only one solution with at least three elements; other possible solution is with six elements, see 189
+e189:success:size:test
+e190:failure:size:test:unicity
+e191:failure:size:test:unicity
+e192:failure:size:test:unicity
+e193:failure:size:test:unicity
+e194:failure:size:test:unicity
+e195:failure:size:test:unicity
+e196:failure:size:test:unicity
+e197:failure:size:test:unicity
+e198:failure:size:test:unicity
+e199:failure:size:test:unicity
+e200:failure:size:test:unicity
+e201:failure:size:test:unicity
+e202:failure:size:test:unicity
+e203:failure:size:test:unicity
+e204:failure:size:test:unicity
+e205:failure:size:test
+e206:failure:size:test
+e207:success:size:test
+e208:failure:size:test
+e209:success:size:test
+e210:success:size:test
+e211:success:size:test
+e212:success:size:test
+e213:success:size:test
+e214:success:size:test
+e215:success:size:test
+e216:success:size:test
+e217:failure:size:test
+e218:success:size:test
+e219:failure:size:test
+e220:failure:size:test
+e221:failure:size:test
+e222:success:size:test
+e223:success:size:test
+e224:success:size:test
+e225:failure:size:property
+e226:failure:size:property
+e227:failure:size:property
+e228:failure:size:property
+e229:failure:size:property
+e230:failure:size:property
+e231:failure:size:property
+e232:failure:size:property
+e233:failure:size:property
+e234:failure:size:property
+e235:failure:size:property
+e236:failure:size:property
+e237:success:size:property
+e238:success:size:property
+e239:success:size:property
+e240:success:size:property
+e241:failure:size:property
+e242:failure:size:property
+e243:failure:size:property
+e244:failure:size:property
+e245:failure:size:property
+e246:failure:size:property
+e247:failure:size:property
+e248:failure:size:property
+e249:failure:size:property
+e250:failure:size:property
+e251:success:size:property
+e252:success:size:property
+e253:failure:size:property
+e254:failure:size:property
+e255:failure:size:property
+e256:failure:size:property
+e257:failure:size:property
+e258:failure:size:property
+e259:failure:size:property
+e260:timeout:size:property
+e261:failure:size:property
+e262:timeout:size:property
+e263:failure:size:property
+e264:timeout:size:property
+e265:success:size:test:found error
+e266:success:size:test:found error
+e267:success:size:test:found error
+e268:success:size:test:found error
+e269:success:size:test:unicity
+e270:failure:size:test:unicity
+e271:success:size:test:found error
+e272:success:size:test:found error
+e273:failure:size:property
+e274:failure:size:property
+e275:failure:size:property
+e276:failure:size:property
+e277:success:size:property:solved form
+e278:success:size:property:solved form
+e279:success:size:property:solved form
+e280:success:size:property:solved form
+e281:success:size:property:solved form
+e282:success:size:property:solved form
+e283:success:size:property:solved form
+e284:success:size:property:solved form
+e285:success:size:test:found error
+e286:success:size:test:found error
+e287:success:size:test:found error
+e288:failure:size:test:found error
+e334:failure:size:test:335, detect failure
+e335:success:size:test:first version generated ever increasing solutions; solved form, minimum algorithm
+e336:failure:size:test:335, detect failure
+e337:failure:size:test:335, detect failure
+e338:failure:size:test:335, detect failure
+e339:failure:size:test:335, detect failure
+e340:failure:size:test:335, detect failure
+e341:success:size:test:solved form, minimum algorithm
+e342:success:size:test:solved form, minimum algorithm
+e343:success:size:test:solved form, minimum algorithm
+e344:success:size:test:solved form, minimum algorithm
+e345:success:size:test:positive 038
+e346:failure:size:property:negative 251
+e347:success:size:test:solved form, minimum algorithm
+e348:failure:size:Kuncak, Example Fig 6 in \cite{Kuncak2006}
+e349:failure:size:Kuncak, Example Fig 7 in \cite{Kuncak2006} (first simulation condition)
+e350:failure:size:Kuncak, Example Fig 7 in \cite{Kuncak2006} (second simulation condition)
+e351:failure:size:Kuncak, Example Fig 9 in \cite{Kuncak2006}
+e352:failure:size:Kuncak, Example Fig 10 in \cite{Kuncak2006}
+e353:success:size:ssl-reachability, card_fol_0000001
+e354:success:size:ssl-reachability, card_fol_0000002
+e355:success:size:ssl-reachability, card_fol_0000003
+e356:success:size:ssl-reachability, card_fol_0000004
+e357:success:size:ssl-reachability, card_fol_0000005
+e358:success:size:ssl-reachability, card_fol_0000006
+e359:success:size:ssl-reachability, card_fol_0000007
+e360:success:size:ssl-reachability, card_fol_0000008
+e361:success:size:ssl-reachability, card_fol_0000009
+e362:success:size:ssl-reachability, card_fol_0000010
+e363:success:size:ssl-reachability, card_fol_0000011
+e364:success:size:ssl-reachability, card_fol_0000012
+e365:success:size:ssl-reachability, card_fol_0000013
+e366:success:size:ssl-reachability, card_fol_0000014
+e367:success:size:ssl-reachability, card_fol_0000015
+e368:failure:size:ssl-reachability, card_fol_0000016
+e369:success:size:ssl-reachability, card_fol_0000017
+e370:success:size:ssl-reachability, card_fol_0000018
+e371:success:size:ssl-reachability, card_fol_0000019
+e372:success:size:ssl-reachability, card_fol_0000020
+e373:failure:size:ssl-reachability, card_fol_0000021
+e374:success:size:ssl-reachability, card_fol_0000022
+e375:failure:size:ssl-reachability, card_fol_0000023
+e376:failure:size:ssl-reachability, card_fol_0000024
+e377:success:size:ssl-reachability, card_fol_0000025
+e378:success:size:ssl-reachability, card_fol_0000026
+e379:success:size:ssl-reachability, card_fol_0000027
+e380:failure:size:ssl-reachability, card_fol_0000028
+e381:failure:size:ssl-reachability, card_fol_0000029
+e382:failure:size:ssl-reachability, card_fol_0000030
+e383:success:size:ssl-reachability, card_fol_0000031
+e384:failure:size:ssl-reachability, card_fol_0000032
+e385:success:size:ssl-reachability, card_fol_0000033
+e386:failure:size:ssl-reachability, card_fol_0000034
+e387:success:size:ssl-reachability, card_fol_0000035
+e388:success:size:ssl-reachability, card_fol_0000036
+e389:success:size:ssl-reachability, card_fol_0000037
+e390:failure:size:ssl-reachability, card_fol_0000038
+e391:success:size:ssl-reachability, card_fol_0000039
+e392:failure:size:ssl-reachability, card_fol_0000040
+e393:success:size:ssl-reachability, card_fol_0000041
+e394:success:size:ssl-reachability, card_fol_0000042
+e395:success:size:ssl-reachability, card_fol_0000043
+e396:success:size:ssl-reachability, card_fol_0000044
+e397:failure:size:ssl-reachability, card_fol_0000045
+e398:success:size:ssl-reachability, card_fol_0000046
+e399:failure:size:ssl-reachability, card_fol_0000047
+e400:success:size:ssl-reachability, card_fol_0000048:15 s
+e401:timeout:size:ssl-reachability, card_fol_0000049:success:31 s
+e402:success:size:ssl-reachability, card_fol_0000050
+e403:success:size:ssl-reachability, card_fol_0000051
+e404:success:size:ssl-reachability, card_fol_0000052
+e405:success:size:ssl-reachability, card_fol_0000053
+e406:success:size:ssl-reachability, card_fol_0000054
+e407:timeout:size:ssl-reachability, card_fol_0000055:failure:212 s
+e408:success:size:ssl-reachability, card_fol_0000056
+e409:success:size:ssl-reachability, card_fol_0000057
+e410:failure:size:ssl-reachability, card_fol_0000058
+e411:failure:size:ssl-reachability, card_fol_0000059
+e412:failure:size:ssl-reachability, card_fol_0000060
+e413:failure:size:ssl-reachability, card_fol_0000061
+e414:success:size:ssl-reachability, card_fol_0000062
+e415:failure:size:ssl-reachability, card_fol_0000063
+e416:failure:size:ssl-reachability, card_fol_0000064
+e417:failure:size:ssl-reachability, card_fol_0000065
+e418:failure:size:ssl-reachability, card_fol_0000066
+e419:failure:size:ssl-reachability, card_fol_0000067
+e420:failure:size:ssl-reachability, card_fol_0000068
+e421:success:size:ssl-reachability, card_fol_0000069
+e422:failure:size:ssl-reachability, card_fol_0000070
+e423:timeout:size:ssl-reachability, card_fol_0000071:success:11 s
+e424:timeout:size:ssl-reachability, card_fol_0000072:success:13 s
+e425:success:size:ssl-reachability, card_fol_0000073
+e426:success:size:ssl-reachability, card_fol_0000074
+e427:success:size:ssl-reachability, card_fol_0000075
+e428:success:size:ssl-reachability, card_fol_0000076
+e429:success:size:ssl-reachability, card_fol_0000077
+e430:timeout:size:ssl-reachability, card_fol_0000078:failure:36 s
+e431:success:size:ssl-reachability, card_fol_0000079
+e432:success:size:ssl-reachability, card_fol_0000080
+e433:failure:size:ssl-reachability, card_fol_0000081
+e434:success:size:ssl-reachability, card_fol_0000082
+e435:failure:size:ssl-reachability, card_fol_0000083
+e436:success:size:ssl-reachability, card_fol_0000084
+e437:failure:size:ssl-reachability, card_fol_0000085
+e438:failure:size:ssl-reachability, card_fol_0000086
+e439:failure:size:ssl-reachability, card_fol_0000087
+e440:failure:size:ssl-reachability, card_fol_0000088
+e441:failure:size:ssl-reachability, card_fol_0000089
+e442:success:size:ssl-reachability, card_fol_0000090
+e443:failure:size:ssl-reachability, card_fol_0000091
+e444:failure:size:ssl-reachability, card_fol_0000092
+e445:failure:size:ssl-reachability, card_fol_0000093
+e446:failure:size:ssl-reachability, card_fol_0000094
+e447:failure:size:ssl-reachability, card_fol_0000095
+e448:timeout:size:ssl-reachability, card_fol_0000096:success:11 s
+e449:timeout:size:ssl-reachability, card_fol_0000097:failure:94 s
+e450:timeout:size:ssl-reachability, card_fol_0000098:failure:121 s
+e451:timeout:size:ssl-reachability, card_fol_0000099:success: > 370 s
+e452:timeout:size:ssl-reachability, card_fol_0000100:success: > 370 s
+e453:success:size:ssl-reachability, card_fol_0000101
+e454:timeout:size:ssl-reachability, card_fol_0000102:success: > 370 s
+e455:timeout:size:ssl-reachability, card_fol_0000103:success
+e456:timeout:size:ssl-reachability, card_fol_0000104:success: > 370 s
+e457:success:size:ssl-reachability, card_fol_0000105
+e458:timeout:size:ssl-reachability, card_fol_0000106:success:18 s
+e459:timeout:size:ssl-reachability, card_fol_0000107:failure: > 370 s
+e460:success:size:ssl-reachability, card_fol_0000108
+e461:success:size:ssl-reachability, card_fol_0000109
+e462:failure:size:ssl-reachability, card_fol_0000110
+e463:failure:size:ssl-reachability, card_fol_0000111
+e464:failure:size:ssl-reachability, card_fol_0000112
+e465:timeout:size:ssl-reachability, card_fol_0000113:success:9 s
+e466:failure:size:ssl-reachability, card_fol_0000114
+e467:failure:size:ssl-reachability, card_fol_0000115
+e468:timeout:size:ssl-reachability, card_fol_0000116:failure:39 s
+e469:timeout:size:ssl-reachability, card_fol_0000117:success:10 s
+e470:timeout:size:ssl-reachability, card_fol_0000118:success:11 s
+e471:failure:size:ssl-reachability, card_fol_0000119
+e472:timeout:size:ssl-reachability, card_fol_0000120:failure:36 s
+e473:success:size:ssl-reachability, arith_fol_0000001
+e474:success:size:ssl-reachability, arith_fol_0000002
+e475:success:size:ssl-reachability, arith_fol_0000003
+e476:success:size:ssl-reachability, arith_fol_0000004
+e477:success:size:ssl-reachability, arith_fol_0000005
+e478:success:size:ssl-reachability, arith_fol_0000006
+e479:success:size:ssl-reachability, arith_fol_0000007
+e480:success:size:ssl-reachability, arith_fol_0000008
+e481:success:size:ssl-reachability, arith_fol_0000009
+e482:success:size:ssl-reachability, arith_fol_0000010
+e483:success:size:ssl-reachability, arith_fol_0000011
+e484:success:size:ssl-reachability, arith_fol_0000012
+e485:success:size:ssl-reachability, arith_fol_0000013
+e486:success:size:ssl-reachability, arith_fol_0000014
+e487:success:size:ssl-reachability, arith_fol_0000015
+e488:failure:size:ssl-reachability, arith_fol_0000016
+e489:success:size:ssl-reachability, arith_fol_0000017
+e490:success:size:ssl-reachability, arith_fol_0000018
+e491:success:size:ssl-reachability, arith_fol_0000019
+e492:success:size:ssl-reachability, arith_fol_0000020
+e493:failure:size:ssl-reachability, arith_fol_0000021
+e494:success:size:ssl-reachability, arith_fol_0000022
+e495:failure:size:ssl-reachability, arith_fol_0000023
+e496:failure:size:ssl-reachability, arith_fol_0000024
+e497:success:size:ssl-reachability, arith_fol_0000025
+e498:success:size:ssl-reachability, arith_fol_0000026
+e499:success:size:ssl-reachability, arith_fol_0000027
+e500:failure:size:ssl-reachability, arith_fol_0000028
+e501:failure:size:ssl-reachability, arith_fol_0000029
+e502:failure:size:ssl-reachability, arith_fol_0000030
+e503:success:size:ssl-reachability, arith_fol_0000031
+e504:failure:size:ssl-reachability, arith_fol_0000032
+e505:success:size:ssl-reachability, arith_fol_0000033
+e506:failure:size:ssl-reachability, arith_fol_0000034
+e507:success:size:ssl-reachability, arith_fol_0000035
+e508:success:size:ssl-reachability, arith_fol_0000036
+e509:success:size:ssl-reachability, arith_fol_0000037
+e510:failure:size:ssl-reachability, arith_fol_0000038
+e511:success:size:ssl-reachability, arith_fol_0000039
+e512:failure:size:ssl-reachability, arith_fol_0000040
+e513:success:size:ssl-reachability, arith_fol_0000041
+e514:success:size:ssl-reachability, arith_fol_0000042
+e515:success:size:ssl-reachability, arith_fol_0000043
+e516:success:size:ssl-reachability, arith_fol_0000044
+e517:failure:size:ssl-reachability, arith_fol_0000045
+e518:success:size:ssl-reachability, arith_fol_0000046
+e519:failure:size:ssl-reachability, arith_fol_0000047
+e520:success:size:ssl-reachability, arith_fol_0000048
+e521:success:size:ssl-reachability, arith_fol_0000049
+e522:success:size:ssl-reachability, arith_fol_0000050
+e523:success:size:ssl-reachability, arith_fol_0000051
+e524:success:size:ssl-reachability, arith_fol_0000052
+e525:success:size:ssl-reachability, arith_fol_0000053
+e526:success:size:ssl-reachability, arith_fol_0000054
+e527:failure:size:ssl-reachability, arith_fol_0000055
+e528:success:size:ssl-reachability, arith_fol_0000056
+e529:success:size:ssl-reachability, arith_fol_0000057
+e530:failure:size:ssl-reachability, arith_fol_0000058
+e531:failure:size:ssl-reachability, arith_fol_0000059
+e532:failure:size:ssl-reachability, arith_fol_0000060
+e533:failure:size:ssl-reachability, arith_fol_0000061
+e534:success:size:ssl-reachability, arith_fol_0000062
+e535:failure:size:ssl-reachability, arith_fol_0000063
+e536:failure:size:ssl-reachability, arith_fol_0000064
+e537:failure:size:ssl-reachability, arith_fol_0000065
+e538:failure:size:ssl-reachability, arith_fol_0000066
+e539:failure:size:ssl-reachability, arith_fol_0000067
+e540:success:size:ssl-reachability, arith_fol_0000068
+e541:failure:size:ssl-reachability, arith_fol_0000069
+e542:success:size:ssl-reachability, arith_fol_0000070
+e543:success:size:ssl-reachability, arith_fol_0000071
+e544:success:size:ssl-reachability, arith_fol_0000072
+e545:success:size:ssl-reachability, arith_fol_0000073
+e546:success:size:ssl-reachability, arith_fol_0000074
+e547:success:size:ssl-reachability, arith_fol_0000075
+e548:success:size:ssl-reachability, arith_fol_0000076
+e549:failure:size:ssl-reachability, arith_fol_0000077
+e550:success:size:ssl-reachability, arith_fol_0000078
+e551:success:size:ssl-reachability, arith_fol_0000079
+e552:success:size:ssl-reachability, arith_fol_0000080
+e553:failure:size:ssl-reachability, arith_fol_0000081
+e554:success:size:ssl-reachability, arith_fol_0000082
+e555:failure:size:ssl-reachability, arith_fol_0000083
+e556:success:size:ssl-reachability, arith_fol_0000084
+e557:failure:size:ssl-reachability, arith_fol_0000085
+e558:failure:size:ssl-reachability, arith_fol_0000086
+e559:failure:size:ssl-reachability, arith_fol_0000087
+e560:failure:size:ssl-reachability, arith_fol_0000088
+e561:failure:size:ssl-reachability, arith_fol_0000089
+e562:success:size:ssl-reachability, arith_fol_0000090
+e563:failure:size:ssl-reachability, arith_fol_0000091
+e564:failure:size:ssl-reachability, arith_fol_0000092
+e565:failure:size:ssl-reachability, arith_fol_0000093
+e566:failure:size:ssl-reachability, arith_fol_0000094
+e567:failure:size:ssl-reachability, arith_fol_0000095
+e568:success:size:ssl-reachability, arith_fol_0000096
+e569:failure:size:ssl-reachability, arith_fol_0000097
+e570:failure:size:ssl-reachability, arith_fol_0000098
+e571:success:size:ssl-reachability, arith_fol_0000099
+e572:success:size:ssl-reachability, arith_fol_0000100
+e573:success:size:ssl-reachability, arith_fol_0000101
+e574:success:size:ssl-reachability, arith_fol_0000102
+e575:success:size:ssl-reachability, arith_fol_0000103
+e576:success:size:ssl-reachability, arith_fol_0000104
+e577:success:size:ssl-reachability, arith_fol_0000105
+e578:success:size:ssl-reachability, arith_fol_0000106
+e579:failure:size:ssl-reachability, arith_fol_0000107
+e580:success:size:ssl-reachability, arith_fol_0000108
+e581:success:size:ssl-reachability, arith_fol_0000109
+e582:failure:size:ssl-reachability, arith_fol_0000110
+e583:failure:size:ssl-reachability, arith_fol_0000111
+e584:failure:size:ssl-reachability, arith_fol_0000112
+e585:success:size:ssl-reachability, arith_fol_0000113
+e586:failure:size:ssl-reachability, arith_fol_0000114
+e587:failure:size:ssl-reachability, arith_fol_0000115
+e588:failure:size:ssl-reachability, arith_fol_0000116
+e589:success:size:ssl-reachability, arith_fol_0000117
+e590:success:size:ssl-reachability, arith_fol_0000118
+e591:failure:size:ssl-reachability, arith_fol_0000119
+e592:failure:size:ssl-reachability, arith_fol_0000120
+e593:success:size:test:large sizes
+e594:failure:size:test:large sizes
+e595:failure:size:test:performance, inference rules, union
+e596:failure:size:property: Cantone, Omodeo, Policriti book p. 308
+e597:failure:size:property: Cantone, Omodeo, Policriti book example 11.2
+

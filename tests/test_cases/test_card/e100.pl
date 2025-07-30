@@ -1,0 +1,22 @@
+un(A1,A2,U1) &
+un(U1,A3,U2) &
+un(U2,A4,U3) &
+un(U3,A4,U4) &
+un(U4,A5,U5) &
+un(U5,A6,U6) &
+un(U6,A7,U7) &
+un(U7,A8,U8) &
+un(U8,A9,U9) &
+un(U9,A10,U10) &
+un(U10,A11,U11) &
+un(U11,A12,U12) &
+un(U12,A13,U13) &
+un(U13,A14,U14) &
+un(U14,A15,U15) &
+un(U15,A16,U16) &
+un(U16,A17,U17) &
+un(U17,A18,U18) &
+un(U18,A19,U19) &
+un(U19,A20,U20) &
+un(U20,A21,U21) &
+X in U21

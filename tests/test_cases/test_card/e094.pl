@@ -1,0 +1,4 @@
+L116 neq Nul17 & L116 neq Ths18 & Ths18 neq Nul17 & Ths18 in List19 & Ths18 in  ObjAlloc20 & L116 in List19 & L116 in ObjAlloc20 & ObjAlloc7421 = ObjAlloc20 & ListContent7322 = ListContent23 & subset(ObjAlloc20,ObjAlloc7421) & ObjAlloc6025 = ObjAlloc7421 & ListContent5926 = ListContent7322 & subset(ObjAlloc7421, ObjAlloc6025) & Tmp35727 in Objct28 & Tmp35727 in ObjAlloc6025 & ObjAlloc4529 = ObjAlloc6025 & subset(ObjAlloc6025, ObjAlloc4529) & ObjAlloc4529 = ObjAlloc20 & Tmp35727 in S14230 & un(S14230,{Tmp35727},S24131) & un(ObjAlloc3032, ObjAlloc4529,M1) & size(M1,M2) & M2 =< 1 & subset(ObjAlloc4529, ObjAlloc3032) & un(ObjAlloc3032, ObjAlloc20, M3) & size(M3,M4) & M4 =< 1 & subset(ObjAlloc3032, ObjAlloc1633) & un(ObjAlloc1633, ObjAlloc3032,M8) & size(M8,M9) & size(S24131,M10) & M9 =< M10 & un(ObjAlloc1633, ObjAlloc20,M5) & size(M5,M6) & size(S14230,M7) & M6 > M7
+
+
+

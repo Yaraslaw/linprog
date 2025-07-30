@@ -1,0 +1,192 @@
+% version 1.0-1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                %
+%                     {log}                      %                                               
+%                    library                     %                                            
+%                      for                       %                                          
+%               integer intervals                %
+%                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% S is not an integer interval
+nint(S) :-
+  integer(A) & A in S & integer(B) & B in S & A < N & N < B & N nin S
+  or
+  A in S & ninteger(A).
+
+% Int is the interior of interval int(M,N)
+interior(int(M,N),Int) :-
+  M1 is M + 1 &
+  N1 is N - 1 &
+  Int = int(M1,N1).
+
+% M is the minimum of set S
+setmin(S,M) :-
+  M in S &
+  subset(S,int(M,_)).
+
+n_setmin(S,M) :-
+  M nin S
+  or
+  X in S & X < M.
+
+% M is the maximum of set S
+setmax(S,M) :-
+  M in S &
+  subset(S,int(_,M)).
+
+% Maximum (Max) of lower bounds (Lb) of S w.r.t. N
+% Minimum (Min) of upper bounds (Ub) of S w.r.t. N
+% assumes:
+%   S is a set of integers
+%   N nin S
+%:- dec_p_type(mnlb_mxub(stype(int),int,stype(int),int,stype(int),int)).
+mxlb_mnub(S,N,Lb,Max,Ub,Min) :-
+  un(Lb,Ub,S) & disj(Lb,Ub) &
+  (Max < N &
+   Max in Lb &
+   subset(Lb,int(_,Max))
+   or
+   Lb = {}
+  ) &
+  (N < Min &
+   Min in Ub &
+   subset(Ub,int(Min,_))
+   or
+   Ub = {}
+  ).
+
+% L = {X in S | X < M}
+% U = {X in S | M < X}
+partition(S,M,L,U) :-
+  (S = {M/S1} & M nin S1
+   or
+   M nin S & S = S1
+  ) &
+  un(L,U,S1) & disj(L,U) &
+  M1 is M - 1 &
+  subset(L,int(_,M1)) &
+  M2 is M + 1 &
+  subset(U,int(M2,_)).
+
+% partitions S w.r.t. M
+% L = {X in S | X =< M}
+% U = {X in S | M < X}
+partition_l(S,M,L,U) :-
+  un(L,U,S) & disj(L,U) &
+  subset(L,int(_,M)) &
+  M1 is M + 1 &
+  subset(U,int(M1,_)).
+
+% partitions S w.r.t. M
+% L = {X in S | X < M}
+% U = {X in S | M =< X}
+partition_u(S,M,L,U) :-
+  un(L,U,S) & disj(L,U) &
+  M1 is M - 1 &
+  subset(L,int(_,M)) &
+  subset(U,int(M,_)).
+
+% snth_min(S,N,E)
+% E is the N-th smallest element of set S
+%
+% snth_min({7,8,2,14},1,2)
+% snth_min({7,8,2,14},2,7)
+% snth_min({7,8,2,14},3,8)
+% snth_min({7,8,2,14},4,14)
+%
+% assumes:
+%   S is a set of integers
+snth_min(S,N,E) :-
+  un(Smin,Smax,S) & disj(Smin,Smax) &
+  Min in Smin &
+  E in Smin &
+  E1 is E + 1 &
+  size(Smin,N) &
+  subset(Smin,int(Min,E)) &
+  subset(Smax,int(E1,_)).
+
+% snth_max(S,N,E)
+% E is the N-th largest element of set S
+%
+% snth_max({7,8,2,14},1,14)
+% snth_max({7,8,2,14},2,8)
+% snth_max({7,8,2,14},3,7)
+% snth_max({7,8,2,14},4,2)
+%
+% assumes:
+%   S is a set of integers
+snth_max(S,N,E) :-
+  un(Smin,Smax,S) & disj(Smin,Smax) &
+  Max in Smax &
+  E in Smax &
+  E1 is E - 1 &
+  size(Smax,N) &
+  subset(Smin,int(_,E1)) &
+  subset(Smax,int(E,Max)).
+
+% medians(S,Med1,Med2)
+% (median is a value separating the higher half from 
+% the lower half of a data sample; in this definition
+% repetitions aren't considered)
+% if S has an odd cardinality then Med1 = Med2 = median of S
+% if S has an even cardinality then Med1 < Med2 and
+% median of S is (Med1 + Med2) / 2
+medians(S,Med1,Med2) :-
+  S = {Med1,Med2 / S1} & 
+  Med1 nin S1 & Med2 nin S1 & 
+  un(R1,R2,S1) & 
+  disj(R1,R2) &
+  Med1 =< Med2 &
+  Medi is Med1 - 1 &
+  subset(R1,int(_,Medi)) &
+  size(R1,K) &
+  Meds is Med2 + 1 &
+  subset(R2,int(Meds,_)) &
+  size(R2,K).
+
+% int_max_prop(S,M,N)
+% int(M,N) is a proper maximal subinterval of S
+int_max_prop(S,M,N) :-
+  un(int(M,N),R,S) & 
+  M < N & 
+  disj(int(M,N),R) &
+  M1 is M - 1 &
+  M1 nin R &
+  N1 is N + 1 &
+  N1 nin R.
+
+% lb_ub(S,Lb,Ub)
+% Lb is the subset of S with the lowest elements
+% Ub is the subset of S with the greatest elements
+% Lb's cardinality is equal to Ub's
+% if S has an odd cardinality, lb_ub fails
+lb_ub(S,Lb,Ub) :-
+  un(Lb,Ub,S) & 
+  disj(Lb,Ub) &
+  subset(Lb,int(_,M)) &
+  size(Lb,K) &
+  M < N &
+  subset(Ub,int(N,_)) &
+  size(Ub,K).
+
+% Y is the successor of X in A
+ssucc(A,X,Y) :-
+  X < Y &
+  A = {X,Y/A1} & X nin A1 & Y nin A1 &
+  un(Inf,Sup,A1) & disj(Inf,Sup) &
+  M is X - 1 & subset(Inf,int(_,M)) &
+  N is Y + 1 & subset(Sup,int(N,_)).
+
+n_ssucc(A,X,Y) :-
+  X nin A
+  or
+  Y nin A
+  or
+  X in A & 
+  Y in A &
+  Z in A & 
+  X < Z & 
+  Z < Y.
+

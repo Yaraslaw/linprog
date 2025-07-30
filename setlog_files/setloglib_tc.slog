@@ -1,0 +1,385 @@
+% version 1.0-4a
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% General operations dealing with sets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% Generalized union ("\bigcup"). 
+%%% bun(S,R) is true if R is the union of all the elements
+%%% of the set of sets S
+%
+dec_pp_type(bun(set(set(T)),set(T))).
+bun(A,B) :-
+   A = {} & B = {}.
+bun(X,S) :-
+   X = {A/Set} & dec(A,set(T)) & dec(Set,set(set(T))) &
+   A nin Set &               
+   bun(Set,U) & dec(U,set(T)) &
+   un(A,U,S).
+
+%%% Generalized intersection ("\bigcap"). 
+%%% binters(S,R) is true if R is the inersection of all the 
+%%% elements of the set of sets S
+%
+dec_pp_type(binters(set(set(T)),set(T))).
+binters(B,A) :-
+   B = {A}.
+binters(X,S) :-
+   X = {A/Set} & dec(A,set(T)) & dec(Set,set(set(T))) &
+   A nin Set &               
+   binters(Set,U) & dec(U,set(T)) &
+   inters(A,U,S).
+
+%%% diff1(?S,?X,?R) is true if R is S\{X}
+%%% equivalent to diff(S,{X},R) but possibly more efficient
+%
+dec_pp_type(diff1(set(T),T,set(T))).
+diff1(B,X,R) :-
+   B = {X/R} &             
+   X nin R.                   
+diff1(S,X,S1) :-
+   S1 = S & 
+   X nin S.
+
+%%% symdiff(A,B,C) is true if C is the symmetric difference 
+%%% between A and B
+%
+dec_pp_type(symdiff(set(T),set(T),set(T))).
+symdiff(A,B,C) :-
+   diff(A,B,M1) & dec([M1,M2],set(T)) &
+   diff(B,A,M2) &
+   un(M1,M2,C).
+
+%%% int_to_set(+I,?S) is true if S denotes the set
+%%% of all elements of the interval I  
+%
+dec_pp_type(int_to_set(set(int),set(int))).
+int_to_set(I,Set) :-
+   I = int(A,A) & dec(A,int) &
+   Set = {A}.      
+int_to_set(I,Set) :- 
+   I = int(A,B) & dec([A,B],int) &
+   Set = {A/S} & dec(S,set(int)) &
+   A < B &
+   A1 is A + 1 & dec(A1,int) &
+   int_to_set(int(A1,B),S).
+
+%%% like int_to_set/2 but delayed if interval bounds are unknown
+%
+dec_pp_type(dint_to_set(int,int,set(int))).
+dint_to_set(A,B,S) :-           
+   delay(int_to_set(int(A,B),S),nonvar(A) & nonvar(B)).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Boolean type and operators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% X is a Boolean object represented as:
+% {} --> false and {{}} --> true
+%
+% present also in setloglibTPTP.slog
+dec_pp_type(bool(set(set(T)))).
+bool(X) :- 
+   X = {} or X = {{}}.
+
+% Boolean conjunction implemented as
+% set intersection
+% R = P /\ Q
+dec_pp_type(and(set(set(T)),set(set(T)),set(set(T)))).
+and(P,Q,R) :-
+   bool(P) & bool(Q) & bool(R) & inters(P,Q,R).
+
+% Boolean disjunction implemented as
+% set union
+% R = P \/ Q
+dec_pp_type(or(set(set(T)),set(set(T)),set(set(T)))).
+or(P,Q,R) :-
+   bool(P) & bool(Q) & bool(R) & un(P,Q,R).
+
+% Boolean negation implemented as
+% set complement
+% Q = ~P
+dec_pp_type(not(set(set(T)),set(set(T)))).
+not(P,Q) :-
+   bool(P) & bool(Q) & un(P,Q,{{}}) & disj(P,Q).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Binary relations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% F is a bijective function
+% note that when F is finite, bijective and injective is the same
+dec_pp_type(bij(set([T,U]))).
+bij(F) :-
+   pfun(F) &
+   inv(F,M1) & dec(M1,set([U,T])) &
+   pfun(M1).
+
+% the negation of bij
+dec_pp_type(n_bij(set([T,U]))).
+n_bij(F) :-
+   npfun(F) or (inv(F,M1) & npfun(M1) & dec(M1,set([U,T]))).
+
+% Y is the relational image of X through F
+% when F is a function
+dec_pp_type(fimg(set([T,U]),set(T),set(U))).
+fimg(F,X,Y) :-
+   pfun(F) &
+   id(X,M1) & dec(M1,set([T,T])) &
+   comppf(M1,F,M2) & dec(M2,set([T,U])) &
+   ran(M2,Y).
+
+% alternate definition for rimg
+dec_pp_type(rimg2(set([T,U]),set(T),set(U))).
+rimg2(R,X,Y) :-
+   id(X,M1) & dec(M1,set([T,T])) &
+   comp(M1,R,M2) & dec(M2,set([T,U])) &
+   ran(M2,Y).
+
+% domain functional restriction
+% same as dres but for functions
+dec_pp_type(dfes(set(T),set([T,U]),set([T,U]))).
+dfes(X,F,G) :-
+   pfun(F) &
+   id(X,M1) & dec(M1,set([T,T])) &
+   comppf(M1,F,G).
+
+% the negation of dfes
+dec_pp_type(n_dfes(set(T),set([T,U]),set([T,U]))).
+n_dfes(X,F,G) :-
+   pfun(F) &
+   id(X,M1) & dec(M1,set([T,T])) &
+   ncomp(M1,F,G).
+
+%%% foplus(F,X,Y,G)
+%%% g = f \oplus \{(x,y)\} \land \{(x,x)\} \comp f = \{(x,\_)\}
+
+dec_pp_type(foplus(set([T,U]),T,U,set([T,U]))).
+ foplus(F,X,Y,G) :-
+   (F = {[X,Y1]/F1} & dec(F1,set([T,U])) & dec(Y1,U) &
+    [X,Y1] nin F1 &
+    comp({[X,X]},F1,{}) &
+    G = {[X,Y]/F1}
+    or
+    comp({[X,X]},F,{}) &
+    G = {[X,Y]/F}
+   ).
+
+%%% n_applyTo(F,X,Y)
+
+dec_pp_type(n_applyTo(set([T,U]),T,U)).
+ n_applyTo(F,X,Y) :-
+    ncomp({[X,X]},F,{[X,Y]}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Integers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Z is the maximum between X and Y
+dec_pp_type(max(int,int,int)).
+max(X,Y,Z) :-
+   X =< Y & Z = Y
+   or
+   Y < X & Z = X.
+
+% Z is minimum between X and Y
+dec_pp_type(min(int,int,int)).
+min(X,Y,Z) :-
+   X =< Y & Z = X
+   or
+   Y < X & Z = Y.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Minimum, maximum, etc.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% M is the minimum of set S
+% implemented with foreach (quantified definition)
+dec_pp_type(qsetmin(set(int),int)).
+qsetmin(S,M) :-
+   M in S &
+   foreach(X in S, M =< X & dec(X,int)).
+
+% M is the maximum of set S
+% implemented with foreach (quantified definition)
+dec_pp_type(qsetmax(set(int),int)).
+qsetmax(S,M) :-
+   M in S &
+   foreach(X in S, M >= X & dec(X,int)).
+
+% R is a set of ordered pairs
+% M is the minimum of the range of R
+dec_pp_type(qrelmin(set([T,int]),int)).
+qrelmin(R,M) :-
+   [X,M] in R & dec(X,T) &
+   foreach([A,B] in R, M =< B & dec(A,T) & dec(B,int)).
+    
+% Minimum (Min) of upper bounds (Ub) of S w.r.t. N
+% with RIS (quantified definition)
+% this definition fails if the maximum of S
+% is less than or equal to N
+dec_pp_type(qmnub(set(int),int,set(int),int)).
+qmnub(S,N,Ub,Min) :-
+   Ub = ris(X in S, N < X & dec(X,int)) &
+   qsetmin(Ub,Min).
+
+% Maximum (Max) of lower bounds (Lb) of S w.r.t. N
+% with RIS (quantified definition)
+% this definition fails if the minimum of S
+% is greater than or equal to N
+dec_pp_type(qmxlb(set(int),int,set(int),int)).
+qmxlb(S,N,Lb,Max) :-
+   Lb = ris(X in S, N < X & dec(X,int)) &
+   qsetmax(Lb,Max).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Integer intervals - unquantified versions of minimum, maximum, etc.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% S is not an integer interval
+dec_pp_type(nint(set(int))).
+nint(S) :-
+   integer(A) & A in S & dec([A,B,N],int) &
+   integer(B) & B in S &
+   N < B & A < N & N nin S.
+
+% Int is the interior of interval int(M,N)
+dec_pp_type(interior(set(int),set(int))).
+interior(I,Int) :-
+   I = int(M,N) & dec([M,N,M1,N1],int) &
+   M1 is M + 1 &
+   N1 is N - 1 &
+   Int = int(M1,N1).
+
+% M is the minimum of set S
+dec_pp_type(setmin(set(int),int)).
+setmin(S,M) :-
+   M in S &
+   subset(S,int(M,N)) & dec(N,int).
+
+dec_pp_type(n_setmin(set(int),int)).
+n_setmin(S,M) :-
+   M nin S
+   or
+   X in S & X < M & dec(X,int).
+
+% M is the maximum of set S
+dec_pp_type(setmax(set(int),int)).
+setmax(S,M) :-
+   M in S &
+   subset(S,int(N,M)) & dec(N,int).
+
+% Maximum (Max) of lower bounds (Lb) of S w.r.t. N
+% Minimum (Min) of upper bounds (Ub) of S w.r.t. N
+% assumes:
+%   S is a set of integers
+%   N nin S
+dec_p_type(mxlb_mnub(set(int),int,set(int),int,set(int),int)).
+mxlb_mnub(S,N,Lb,Max,Ub,Min) :-
+   un(Lb,Ub,S) & disj(Lb,Ub) &
+   (Max < N &
+    Max in Lb &
+    subset(Lb,int(K1,Max)) & dec(K1,int)
+    or
+    Lb = {}
+   ) &
+   (N < Min &
+    Min in Ub &
+    subset(Ub,int(Min,K2)) & dec(K2,int)
+    or
+    Ub = {}
+   ).
+  
+% snth_min(S,N,E)
+% E is the N-th smallest element of set S
+%
+% snth_min({7,8,2,14},1,2)
+% snth_min({7,8,2,14},2,7)
+% snth_min({7,8,2,14},3,8)
+% snth_min({7,8,2,14},4,14)
+%
+% assumes:
+%   S is a set of integers
+dec_pp_type(snth_min(set(int),int,int)).
+snth_min(S,N,E) :-
+   un(Smin,Smax,S) & disj(Smin,Smax) & dec([Smin,Smax],set(int)) &
+   Min in Smin & dec([Min,E1,E2],int) &
+   E in Smin &
+   E1 is E + 1 &
+   size(Smin,N) &
+   subset(Smin,int(Min,E)) &
+   subset(Smax,int(E1,E2)).
+
+% snth_max(S,N,E)
+% E is the N-th largest element of set S
+%
+% snth_max({7,8,2,14},1,14)
+% snth_max({7,8,2,14},2,8)
+% snth_max({7,8,2,14},3,7)
+% snth_max({7,8,2,14},4,2)
+%
+% assumes:
+%   S is a set of integers
+dec_pp_type(snth_max(set(int),int,int)).
+snth_max(S,N,E) :-
+   un(Smin,Smax,S) & disj(Smin,Smax) & dec([Smin,Smax],set(int)) &
+   Max in Smax & dec([Max,E1,E2],int) &
+   E in Smax &
+   E1 is E - 1 &
+   size(Smax,N) &
+   subset(Smin,int(E2,E1)) &
+   subset(Smax,int(E,Max)).
+
+% int_max_prop(S,M,N)
+% int(M,N) is a proper maximal subinterval of S
+dec_pp_type(int_max_prop(set(int),int,int)).
+int_max_prop(S,M,N) :-
+   un(int(M,N),R,S) & dec(R,set(int)) &
+   M < N & 
+   disj(int(M,N),R) &
+   M1 is M - 1 & dec([M1,N1],int) &
+   M1 nin R &
+   N1 is N + 1 &
+   N1 nin R.
+
+% lb_ub(S,Lb,Ub)
+% Lb is the subset of S with the lowest elements
+% Ub is the subset of S with the greatest elements
+% Lb's cardinality is equal to Ub's
+% if S has an odd cardinality, lb_ub fails
+dec_pp_type(lb_ub(set(int),set(int),set(int))).
+lb_ub(S,Lb,Ub) :-
+   un(Lb,Ub,S) & 
+   disj(Lb,Ub) &
+   subset(Lb,int(K1,M)) & dec([K1,M,K,N,K2],int) &
+   size(Lb,K) &
+   M < N &
+   subset(Ub,int(N,K2)) &
+   size(Ub,K).
+
+% Y is the successor of X in A
+dec_pp_type(ssucc(set(int),int,int)).
+ssucc(A,X,Y) :-
+   X < Y &
+   A = {X,Y/A1} & X nin A1 & Y nin A1 & dec([A1,Inf,Sup],set(int)) &
+   un(Inf,Sup,A1) & disj(Inf,Sup) &
+   M is X - 1 & subset(Inf,int(K1,M)) & dec([M,K1,N,K2],int) &
+   N is Y + 1 & subset(Sup,int(N,K2)).
+
+dec_pp_type(n_ssucc(set(int),int,int)).
+n_ssucc(A,X,Y) :-
+   X nin A
+   or
+   Y nin A
+   or
+   X in A & 
+   Y in A &
+   Z in A & dec(Z,int) &
+   X < Z & 
+   Z < Y.
+
