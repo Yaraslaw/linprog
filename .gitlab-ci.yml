@@ -1,13 +1,14 @@
 image: 33578522838/clpq-environment:latest
 
 stages:
-  - deploy # just for testing
+  
   - basicLogic
   - validate1
   - ValidationStep
   - validate2
   - Benchmarking
   - validate3
+  - release 
 
 before_script:
   - apt-get update && apt-get install -y zip curl jq
@@ -108,8 +109,8 @@ validate_after_hard:
 
 ###################
 push_release:
-  stage: deploy
-  tags: [juno]
+  stage: release
+  # tags: [juno]
   script:
     - apt-get install -y git
     - apt-get update && apt-get install -y rsync
