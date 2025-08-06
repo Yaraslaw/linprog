@@ -27,7 +27,7 @@ TEST_NAME=$1
 EXT=$2
 
 # Compile the C implementation
-sh ./compile_c_setlog.sh "${3:-linprog}"
+bash ./compile_c_setlog.sh "${3:-linprog}"
 
 # Define directories
 TEST_DIR="./test_cases/test_$TEST_NAME"  # Adjust this if your tests are in a different folder
@@ -68,7 +68,7 @@ fi
 
 # Run the tests in the setlog_files directory
 cd $SETLOG_DIR
-./run_all.sh $EXT 
+bash ./run_all.sh $EXT 
 
 cd ..
 
@@ -82,7 +82,7 @@ mv $SETLOG_DIR/results.txt $LOG_DIR/ 2>/dev/null
 
 # Clean up the setlog_files directory
 cd $SETLOG_DIR
-./clean.sh $EXT
+bash ./clean.sh $EXT
 
 # Return to the original directory
 cd ..

@@ -16,7 +16,7 @@ display_progress() {
   progress=$((($current_test * 100) / $total_tests))
   bar=""
 
-  for ((i=0; i<$progress; i+=2)); do
+  for ((x=0; x<$progress; x+=2)); do
     bar="${bar}#"
   done
 
@@ -25,9 +25,9 @@ display_progress() {
 
 # Run tests for all cases
 for i in "${ext}-e"*.pl; do
-  ./run.sh $i $1 
+  display_progress "$i"
+  bash ./run.sh $i $1 
   current_test=$(($current_test + 1))
-  display_progress
 done
 
 elapsed_time=$(($SECONDS - $start_time))

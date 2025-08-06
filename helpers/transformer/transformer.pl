@@ -11,6 +11,7 @@ append_to_file(File, Content) :-
 %% Using for converting entries     %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+:- set_prolog_flag(stack_limit, 32_000_000_000).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -42,8 +43,11 @@ parse_name(Str, Struct, StructNew, NextHeading, Stream) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 read_row(Str, Type, Name) :- 
-    split_string(Str, " ", " ", [TypeS, NameS]), 
+    split_string(Str, " ", " ", [TypeS, NameSRaw]), 
+    string(NameSRaw),
+    !,
     atom_string(Type, TypeS),
+    var_name_checker(NameSRaw, NameS),
     atom_string(Name, NameS).
 
 
@@ -54,7 +58,9 @@ parse_rows(Stream, Struct, StructNew, NextHeading) :-
     (read_row(Str, Type, Name) -> 
         parse_rows(Stream, Struct, StructUPD, NextHeading),
         StructUPD = linprog(name(NameLinprog), entries(E), ints(Ints), signRHS(SignRHS), buf(B), vars(Vars)),
-        append([SignRHS, [Name-Type]], SignRHSNew),
+        % append([SignRHS, [Name-Type]], SignRHSNew),
+        % This way is faster
+        SignRHSNew = [Name-Type|SignRHS],
         StructNew = linprog(name(NameLinprog), entries(E), ints(Ints), signRHS(SignRHSNew), buf(B), vars(Vars));
     
     NextHeading = Str, StructNew = Struct
@@ -72,9 +78,11 @@ Names: [CName]
 read_col(Line, Coefs, Names) :-
     % Split the line into tokens by whitespace
     % Line =.. [CNameS, RNameS, ValS],
-    split_string(Line, " ", " ", [CNameS, RNameS, ValSRaw]),
-    string(CNameS), string(RNameS), string(ValSRaw),
+    split_string(Line, " ", " ", [CNameSRaw, RNameSRaw, ValSRaw]),
+    string(CNameSRaw), string(RNameSRaw), string(ValSRaw),
     number_checker(ValSRaw, ValS),
+    var_name_checker(RNameSRaw, RNameS),
+    var_name_checker(CNameSRaw, CNameS),
     !,
 
     % Transform a variable name into "V"+name, because in
@@ -91,10 +99,15 @@ read_col(Line, Coefs, Names) :-
 
 read_col(Line, Coefs, Names) :- 
     % Split the line into tokens by whitespace
-    split_string(Line, " ", " ", [CNameS, RNameS1, ValS1Raw, RNameS2, ValS2Raw]),
-    string(CNameS), string(RNameS1), string(ValS1Raw), string(RNameS2), string(ValS2Raw),
+    split_string(Line, " ", " ", [CNameSRaw, RNameSRaw1, ValS1Raw, RNameSRaw2, ValS2Raw]),
+    string(CNameSRaw), string(RNameSRaw1), string(ValS1Raw), string(RNameSRaw2), string(ValS2Raw),
     number_checker(ValS1Raw, ValS1),
     number_checker(ValS2Raw, ValS2),
+
+    var_name_checker(RNameSRaw1, RNameS1),
+    var_name_checker(RNameSRaw2, RNameS2),
+    var_name_checker(CNameSRaw, CNameS),
+    
     !,
 
     % Transform a variable name into "V"+name, because in
@@ -111,6 +124,16 @@ read_col(Line, Coefs, Names) :-
     Names = [CName].
 
 
+add_unique(E, L, L) :-
+    memberchk(E, L), !.
+add_unique(E, L, [E|L]).
+
+add_unique_lst([], L, L).
+add_unique_lst([V|T], LWas, LNew) :-
+    add_unique(V, LWas, LStep),
+    add_unique_lst(T, LStep, LNew).
+
+
 parse_cols(Stream, Struct, StructNew, NextHeading, IsInt) :-
     read_string(Stream, "\n", "\r", _Sep, Str),
     % read_string(Stream, _, Str),
@@ -122,27 +145,35 @@ parse_cols(Stream, Struct, StructNew, NextHeading, IsInt) :-
     );
     (read_col(Str, Coefs, Names) -> 
 
+        (
         parse_cols(Stream, Struct, StructUPD, NextHeading, IsInt),
         StructUPD = linprog(name(NameLinprog), entries(E), ints(Ints), signRHS(SignRHS), buf(B), vars(Vars)),
-        append([E, Coefs], ENew),
-        (IsInt == 1 -> append([Ints, Names], IntsRaw); IntsRaw = Ints),
-        sort(IntsRaw, IntsNew),
-
-        append([Vars, Names], VRaw),
-        sort(VRaw, VarsNew),
         
-        StructNew = linprog(name(NameLinprog), entries(ENew), ints(IntsNew), signRHS(SignRHS), buf(B), vars(VarsNew));
+        /* Adding either 1 Coef or 2 Coefs*/
+        % append([E, Coefs], ENew),
+        % Faster way to append
+        ((Coefs = [X|[]], ENew = [X|E]) ; (Coefs = [X,Y|[]], ENew = [X,Y|E])),
 
-    NextHeading = Str, StructNew = Struct
-    )).
+        % NOTE: Names must be unique 
+        (IsInt == 1 -> add_unique_lst(Names, Ints, IntsNew);IntsNew=Ints),
+        add_unique_lst(Names, Vars, VarsNew),
+
+        
+        StructNew = linprog(name(NameLinprog), entries(ENew), ints(IntsNew), signRHS(SignRHS), buf(B), vars(VarsNew))
+        );
+
+        NextHeading = Str, StructNew = Struct
+    )),
+    progress_tick(progress_counter_col).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 read_rhs(Line, RhsBounds) :- 
-    split_string(Line, " ", " ", [Rhs, RNameS, ValSRaw]), 
-    string(Rhs), string(RNameS), string(ValSRaw),
+    split_string(Line, " ", " ", [Rhs, RNameSRaw, ValSRaw]), 
+    string(Rhs), string(RNameSRaw), string(ValSRaw),
     number_checker(ValSRaw, ValS),
+    var_name_checker(RNameSRaw, RNameS),
     !,
     % Convert to atoms (if desired)
     atom_string(RName, RNameS),
@@ -151,10 +182,12 @@ read_rhs(Line, RhsBounds) :-
     RhsBounds = [RName-Val].
 
 read_rhs(Line, RhsBounds) :- 
-    split_string(Line, " ", " ", [Rhs, RNameS1, ValS1Raw, RNameS2, ValS2Raw]), 
-    string(Rhs), string(RNameS1), string(ValS1Raw), string(RNameS2), string(ValS2Raw),
+    split_string(Line, " ", " ", [Rhs, RNameSRaw1, ValS1Raw, RNameSRaw2, ValS2Raw]), 
+    string(Rhs), string(RNameSRaw1), string(ValS1Raw), string(RNameSRaw2), string(ValS2Raw),
     number_checker(ValS1Raw, ValS1),
     number_checker(ValS2Raw, ValS2),
+    var_name_checker(RNameSRaw1, RNameS1),
+    var_name_checker(RNameSRaw2, RNameS2),
     !,
     % Convert to atoms (if desired)
     atom_string(RName1, RNameS1),
@@ -171,7 +204,10 @@ parse_rhs(Stream, Struct, StructNew, NextHeading) :-
 
         parse_rhs(Stream, Struct, StructUPD, NextHeading),
         StructUPD = linprog(name(NameLinprog), entries(E), ints(Ints), signRHS(SignRHS), buf(B), vars(Vars)),
-        append([SignRHS, RhsBounds], SignRHSNew),
+        % RhsBounds has 1-2 elements
+        % append([SignRHS, RhsBounds], SignRHSNew),
+        % This way is faster
+        ((RhsBounds = [X,Y|[]], SignRHSNew = [X,Y|SignRHS]) ; (RhsBounds = [X|[]], SignRHSNew = [X|SignRHS])),
         StructNew = linprog(name(NameLinprog), entries(E), ints(Ints), signRHS(SignRHSNew), buf(B), vars(Vars));
     
     NextHeading = Str, StructNew = Struct
@@ -182,14 +218,20 @@ parse_rhs(Stream, Struct, StructNew, NextHeading) :-
 
 read_bound(Line, Type, Name, ValS) :-
     split_string(Line, " ", " ", [Type, _, NameRaw, ValSRaw]),
+    string(NameRaw), 
+    !,
     number_checker(ValSRaw, ValS), 
-    string_concat("V", NameRaw, NameStr),
+    var_name_checker(NameRaw, NameS),
+    string_concat("V", NameS, NameStr),
 
     atom_codes(Name, NameStr). 
 
 read_bound(Line, Type, Name) :-
     split_string(Line, " ", " ", [Type, _, NameRaw]),
-    string_concat("V", NameRaw, NameStr),
+    string(NameRaw),
+    var_name_checker(NameRaw, NameS),
+    !,
+    string_concat("V", NameS, NameStr),
 
     atom_codes(Name, NameStr). 
 
@@ -203,7 +245,7 @@ parse_bounds(Stream, Struct, StructNew, NextHeading) :-
         
         parse_bounds(Stream, Struct, StructUPD, NextHeading),
         StructUPD = linprog(name(NameLinprog), entries(E), ints(Ints), signRHS(SignRHS), buf(B), vars(Vars)),
-        (member(Name, Vars) -> 
+        (((Type == "LO" ; Type == "LI" ; Type == "FX"), member(Name, Vars)) -> 
             !,select(Name, Vars, VarsNew),!;
             VarsNew = Vars),
         ((Type == "LO"; Type == "LI") -> 
@@ -212,8 +254,9 @@ parse_bounds(Stream, Struct, StructNew, NextHeading) :-
             string_concat(T2, Name, T3),
             string_concat(T3, "},\n", Update);
         ((Type == "UP"; Type == "UI") ->
-            string_concat("{0 =< ", Name, T0),
-            string_concat(T0, "}, {", T00),
+            % string_concat("{0 =< ", Name, T0),
+            % string_concat(T0, "}, {", T00),
+            T00="{",
             string_concat(T00, ValS, T1),
             string_concat(T1, " >= ", T2),
             string_concat(T2, Name, T3),
@@ -233,8 +276,8 @@ parse_bounds(Stream, Struct, StructNew, NextHeading) :-
 
             parse_bounds(Stream, Struct, StructUPD, NextHeading),
             StructUPD = linprog(name(NameLinprog), entries(E), ints(Ints), signRHS(SignRHS), buf(B), vars(Vars)),
-            (Type == "PL" -> Update="";
-            (member(Name, Vars) -> 
+            (Type == "PL" -> Update="", VarsNew = Vars;
+            (\+ Type == "PL", member(Name, Vars) -> 
                 !,select(Name, Vars, VarsNew),!;
                 VarsNew = Vars),
             ((Type == "FR";Type == "MI") -> Update="";
@@ -285,10 +328,14 @@ construct([H|Rest], Ans) :-
         with_output_to(string(Ans), format('~w*~w + ~w', [Val, CName, AnsWas])))).
 
 
+% convert list of rows
 convert_LOR([], [], _).
-convert_LOR([(_RName-V)|ConsTail], [AnsRawHead|AnsRawTail], ObjSTR) :- 
+convert_LOR([(RName-V)|ConsTail], [AnsRawHead|AnsRawTail], ObjSTR) :- 
     find_type(V, Type),
-    construct(V, LHS),
+    construct(V, LHSRaw),
+    % LHS=LHSRaw,     
+    (LHSRaw == "" -> LHS = "0" ; LHS = LHSRaw),
+    (LHS == "" -> (writeln("Chcek out for (LHS empty)"), writeln(V), writeln(Type), writeln(RName)) ; true),
     (Type == 'N' ->   
 
         ObjSTR = LHS, AnsRawHead = ""
@@ -298,7 +345,7 @@ convert_LOR([(_RName-V)|ConsTail], [AnsRawHead|AnsRawTail], ObjSTR) :-
         (Type == 'E' -> Sign = '='; Type == 'G' -> Sign = '>='; Type == 'L' -> Sign = '=<' ; writeln("Unknown Type:"),writeln(Type)),
         with_output_to(string(AnsRawHead), format('{~w ~w ~w},\n', [LHS, Sign, RHS]))
     ),
-
+    (LHS == "" -> writeln(AnsRawHead);true),
     convert_LOR(ConsTail, AnsRawTail, ObjSTR).
 
 
@@ -320,6 +367,7 @@ addingPosit(AnsCons, [H|T], AnsConsFull) :-
 mps_to_clpq(Struct, Ans) :- 
     !,
     Struct = linprog(name(_Name), entries(E), ints(Ints), signRHS(SignRHS), buf(B), vars(Vars)),
+    % writeln("Vars at the end:"), writeln(Vars),
     % writeln('Current buffer is'),
     % writeln(B),
     append([E, SignRHS], ListOfRows),
@@ -336,7 +384,9 @@ mps_to_clpq(Struct, Ans) :-
 
 parser(Heading, Struct, Ans, Stream) :- 
     !,
+    reset_progress(progress_counter_col),
     split_string(Heading, " ", " ", Str), 
+    write('Clalcs: '), writeln(Str),
     (Str == ["ENDATA"] -> !, mps_to_clpq(Struct, Ans);
         (nth0(0, Str, "NAME") -> !, parse_name(Str, Struct, StructNew, NextHeading, Stream);
         (nth0(0, Str, "ROWS") -> !, parse_rows(Stream, Struct, StructNew, NextHeading);
@@ -344,7 +394,7 @@ parser(Heading, Struct, Ans, Stream) :-
         (nth0(0, Str, "RHS") -> !, parse_rhs(Stream, Struct, StructNew, NextHeading);
         (nth0(0, Str, "BOUNDS") -> !, parse_bounds(Stream, Struct, StructNew, NextHeading);
         (sub_string(Heading, 0, 1, _, "*");Str==[]) -> !, StructNew = Struct, read_string(Stream, "\n", "\r", _Sep, NextHeading);
-        writeln("Unknown format found"), writeln(Str)
+        writeln("Unknown format found"), writeln(Str), !, fail
         ))))),
         parser(NextHeading, StructNew, Ans, Stream)).
 
@@ -375,3 +425,31 @@ number_checker(NumStr, NumStrChecked) :-
         string_concat(NumStrFrontChecked, "0", NumStrChecked);
         NumStrChecked = NumStrFrontChecked
     ).
+
+var_name_checker(VarStr, VarStrChecked) :- 
+    string_chars(VarStr, VarChars),
+    maplist(check_var_name, VarChars, VarCharsNew),
+    string_chars(VarStrChecked, VarCharsNew).
+
+
+check_var_name(C, C) :-
+    char_type(C, alnum), !.
+
+check_var_name(_, '_').
+
+:- dynamic progress_counter_col/1.
+
+reset_progress(CounterName) :- 
+    nb_setval(CounterName, 0).
+
+progress_tick(CounterName) :- 
+    nb_getval(CounterName, N),
+    N1 is N + 1,
+    nb_setval(CounterName, N1),
+    (0 is N1 mod 100 -> write('.'), flush_output;true),
+    (0 is N1 mod 1000 -> nl;true),
+    (0 is N1 mod 10000 -> write(N1), writeln(' line parsed');true).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

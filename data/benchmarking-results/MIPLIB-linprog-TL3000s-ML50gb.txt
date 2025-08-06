@@ -1,0 +1,26 @@
+Test name            : Result               : Time (s)
+-------------------- : -------------------- : --------
+markshare_4_0        : 1                    : 465.484
+neos859080           : false                : 2.175
+neos-3046615-murg    : 484                  : 131.044
+eil33-2              : 934.007916           : 293.743
+qap10                : TIMEOUT              : 3001.011
+app1-1               : TIMEOUT              : 3001.006
+hypothyroid-k1       : TIMEOUT              : 3001.017
+swath1               : Memory Limit         : 663.705
+rmatr100-p10         : TIMEOUT              : 3001.024
+dano3_3              : TIMEOUT              : 3001.011
+dano3_5              : TIMEOUT              : 3001.015
+neos-3083819-nubu    : Memory Limit         : 996.328
+decomp2              : TIMEOUT              : 3001.009
+irp                  : 12159.492836000001   : 985.057
+momentum1            : TIMEOUT              : 3001.016
+neos-1122047         : TIMEOUT              : 3001.024
+neos-827175          : TIMEOUT              : 3001.012
+neos-2987310-joes    : TIMEOUT              : 3001.016
+neos8                : TIMEOUT              : 3001.089
+neos-957323          : TIMEOUT              : 3001.072
+neos-2746589-doon    : Memory Limit         : 1914.659
+tbfp-network         : Memory Limit         : 2228.784
+nw04                 : Memory Limit         : 2956.000
+

@@ -26,39 +26,41 @@ echo "))." >> test.pl
 # cat "$e" >> test.pl
 # echo "))." >> test.pl
 
-timeout --foreground 60s swipl -q < test.pl 2>&1 \
-  | grep -v "Use ?- setlog" \
-  | grep -v "^true.$" \
-  | grep -v "^$" \
-  > out.out
+# here is a timeout one more time, because C-programs can't be interapted by prolog timeout
+timeout --foreground --kill-after=1s 20s swipl -q < test.pl 2>&1 | grep -v "Use ?- setlog" | grep -v "^true.$" | grep -v "^$" > out.out
 
-ret=$?
-
-inference_line=$(grep "^%" out.out)
-time="0"
-
-if [ -n "$inference_line" ]; then
-  time=$(echo "$inference_line" | sed -e 's/^.*in //' -e 's/ seconds.*$//')
-fi
-
-if grep -q "ERROR" out.out; then
-  inference_line="ERROR"
-fi
+time=$(grep "^%" out.out | sed -e 's/^.*in //' -e 's/ seconds.*$//')
 
 
-if [ $ret -eq 124 ]; then
-  result="time_out"
-  short_description="Timeout after 5s"
-elif [ -z "$inference_line" ] || [ "$inference_line" == "ERROR" ]; then
-  result="ERROR"
-  short_description="ERROR"
-elif grep -q "^false.$" out.out; then
-  result="failure"
-  short_description=""
-else
-  result="success"
-  short_description=""
-fi
+
+# # Check if the output file contains "ERROR"
+# if grep -q "ERROR" out.out; then
+#   result="ERROR"
+#   short_description=$(grep "ERROR" out.out | tail -n 1)
+# else
+  # Set default time to 0 if not found
+  result=""
+  if [ -z "$time" ]; then
+    time="0"
+  fi
+  # Check if __R was not found, indicating a time limit (TL) result
+  if [[ "$time" == 0 ]]; then
+    result="timeout"
+    # If the result is timeout or BAD, capture the last line of the output as a description
+  elif [[ $result == "BAD" ]]; then
+    short_description=$(tail -n 1 out.out)
+  elif grep -q "Warning" out.out; then
+    short_description=$(grep "Warning" out.out | tail -n 1)
+  elif grep -q "ERROR" out.out; then
+    short_description=$(grep "ERROR" out.out | tail -n 1)
+    result="ERROR"
+  elif grep -q "false" out.out; then
+    result="failure"
+  else
+    result="success"
+  fi
+# fi
 
 echo "${e#"$ext"-};$time;$result;$short_description" >> results_temp.txt
-mv out.out "$output_file"
+mv out.out $output_file
+

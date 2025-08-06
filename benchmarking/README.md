@@ -2,11 +2,11 @@
 
 These guidelines help you to reproduce the benchmarking processes used to assess Linprog.
 
-## Solver setup 
-
+## Solver setup
 
 ### GLPK
-You should have already installed glpk (as it's required to use Linprog). 
+
+You should have already installed glpk [(as it's required to use Linprog)](./../README.md#software-requirements).
 Thus, you should be ready to use this solver to execute an instance.
 
 To confirm that you are all set, in a terminal execute:
@@ -15,7 +15,7 @@ To confirm that you are all set, in a terminal execute:
 
 If you get as  outcome (something close) to what is shown below, there you are good to run an instance with the GLPK solver.  
 
-```
+```txt
 GLPSOL--GLPK LP/MIP Solver 5.0
 Copyright (C) 2000-2020 Free Software Foundation, Inc.
 
@@ -25,11 +25,9 @@ This program is free software; you may re-distribute it under the terms
 of the GNU General Public License version 3 or later.
 ```
 
-
-
 ### SWI-Prolog clpq
-This solver operates withing SWI-Prolog. Thus, the only requirement to use it is to have installed SWI-Prolog. The clpq library comes along with the standard distribution of SWI-Prolog, so once it is installed, you should:
 
+This solver operates withing SWI-Prolog. Thus, the only requirement to use it is to have installed SWI-Prolog. The clpq library comes along with the standard distribution of SWI-Prolog, so once it is installed, you should:
 
 1-Start prolog
 
@@ -39,12 +37,12 @@ This solver operates withing SWI-Prolog. Thus, the only requirement to use it is
 
 ``$ consult(library(clpq)).``
 
-
 Now, you are ready to run an instance. See next section.
 
-
 ### Linprog
-It is assumed that you have already installed all required software to use the Linprog library (otherwise see [Software requirements](../README.md)). It is also assumed that you are located in a folder where Linprog is installed (see [Usage](../README.md)). Under these assumptions, to use Linprog you should:
+
+It is assumed that you have already installed all required software to use the Linprog library (otherwise see [Software requirements](../README.md)).
+If you have linprog already installed, you should:
 
 1-Start prolog
 
@@ -52,100 +50,74 @@ It is assumed that you have already installed all required software to use the L
 
 2-Load the library
 
-``$ consult(linprog).``
+``$ use_module(library(linprog)).``
+
+Otherwise: you need to either install linprog [?see installation section?](./../README.md#????) or compile linprog by yourself [?see compilation section?](./../README.md#compilation).
 
 Now, you are ready to run an instance. See next section.
 
 **Remarks:**
+
 > - It may be required to increase the GLPK timeout limit.
 > - By default, this limit is set at 5 minutes.
-> - The predicate *set_time* allows to change this limit (value is indicated in milliseconds). 
-> - Example to set the limit to 30 minutes: ``?- set_time_limit(18000000).``
+> - The predicate *set_time* allows to change this limit (value is indicated in milliseconds).
+> - Example to set the limit to 30 minutes: ``?- set_time_limit(1_800_000).``
 
+## Instance execution
 
+Inside folders you can find each test case in both `.mps` and `.pl` formats. \
+`.mps` - original format, used by glpk. \
+`.pl` - semantically the same test case translated from `.mps` using [transformer](./../helpers/transformer/README.md), used by clpq, linprog.
 
-## Instance execution 
-This section indicates how to run an instance depending in its format. 
+### Automated execution
 
+<!-- ***NOTE:*** Automated execution relies on **local compiled** version of linprog.
+Thus, before running benchmarks checkout [compilation README](./../helpers/README.md#compilation), and don't forget to compile linprog inside netlib/MIPLIB or any other test suit folder. -->
 
-### MPS format
-Instances with this format can be directly run by the GLPK solver. To do it, simply call glpsol passing as parameter the .ms file. For example:
+To run any any benchmarks, just use:\
+`./run.sh <test-suit> <lib>`\
+The result will be in file ``results-<test-suit>-<lib>-<data>.txt``,
+where:
 
-``glpsol markshare_4_0.mps``
+- `<test-suit>`
+  - netlib
+  - MIPLIB
+  - Any other folder you create inside `benchmarks`. Please enter only a single word, no paths allowed.
+- `<lib>`
+  - glpk
+  - linprog
+  - clpq
 
+### Manually execution
 
+#### GLPK execution
 
-### Prolog file
-Prolog instances can be executed using solvers implemented in SWI-Prolog. Thus, these instances are used to compare clpq vs. Linprog. 
-Assuming you have completed the setup steps indicated above, to run an instance you should simply load it into the environment. For example, to run the instance *t001.pl*:
+Just run `glpsol --freemps <test-name>`
 
-``$ consult(t001.pl).``
+#### Linprog execution
 
-The expected outcome should look like this:
+If you installed linprog as an SWI-Prolog package
 
-
-```
-TBC
-```
-
-**Remark: actual numbers may be different, as they depend on the chosen solver and employed environment.**
-
-
-#### MIPLIB 
-
-An instances belonging to this benchamrk before it can be executed, it needs be translated from its standard representation to a valid SWI-Prolog predicate. To do this transalation you should:
-
-**Remark: we use the instance *markshare_4_0.mps* as example.
-
-1- Go to the *transformer* folder
-2- Copy the instance *markshare_4_0.mps* into that folder.
-3-Start prolog
-
-``$ swipl``
-
-4- Consult the helper that implements the translation
-
-``?- consult('transformer.pl').``
-
-
-5- Perform the translation
-
-``?- parse('markshare_4_0.mps','markshare_4_0.pl').``
-
-A new file named *markshare_4_0.pl'* should be available in the folder. This file can be used as indicated above as it is a valid SWI-Prolog instance.  
-
-
-### Setlog file
-Instances in this group are executed from inside the {log} environment. Before loading this environment, it has to be decided which solver {log} should use. This is indicated into the *setlog.pl* file, by loading the library that implements the solver. So, open the file, look for the line:
-
-```
-:- use_module('linprog').
-% :- use_module(library(clpq)).
+```prolog
+?- use_module(library(linprog)).
+?- consult('./<test-suit>/<test-name>').
 ```
 
-Comment/Uncomment the line that corresponds to the solver you want to use. By default, {log} uses Linprog. 
+If you installed linprog locally
 
-To run an instance:
-
-1-Start prolog
-
-``$ swipl``
-
-2-Load {log} 
-
-``?- consult(’setlog.pl’).``
-
-3-Start {log}  
-
-``? setlog.``
-
-4-Load the targeted instance 
-
-``{log}=> consult('e014.pl’).``
-
-The expected outcome should look like this:
-
-
+```prolog
+?- consult(linprog).
+?- consult('./<test-suit>/<test-name>').
 ```
-TBC
+
+#### SWI-Prolog clpq execution
+
+Just run
+
+```prolog
+?- consult(library(clpq)).
+?- consult('./<test-suit>/<test-name>').
 ```
+
+Note: clpq gives results in XrY, where X and Y are integers,
+if you want to get a number in decimal format you can run ./convert.sh

@@ -1,131 +1,67 @@
-# Clpq failing test cases
+# Test suit creation
 
-This page documents the test cases that fail when using the  **clpq** library either directly from SWI-Prolog or {log}.
+## Step 1
 
+Create a test suit you need to create a folder `test_<name>`\
+Example `test_card`
 
-**__Remarks__**
-- The **Expected** column indicates what should be the correct outcome of having executed the test case or verification condition (VC). 
-- The **Outcome** column indicates the actual result obtained from executing the test case or VC.
-- Test cases were executed using SWI-Prolog version 9.2.9 for arm64-darwin.
-- VCs were checked using {log} version setlog498-14a. 
+## Step 2
 
+Determine if your test cases will be written on prolog or **{log}** (setlog). Based on it. Your folder structure should be the following
 
-## SWI Prolog test cases
+### Step 2 prolog
 
+You need to have `expected.txt` which will be used as a source of truth. Each test case should be in a single file that starts with `t0` and has extension with `.pl`\
+Example: `t001.pl`
 
-### Usage
-- $ swipl
-- ?- consult(library(clpq)).
-- copy-paste the content of the test case into the prompt.
+### Step 2 {log}
 
+You need to have `expected.txt` which will be used as a source of truth. Each test case should be in a single file that starts with `e` and has extension with `.pl`\
+Example: `e001.pl`
 
+## expected format
 
-**__Remark__**: if the test case contains a feasible system (indicated by the column), then a solution should be found. Otherwise it should return false.
+Each line of `expected.txt` should be in format `<test_name>:<success/failure>:<any_comments>`
 
-| Test case   | Feasible | Expected | Outcome Clpq | Outcome Linprog |
-|-------------|----------|---------|---------|---------|
-| t001.pl | Y | find solution  | Exception: bb_q:bb_branch(...)    | TBC |
-| t002.pl | N | false | Exception: bb_q:bb_branch(...)     | TBC |
-| t003.pl | Y |find solution  | Exception: bb_q:bb_branch(...)     | TBC |
-| t004.pl | Y |find solution  | Exception: bb_q:bb_inf_internal(...)    | TBC |
-| t005.pl | N | false | Exception: bb_q:bb_branch(...)     | TBC |
-| t006.pl | Y |find solution  | Exception: bb_q:bb_inf_internal(...)    | TBC |
-| t007.pl | Y |find solution  | Exception: bb_q:bb_branch(...)     | TBC |
-| t008.pl | Y |find solution  | Exception: ineq_q:ineq_one_n_p_i(...) | TBC |
-| t009.pl | Y |find solution  | Exception: bb_q:bb_branch(...)     | TBC |
-| t010.pl | Y |find solution  | _2749568 = 1,_2749570 = [0, -1],{...}.  | TBC |
-| t011.pl | N | false | Exception: bb_q:bb_reoptimize(...)    | TBC |
+- <test_name> - name of test case file without `.pl` extensions.
+- <success/failure>
+  
+  - success - if test case should ended with returning `true` from SWI-Prolog
+  - failure if test case should ended with returning `false` from SWI-Prolog
 
+- <any_comments> - you may add comments to test case.
 
+Example: `e001:success:32s:256MB:slow_test_case`\
+Example: `t001:failure`
 
+## Clpq failing test cases
 
-## {log} 
+failing test cases for clpq:
 
-### Cardinality test cases (to be double-checked)
+t003, t004, t006 - t009 - clpq consumes too much memory on simple examples and falls into ERROR.
 
+t066 - t070 - even though, clpq finds a solution, it's incorrect one.
+You can see in comments, what solution is expected and what was the outcome of clpq.
 
-#### Usage
-- $ swipl
-- ?- consult(setlog).
-- ?- setlog.
-- copy-paste the content of the test case into the prompt.
+Example [t070](./test_clp/t070.pl)
 
+```prolog
+/*
 
-**__Remark__**: if the test case contains a satisfiable predicate, then it returns **true** along with a solution. Otherwise it returns **no**.
+Solution: 
+I = 1,
+V = [1, 1],
+{X>=1},
+{Y>=1}.
 
-| Test case   | Expected | Outcome Clpq | Outcome Linprog |
-|-------------|----------|---------|---------|
-| e035.pl | find solution   | TBC    | TBC    |
-| e059.pl | find solution   | TBC   | TBC    |
-| e060.pl | find solution   | TBC   | TBC    |
-| e063.pl | find solution   | TBC   | TBC    |
-| e064.pl | find solution   | TBC   | TBC    |
-| e066.pl | find solution   | TBC   | TBC    |
-| e067.pl | find solution   | TBC   | TBC    |
-| e068.pl | find solution   | TBC   | TBC    |
+V = [1, 0], 
+is NOT a solution, because:
+Y >= 1
+*/
+```
 
+This means, that a solution that is expected can be `I=1, V=[1, 1]`. But clpq gives `V=[1,0]`, which is incorrect according to `Y >= 1` bound.
 
-### ABZ18 verification conditions (VCs)
+### Assumption about why clpq is wrong
 
-
-#### Usage
-- $ swipl
-- ?- consult(setlog).
-- ?- setlog.
-- Consult the file with the VCs, e.g.:
-{log}=> consult('cm1-vc-linprog-new-inv-all.pl').
-- Launch the VCs check process, e.g.: {log}=> check_vcs_cm1.
-
-
-**__Remarks__**: 
-- if the VC is discharged, then it returns **Ok**. Otherwise it returns **ERROR** or **TIMEOUT**.
-- Timeout limits are set at 1 minute, 10 minutes, and 1000 minutes (~16.5 hours).
-
-#### Pools of VCs.
-
-The available files containing mutliple VCs are listed and explained in the [ABZ18 case study page](../../case-studies/abz18/Readme.md).
-
-
-#### Individual VCs grouped by operations
-
-
-| VC | Timeout (min) | Outcome Clpq | Outcome Linprog|
-|-------------|----------|---------|---------|
-| | move_non_ambtrain_1 |||
-| move_non_ambtrain_1_pi_inv3_1 | 1 | Ok | TIMEOUT |
-| move_non_ambtrain_1_pi_inv4_2 | 1 | Ok | TIMEOUT |
-| move_non_ambtrain_1_pi_inv5_2 | 1 | Ok | TIMEOUT |
-| move_non_ambtrain_1_pi_inv13 | 10 | TBD | TIMEOUT |
-| move_non_ambtrain_1_pi_inv13 | 1000 | TBD | TIMEOUT |
-| | move_non_ambtrain_2 |||
-| move_non_ambtrain_2_pi_inv12 | 1 | TIMEOUT | TIMEOUT |
-| move_non_ambtrain_2_pi_inv13 | 10 | TBD | ***ERROR***: problem in arithmetic expression |
-| move_non_ambtrain_2_pi_inv13 | 1000 | TBD | TIMEOUT |
-| | disconnect_1 |||
-| disconnect_1_pi_inv_LastU_AMBTRAIN | 1000 | TBD | ERROR |
-| disconnect_1_pi_inv13 | 1 | TIMEOUT | ***ERROR***: problem in arithmetic expression |
-| | disconnect_2 |||
-| disconnect_2_pi_inv13 | 1 | TIMEOUT | ***ERROR***: problem in arithmetic expression |
-| disconnect_2_pi_inv13 | 1000 | TBD | TIMEOUT |
-| disconnect_2_pi_inv_LastU_AMBTRAIN | 1000 | TBD | ERROR |
-| | reconnect |||
-| reconnect_pi_inv13 | 1 | ERROR | ***ERROR***: problem in arithmetic expression |
-| reconnect_pi_inv17 | 1 | TIMEOUT | TIMEOUT |
-| reconnect_pi_inv_LastU_AMBTRAIN | 1000 | TBD | ERROR |
-| | ghost_1 |||
-| ghost_1_pi_inv1 | 1000 | TBD | ERROR |
-| | ghost_2 |||
-| ghost_2_pi_inv1 | 1000 | TBD | ***ERROR***: Stack limit (1.0Gb) exceeded |
-| ghost_2_pi_inv_LastU_AMBTRAIN | 1000 | TBD | TBD |
-| ghost_2_pi_inv_Comp1_AMBTRAIN | 1000 | TBD | TBD |
-| ghost_2_pi_inv_Comp2_AMBTRAIN | 1000 | TBD | TBD |
-| | move_ambtrain_3 |||
-| move_ambtrain_3_pi_inv_22 | 1 | TIMEOUT | TIMEOUT |
-| move_ambtrain_3_pi_inv_LastU_AMBTRAIN | 1000 | TBD | TBD |
-| move_ambtrain_3_pi_inv_Comp1_AMBTRAIN | 1000 | TBD | TBD |
-| move_ambtrain_3_pi_inv_Comp2_AMBTRAIN | 1000 | TBD | TBD |
-| | move_ambtrain_4 |||
-| move_ambtrain_4_pi_inv_22 | 1 | TIMEOUT | TIMEOUT |
-| move_ambtrain_4_pi_inv_25 | 1 | TIMEOUT | TIMEOUT |
-| move_ambtrain_4_pi_inv_LastU_AMBTRAIN | 1000 | TBD | TBD |
-| move_ambtrain_4_pi_inv_Comp2_AMBTRAIN | 1000 | TBD | TBD |
+It seems like if a variable is not participating in the objective function, then it will be 0 as default regarding any constraints that are not leading to infeasibility of the whole system.

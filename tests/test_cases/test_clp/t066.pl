@@ -1,0 +1,18 @@
+/*
+
+Solution: 
+I = 1,
+V = [1, -1, 0, 1, 1, 0],
+{_N4>=1, _N5=_N6+_N4},
+{_N1>=1, _N2=_N3-_N1}.
+
+V = [1, 0, 1, 0, 0, 0], 
+is NOT a solution, because:
+_N4 >= 1 is not satisfied, as _N4 = 0.
+*/
+
+( {_N6 = -_N4+_N5,
+ _N4>=1,
+ _N3 = _N1+_N2,_N1>=1},
+ bb_inf([_N1,_N2,_N3,_N4,_N5,_N6],_N1,I,V))
+

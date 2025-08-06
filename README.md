@@ -1,4 +1,4 @@
-# Linprog 
+# Linprog
 
 *A tool for solving linear inequalities.*
 
@@ -8,14 +8,14 @@ A key feature of Linprog is its compatibility with the CLP(Q, R) interface, allo
 
 ## Software requirements
 
-Linprog (so far) has been proved to work in unix-based environments. 
+Linprog (so far) has been proved to work in unix-based environments.
 
 If you have a computer running a unix-based OS (e.g. Ubuntu, Debian, macOS), then you can go for the *Native installation*.
 
 If you don't have a unix-based environment or want to give a try in an isolated environment you may want to use the provided sandox. Follow instructions in *Virtual installation* to go for this alternative.
 
 > **Remark for Windows users**
-> Nothing should forbid Linprog to work on Windows environments. However, as we have not yet tested it, we cannot guarantee its replicability nor correct behaviour.
+> Nothing should forbid Linprog to work on Windows environments. However, as we have not yet tested it, we cannot guarantee its replicability nor correct behavior.
 
 ## Native installation
 
@@ -43,16 +43,51 @@ Use apt-get to install the required software.
 
 - use brew to install the required software.
 
-              $ brew install swi-prolog
-              $ brew install glpk
+       $brew install swi-prolog
+       $brew install glpk
 
 > - install gtimeout
+       $brew install coreutils
 
-              $ brew install coreutils 
+Then you need to install linprog:
+
+### Linprog installation
+
+Enter SWI-Prolog environment
+
+    $swipl
+
+Then install linprog:
+
+    ?- pack_install(linprog).
+
+The output should be
+
+    true.
+
+If this doesn't work. You can try to install linprog manually.
+
+First, use [packaging](./helpers/packaging/) to compile linprog into an SWI-Prolog package. After this you should be able to see `package/linprog` in the root directory of the repository.
+
+Then go inside `package/linprog` and use
+
+    swipl pack install .
+
+To check if linprog is installed, you can run:
+
+    swipl
+    use_module(library(linprog)).
+
+The output should be
+
+    true.
+
+
+And finally there is the last possible way: compile source code directly. [see compilation process](#compilation)
 
 ## Virtual installation
 
-To use Linprog into a sandox, we need first to get installed:
+To use Linprog into a sandbox, we need first to get installed:
 
 - [VirtualBox V7.0](https://www.virtualbox.org/)
 
@@ -60,33 +95,28 @@ To use Linprog into a sandox, we need first to get installed:
 
 Once you have installed the required software, open a terminal, go to the root folder where the file *Vangrantfile*  is located, and then execute the following commands:
 
->     $ vagrant up
->     $ vagrant ssh
+>     $vagrant up
+>     $vagrant ssh
 
 At this point, you will be inside å virtual machine already provisioned with the required softare to compile the Linprog ibrary. The final step is to go to the folder where the source files are. This is achieved by executing the following command:
 
->     $ cd /vagrant_data
+>     $cd /vagrant_data
 
 ## Compilation
 
-Linprog is distributed as source code. This means you need to compile to get it working.
+Linprog also distributes the source code. This means you can compile and use it locally.
 
-To compile it, you have to navigate to the folder `testing_env` and then either:
-
-- a.  run the script `./compile_to.sh` \<output_fodler> indicating the directory where the binaries are generated. Note that relative paths are from folder `testing_env`.
-
-- b. run the script `compile.sh` \<exec_time> indicating of max allowed time of execution (in seconds). You may want to use this option to execute randomly generated tests. Read [Prolog Test Automation Scripts](./testing_env/README.md) for more information.
-
+To compile it, you have to navigate to the folder `helpers/compilation` and then run the script `./compile_to.sh <output_fodler>` indicating the directory where the binaries are generated. Note that relative paths are from folder `helpers/compilation/`.
 
 After execution, you should get the following message:
 
-       $ Compilation produced successfully
+       $Compilation produced successfully
 
 ## Usage
 
 1. Start **SWI-Prolog**:
 
-       $ swipl
+       $swipl
 
 2. Load the new implementation:
 
@@ -94,118 +124,47 @@ The Linprog library can be loaded into the environment by running the following 
 
        ?- consult(linprog).
 
-3. If you see: "true", then it means you are ready to usage Linprog. 
+3. If you see: "true", then it means you are ready to usage Linprog.
 
-Read the [Manual](./docs/manual.md) to see examples, available predicates and how to use them.ß
-
+Read the [Manual](./docs/manual.md) to see examples, available predicates and how to use them.
 
 ## Correctness
 
-To make sure Linprog behaves as expected we have created two test suites. One test suits contains test cases implemented in SWI-Prolog, whereas the other contains test cases implemented using the [{log}](https://www.clpset.unipr.it/setlog.Home.html) constraint programming language, which relies on SWI-Prolog's clpq library as dedicated solver to deal with constraints over the rational numbers. This is the main motivation why {log} has been selected to assess Linprog.
+To make sure Linprog behaves as expected we have created several test suits. One part of them contains test cases implemented in SWI-Prolog, whereas others contain test cases implemented using [{log}](https://www.clpset.unipr.it/setlog.Home.html) constraint programming language, which relies on SWI-Prolog's clpq library as dedicated solver to deal with constraints over the rational numbers. This is the main motivation why {log} has been selected to assess Linprog.
 
-### Test suites
+### Test suits
 
-These test suites are available into the folder **test**.
+All test suits that where used to access correctness  are available in the folder **test**.
 
-Test cases starting with `t0` are SWI-Prolog tests, and those with the letter `e0` are {log} tests.
+Test cases starting with `t0` are SWI-Prolog tests, and those with the letter `e` are {log} tests.
 
 To automatically run Prolog tests, execute the following command:
 
-      $ ./tests/RUN_PROLOG_test.sh <test-group> <ext>
+      $./tests/RUN_PROLOG_test.sh <test-group> <ext> <linprog/clpq>
 
 To automatically run {log} tests:
 
-       $ ./RUN_SETLOG.sh_test <test-group> <ext>
+       $./RUN_SETLOG.sh_test <test-group> <ext> <linprog/clpq>
 
-Where `<test-group>` is one of the existing test groups:
+- `<test-group>` is one of the existing test groups:
 
-- **clpq**
-- **card**
-- **intervals**
+  - **clpq**
+  - **card**
+  - **intervals**
 
-And `ext` is the extention of log files generated.
+- `ext` is an extension of log files generated.
 
-**Remarks**
+- The last parameter is optional. The default value is **linprog**:
+  - **linprog** - run tests using linprog library
+  - **clpq** - run tests using clpq library
 
-- Test cases showing clpq failing (while Linprog passes) are documented [HERE](./tests/test_cases/README.md).
+### Remarks
 
-- You can also automatically generate test cases. For more information see [Prolog Test Automation Scripts](./testing_env/README.md). 
-
-- Calling clpq multiple times may cause the garbage collector to remove some variables that are already in use by clpq. To solve this problem uncomment the line  ```:- set_prolog_flag(gc, false)``` in file *testing.pl*.  
+- Test cases showing clpq failing (while Linprog passes) are documented [HERE](./tests/test_cases/README.md#).
 
 ## Performance
 
-We want to know how Linprog stands vs. SWI-Prolog's implementation of clpq library in terms of execution time. This assessment is done using tests both created by our own, and borrow from the  [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html) benchmark.
-
-The assessment is done using the following environments:
-
-#### Env1:
-
-- Hardware: Apple M4 Max, 64 GB
-- OS: macOS 15.3.1
-
-#### Env2:
-
-- Hardware: Intel® Core i9-7900X 10-Core CPU 3.30GHz, 128 GB (8x Kingston HyperX 16 GB DDR4-2400
-DIMM (KHX3000C15/16GX))
-- OS: Debian GNU/Linux 11 (bullseye)
-Kernel Version: 5.10.0
-
-#### Env3:
-
-- Hardware: Apple M2, 16GB
-- OS: maxOS 15.4.1???
-
-**Remarks**
-
-- Results are shown in seconds.
-
-- Guidelines to reproduce the benchmarking are provided [HERE](./benchmarking/README.md)
-
-### Own tests
-
-#### Prolog  
-
-| | |  | Env1  |  | Env2   |  |  Env3 | | 
-|----------|----------|----------|----------|----------|----------|----------|----------|----------|
-| Test | #Var | Feasible | clpq  | Linprog |clpq  | Linprog | clpq | Linprog |
-| `t056.pl` | 5 | Y  | 0.005   | 0.003   | Data 1   | Data 2   | | 0.001? 
-| `t057.pl`  | 6 | Y | 0.007   | 0.002   | Data 1   | Data 2   | | 0.001? 
-| `t058.pl`  | 7 | Y | 0.003   | 0.002   | Data 1   | Data 2   | | 0.001?
-| `t059.pl`  | 8 | Y | 0.006   | 0.002   | Data 1   | Data 2   | | 0.001?
-| `t060.pl`  | 9 | Y | 0.006   | 0.003   | Data 1   | Data 2   | | 0.001?
-| `t061.pl`  | 10 | Y | 0.007   | 0.004  | Data 1   | Data 2   | | 0.001?
-| `t062.pl`  | 14 | Y | 0.008   | 0.003   | Data 1   | Data 2   | | 0.001?
-| `t063.pl`  | 6 | N | 0.001   | 0.001   | Data 1   | Data 2   | | 0.001?
-| `t064.pl`  | 7 | N | 0.001 | 0.002   | Data 1   | Data 2   | | 0.001?
-| `t065.pl`  | 8 | N | 0.001  | 0.003  | Data 1   | Data 2   | | 0.001?
-
-
-#### {log} predicates (cardinality)
-(14, 15, 16 are not representative, find better selection?)
-
-|  | Env1  |  | Env2   |  | Env3 | | 
-|----------|----------|----------|----------|----------|----------|----------|
-| Test | clpq  | Linprog | clpq  | Linprog | clpq | Linprog |
-| `e014.pl`  | Data 1   | Data 2   | Data 1   | Data 2   |
-| `e015.pl`   | Data 1   | Data 2   | Data 1   | Data 2   |
-| `e016.pl`  | Data 1   | Data 2   | Data 1   | Data 2   |
-
-
-### MIPLIB benchmark
-
-|  | | Env1  |   |  | Env2   |  |  | Env3 | |
-|----------|----------|----------|----------|----------|----------|----------|----------|----------|----------|
-| Test | GLPK | clpq |  Linprog | GLPK | clpq |  Linprog | GLPK | clpq | Linprog |
-| `markshare_4_0`  | 369.70   | 1557.56   | Data 3   | 748.10   | Data 2   | Data 3   |
-| `markshare_5_0`  | TBC   | TBC   | TBC   | TBC   | TBC   | TBC   |
-| `markshare1`  | TBC   | TBC   | TBC   | TBC   | TBC   | TBC   |
-| `markshare2` | TBC   | TBC   | TBC   | TBC   | TBC   | TBC   |
-| `gen-ip054`  |  TBC   | TBC   | TBC   | TBC   | TBC   | TBC   |
-| `gen-ip002`  |  TBC   | TBC   | TBC   | TBC   | TBC   | TBC   |
-| `neos5`  | TBC   | TBC   | TBC   | TBC   | TBC   | TBC   | | | |
-
-
+We want to know how Linprog stands vs. SWI-Prolog's implementation of clpq library in terms of execution time. This assessment is done using tests borrow from the  [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html) and [netlib](https://www.netlib.org/lp/data/) benchmarks. More information about performance you can see [here](./benchmarking/README.md)
 
 **************************************************************
 

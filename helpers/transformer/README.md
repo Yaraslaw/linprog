@@ -1,23 +1,42 @@
+# Transformer
 
+## How to use (automatically)
 
-An instances belonging to a benchamrk before it can be executed, it needs be translated from its standard representation to a valid SWI-Prolog predicate. To do this transalation you should:
+You can run automatically transformer on any folder. This means that it will tries to read all files ended with `.mps` and try to transform them into `.pl` format.
 
-**Remark: we use the instance *markshare_4_0.mps* as example.
+### Usage
 
-1- Go to the *transformer* folder
-2- Copy the instance *markshare_4_0.mps* into that folder.
-3-Start prolog
+`./run.sh <path-to-folder>`
 
-``$ swipl``
+You will see something like:
 
-4- Consult the helper that implements the translation
+?\
+[RANGES]\
+[COLUMNS]\
+.....
 
-``?- consult('transformer.pl').``
+It means, that [header] was read. And `.` is every 100 lines parser read.\
+?
 
+## How to use (manually)
 
-5- Perform the translation
+An instances belonging to a benchmark before it can be executed, it needs be translated from its standard representation to a valid SWI-Prolog predicate. To do this translation you should:
 
-``?- parse('markshare_4_0.mps','markshare_4_0.pl').``
+**Remark**: we use the instance *dano3_3.mps* as an example.
 
-A new file named *markshare_4_0.pl'* should be available in the folder. This file can be used as indicated above as it is a valid SWI-Prolog instance.  
+1. Go to the *`transformer`* folder
 
+2. Start prolog
+
+    `$ swipl`
+
+3. Consult the helper that implements the translation
+
+    `?- consult('transformer.pl').`
+
+4. Perform the translation
+
+    `?- parse('/path/to/dano3_3.mps',
+    '/any/path/dano3_3.pl').`
+
+A new file named *dano3_3.pl'* should be available. This file can be used as indicated above as it is a valid SWI-Prolog instance.  

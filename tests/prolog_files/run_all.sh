@@ -18,7 +18,7 @@ display_progress() {
   progress=$(( ($current_test * 100) / $total_tests ))
   bar=""
 
-  for ((i=0; i<$progress; i+=2)); do
+  for ((x=0; x<$progress; x+=2)); do
     bar="${bar}#"
   done
 
@@ -28,14 +28,10 @@ display_progress() {
 # Run tests for all cases
 
 for i in "${ext}-t0"*.pl; do
-  num=$(echo "$i" | grep -o -E '[0-9]+' | sed 's/^0*//')
-   
-  if [[ $num -lt 1000 ]]; then
-      # Pass file (i) and optional second arg ($1) to run.sh
-      ./run.sh "$i" "$1" "$2"
-  fi 
+  display_progress "$i"   
+  bash ./run.sh "$i" "$1" "$2"
   current_test=$((current_test + 1))
-  display_progress "$i"
+  
 done
 
 elapsed_time=$((SECONDS - start_time))
@@ -65,6 +61,7 @@ while IFS= read -r line; do
 
   # Look up the expected result from expected.txt
   # e.g. if t037.pl => we look for "t037:" in expected.txt
+
   expected_result=$(grep "${exp%.*}:" expected.txt | cut -d: -f2 | tr -d ' ')
 
   # Compare actual result vs. expected

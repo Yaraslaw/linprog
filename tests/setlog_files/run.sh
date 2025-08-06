@@ -3,6 +3,8 @@
 
 libName="linprog.pl"
 
+
+
 e=$1
 ext=${2:-out}
 output_file="${e%pl}$ext"
@@ -25,7 +27,7 @@ echo >> test.pl
 
 
 # here is a timeout one more time, because C-programs can't be interapted by prolog timeout
-timeout --foreground 7000s swipl -q < test.pl 2>&1 | grep -v "Use ?- setlog" | grep -v "^true.$" | grep -v "^$" > out.out
+timeout --foreground --kill-after=1s 200s swipl -q < test.pl 2>&1 | grep -v "Use ?- setlog" | grep -v "^true.$" | grep -v "^$" > out.out
 
 time=$(grep "^%" out.out | sed -e 's/^.*in //' -e 's/ seconds.*$//')
 result=$(grep "__R =" out.out | sed -e 's/__R = //' | tr -d ' .,')
@@ -36,7 +38,10 @@ fi
 
 
 filename=$(basename "$e")
-expected_line=$(grep "${filename#".pl"-}" expected.txt)
+# echo "filename: $filename"
+expected_line=$(grep "${e#"$ext"-}" expected.txt)
+# echo "${e#"$ext"-".pl"}"
+# echo "expected_line: $expected_line"
 noTL_flag=$(echo "$expected_line" | grep -q "noTL" && echo true || echo false)
 
 # # Check if the output file contains "ERROR"
@@ -52,11 +57,6 @@ noTL_flag=$(echo "$expected_line" | grep -q "noTL" && echo true || echo false)
   # Check if __R was not found, indicating a time limit (TL) result
   if [[ -z "$result" ]]; then
     result="timeout"
-  fi
-
-  # If the result is timeout and noTL flag is set, override the result to "OK"
-  if [[ $result == "timeout" && $noTL_flag == true ]]; then
-    result="OK"
   fi
 
   # If the result is timeout or BAD, capture the last line of the output as a description

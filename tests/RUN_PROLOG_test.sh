@@ -25,7 +25,7 @@ TEST_NAME=$1
 EXT=$2
 
 # Compile the C implementation
-sh ./compile_c_prolog.sh 
+bash ./compile_c_prolog.sh 
 
 # Define directories
 TEST_DIR="./test_cases/test_$TEST_NAME"  # Adjust this if your tests are in a different folder
@@ -67,7 +67,7 @@ fi
 
 # Run the tests in the setlog_files directory
 cd $PROLOG_DIR
-./run_all.sh $EXT "${3:-linprog}"
+bash ./run_all.sh $EXT "${3:-linprog}"
 
 cd ..
 
@@ -82,7 +82,7 @@ mv $PROLOG_DIR/results.txt $LOG_DIR/ 2>/dev/null
 
 # Clean up the setlog_files directory
 cd $PROLOG_DIR
-./clean.sh $EXT
+bash ./clean.sh $EXT
 
 # Return to the original directory
 cd ..

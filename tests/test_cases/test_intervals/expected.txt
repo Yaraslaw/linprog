@@ -111,13 +111,13 @@ e296:failure:interval:subset:min-max:property
 e297:failure:interval:subset:min-max:property
 e298:failure:interval:subset:min-max:property
 e299:failure:interval:subset:min-max:property
-e300:failure:interval:subset:min-max:property:noTL
+e300:failure:interval:subset:min-max:property:
 e301:failure:interval:subset:min-max:property
 e302:failure:interval:subset:min-max:property
 e303:failure:interval:subset:min-max:property
 e304:failure:interval:subset:min-max:test
-e305:success:interval:subset:min-max:performance:noTL
-e306:success:interval:subset:min-max:performance:noTL
+e305:success:interval:subset:min-max:performance:
+e306:success:interval:subset:min-max:performance:
 e307:success:interval:un:first argument interval:test
 e308:success:interval:un:first argument interval:test
 e309:success:interval:un:first argument interval:test
@@ -282,28 +282,28 @@ e465:success:interval:un:third argument interval:test
 e466:success:interval:un:third argument interval:test
 e467:success:interval:un:third argument interval:test
 e468:success:interval:un:third argument interval:test
-e469:success:interval:un:third argument interval:test:noTL
+e469:success:interval:un:third argument interval:test:
 e470:success:interval:un:third argument interval:test
 e471:success:interval:un:third argument interval:test
-e472:success:interval:un:third argument interval:test:noTL
+e472:success:interval:un:third argument interval:test:
 e473:success:interval:un:third argument interval:test
-e474:success:interval:un:third argument interval:test:noTL
-e475:success:interval:un:third argument interval:test:noTL
+e474:success:interval:un:third argument interval:test:
+e475:success:interval:un:third argument interval:test:
 e476:success:interval:un:third argument interval:test
-e477:success:interval:un:third argument interval:test:noTL
-e478:success:interval:un:third argument interval:test:noTL
+e477:success:interval:un:third argument interval:test:
+e478:success:interval:un:third argument interval:test:
 e479:success:interval:un:third argument interval:test
-e480:success:interval:un:third argument interval:test:noTL
-e481:success:interval:un:third argument interval:test:noTL
+e480:success:interval:un:third argument interval:test:
+e481:success:interval:un:third argument interval:test:
 e482:success:interval:un:third argument interval:test
-e483:success:interval:un:third argument interval:test:noTL
-e484:success:interval:un:third argument interval:test:noTL
-e485:success:interval:un:third argument interval:test:noTL
-e486:success:interval:un:third argument interval:test:noTL
-e487:success:interval:un:third argument interval:test:noTL
-e488:success:interval:un:third argument interval:test:noTL
-e489:success:interval:un:third argument interval:test:noTL
-e490:success:interval:un:third argument interval:test:noTL
+e483:success:interval:un:third argument interval:test:
+e484:success:interval:un:third argument interval:test:
+e485:success:interval:un:third argument interval:test:
+e486:success:interval:un:third argument interval:test:
+e487:success:interval:un:third argument interval:test:
+e488:success:interval:un:third argument interval:test:
+e489:success:interval:un:third argument interval:test:
+e490:success:interval:un:third argument interval:test:
 e491:success:interval:un:third argument interval:test
 e492:success:interval:un:third argument interval:test
 e493:success:interval:un:third argument interval:test
@@ -330,7 +330,7 @@ e513:failure:interval:un:third argument interval:test
 e514:failure:interval:un:third argument interval:test
 e515:failure:interval:un:third argument interval:test
 e516:failure:interval:un:third argument interval:test
-e517:failure:interval:un:third argument interval:test:noTL
+e517:failure:interval:un:third argument interval:test:
 e518:failure:interval:un:third argument interval:test
 e519:failure:interval:un:third argument interval:test
 e520:failure:interval:un:third argument interval:test
@@ -379,17 +379,17 @@ e562:failure:interval:un:third argument interval:test
 e563:failure:interval:un:third argument interval:test
 e564:failure:interval:un:third argument interval:test
 e565:failure:interval:un:third argument interval:test
-e566:failure:interval:un:third argument interval:test:noTL
-e567:failure:interval:un:third argument interval:test:noTL
+e566:failure:interval:un:third argument interval:test:
+e567:failure:interval:un:third argument interval:test:
 e568:failure:interval:un:third argument interval:test
 e569:success:interval:un:third argument interval:test
 e570:success:interval:un:third argument interval:test
-e571:success:interval:un:third argument interval:test:noTL
+e571:success:interval:un:third argument interval:test:
 e572:success:interval:un:third argument interval:test
-e574:success:interval:un:third argument interval:test:noTL
-e575:success:interval:un:third argument interval:test:noTL
-e576:success:interval:un:third argument interval:test:noTL
-e577:success:interval:un:third argument interval:test:noTL
+e574:success:interval:un:third argument interval:test:
+e575:success:interval:un:third argument interval:test:
+e576:success:interval:un:third argument interval:test:
+e577:success:interval:un:third argument interval:test:
 e578:success:interval:un:third argument interval:test
 e579:success:interval:un:third argument interval:test
 e580:success:interval:un:third argument interval:test
@@ -415,7 +415,7 @@ e600:failure:interval:un:third argument interval:test
 e601:failure:interval:un:third argument interval:test
 e602:failure:interval:un:third argument interval:test
 e603:failure:interval:un:third argument interval:test
-e604:failure:interval:un:third argument interval:test:noTL
+e604:failure:interval:un:third argument interval:test:
 e605:failure:interval:un:third argument interval:test
 e606:failure:interval:un:third argument interval:test
 e607:failure:interval:un:third argument interval:test
@@ -428,9 +428,9 @@ e613:failure:interval:un:third argument interval:test
 e614:failure:interval:un:third argument interval:test
 e615:failure:interval:un:third argument interval:test
 e616:failure:interval:un:third argument interval:test
-e617:failure:interval:un:third argument interval:test:noTL
+e617:failure:interval:un:third argument interval:test:
 e618:failure:interval:un:third argument interval:test
-e619:failure:interval:un:third argument interval:test:noTL
+e619:failure:interval:un:third argument interval:test:
 e620:success:interval:un:third argument interval:test
 % first third
 e621:success:interval:un:first third argument interval:test
@@ -469,7 +469,7 @@ e653:failure:interval:un:first third argument interval:test
 e654:failure:interval:un:first third argument interval:test
 e655:failure:interval:un:first third argument interval:test
 e656:failure:interval:un:first third argument interval:test
-e657:failure:interval:un:first third argument interval:test:noTL
+e657:failure:interval:un:first third argument interval:test:
 e658:failure:interval:un:first third argument interval:test
 e659:failure:interval:un:first third argument interval:test
 e660:failure:interval:un:first third argument interval:test
@@ -482,9 +482,9 @@ e666:failure:interval:un:first third argument interval:test
 e667:failure:interval:un:first third argument interval:test
 e668:failure:interval:un:first third argument interval:test
 e669:failure:interval:un:first third argument interval:test
-e670:failure:interval:un:first third argument interval:test:noTL
+e670:failure:interval:un:first third argument interval:test:
 e671:failure:interval:un:first third argument interval:test
-e672:failure:interval:un:first third argument interval:test:noTL
+e672:failure:interval:un:first third argument interval:test:
 e673:success:interval:un:first third argument interval:test
 % first second
 e674:success:interval:un:first second argument interval:test
@@ -510,19 +510,19 @@ e693:failure:interval:un:first second argument interval:test
 e694:failure:interval:un:first second argument interval:test
 e695:failure:interval:un:first second argument interval:test
 e696:failure:interval:un:first second argument interval:test
-e697:failure:interval:un:first second argument interval:test:noTL
-e698:failure:interval:un:first second argument interval:test:noTL
-e699:failure:interval:un:first second argument interval:test:noTL
-e700:failure:interval:un:first second argument interval:test:noTL
+e697:failure:interval:un:first second argument interval:test:
+e698:failure:interval:un:first second argument interval:test:
+e699:failure:interval:un:first second argument interval:test:
+e700:failure:interval:un:first second argument interval:test:
 e701:failure:interval:un:first second argument interval:test
 e702:failure:interval:un:first second argument interval:test
 e703:failure:interval:un:first second argument interval:test
 e704:failure:interval:un:first second argument interval:test
 e705:failure:interval:un:first second argument interval:test
 e706:failure:interval:un:first second argument interval:test
-e707:failure:interval:un:first second argument interval:test:noTL
+e707:failure:interval:un:first second argument interval:test:
 e708:success:interval:un:first second argument interval:test
-e709:failure:interval:un:first second argument interval:test:noTL
+e709:failure:interval:un:first second argument interval:test:
 e710:success:interval:un:first second argument interval:test
 e711:success:interval:un:first second argument interval:test
 e712:success:interval:un:first second argument interval:test
@@ -613,8 +613,8 @@ e795:success:interval:disj:test
 e796:success:interval:disj:test
 e797:success:interval:disj:test
 e798:success:interval:disj:test
-e799:success:interval:disj:test:noTL
-e800:success:interval:disj:test:noTL
+e799:success:interval:disj:test:
+e800:success:interval:disj:test:
 e801:success:interval:disj:test
 e802:success:interval:disj:test
 e803:success:interval:disj:test
@@ -670,7 +670,7 @@ e852:failure:interval:disj:test
 e853:failure:interval:disj:test
 e854:failure:interval:disj:test
 e855:failure:interval:disj:test
-e856:failure:interval:disj:test:noTL
+e856:failure:interval:disj:test:
 e857:failure:interval:disj:test
 e858:success:interval:disj:test
 e859:failure:interval:disj:test
@@ -699,55 +699,55 @@ e881:failure:interval:disj:test
 e882:failure:interval:property:nint
 e883:failure:interval:property:nint
 e884:failure:interval:property:nint
-e885:failure:interval:property:nint:> 2 s:noTL
+e885:failure:interval:property:nint:> 2 s:
 e886:failure:interval:property:nint
 e887:failure:interval:property:set-interval equiv
 e888:failure:interval:property:set-interval equiv
 e889:failure:interval:property:set-interval equiv
 e890:failure:interval:property:un, three intervals
-e891:failure:interval:property:diff, three intervals:noTL
+e891:failure:interval:property:diff, three intervals:
 e892:failure:interval:property:nint
-e893:failure:interval:property:interval version of the trichotomy principle:noTL
+e893:failure:interval:property:interval version of the trichotomy principle:
 e894:failure:interval:property:interior
-e895:failure:interval:property:medians:PROBLEM:noTL
-e896:failure:interval:property:snth_min:noTL
-e897:failure:interval:property:snth_min:noTL
-e898:failure:interval:property:snth_min:noTL
-e899:failure:interval:property:snth_min:noTL
-e900:failure:interval:property:snth_min:noTL
-e901:failure:interval:property:snth_min:noTL
-e902:failure:interval:property:snth_min:noTL
-e903:failure:interval:property:snth_min:noTL
-e904:failure:interval:property:snth_min:noTL
+e895:timeout:interval:property:medians:PROBLEM:ans:failure
+e896:failure:interval:property:snth_min:
+e897:failure:interval:property:snth_min:
+e898:failure:interval:property:snth_min:
+e899:failure:interval:property:snth_min:
+e900:failure:interval:property:snth_min:
+e901:failure:interval:property:snth_min:
+e902:failure:interval:property:snth_min:
+e903:failure:interval:property:snth_min:
+e904:failure:interval:property:snth_min:
 e905:failure:interval:property:snth_min
-e906:failure:interval:property:min:noTL
+e906:failure:interval:property:min:
 e907:failure:interval:property:max
 e908:failure:interval:property:snth_min
 e909:failure:interval:property:snth_min, min
-e910:failure:interval:property:snth_min:noTL
-e911:failure:interval:property:snth_min, max:noTL
+e910:failure:interval:property:snth_min:
+e911:failure:interval:property:snth_min, max:
 e912:failure:interval:property:min, max
-e913:failure:interval:property:snth_min:> 14 s:noTL
-e914:failure:interval:property:snth_min:noTL
+e913:failure:interval:property:snth_min:> 14 s:
+e914:failure:interval:property:snth_min:
 e915:failure:interval:property:medians
 e916:failure:interval:property:un, three intervals
 e917:failure:interval:property:un, three intervals
 e918:success:interval:property:un, three intervals, disj
-e919:failure:interval:property:un, commutativity:noTL
-e920:failure:interval:property:un, associativity:noTL
+e919:failure:interval:property:un, commutativity:
+e920:failure:interval:property:un, associativity:
 e921:failure:interval:property:inters, commutativity
-e922:failure:interval:property:inters, associativity:noTL
-e923:failure:interval:property:int_max_prop:noTL
-e924:failure:interval:property:min, lb_ub:noTL
-e925:failure:interval:property:medians, lb_ub:PROBLEM:noTL
+e922:failure:interval:property:inters, associativity:
+e923:failure:interval:property:int_max_prop:
+e924:failure:interval:property:min, lb_ub:
+e925:timeout:interval:property:medians, lb_ub:PROBLEM:ans:failure
 e926:failure:interval:property:un, three intervals, disj, e918
 e927:failure:interval:un:first second argument interval:test:e708
 e928:failure:interval:property:mnlb_mxub
-e929:failure:interval:property:mnlb_mxub:noTL
+e929:failure:interval:property:mnlb_mxub:
 e930:failure:interval:property:int_max_prop
 e931:failure:interval:property:int_max_prop
 e932:failure:interval:property:ssucc
 e933:failure:interval:property:ssucc
-e934:failure:interval:property:ssucc, snth_min: > 47 s:noTL
+e934:failure:interval:property:ssucc, snth_min: > 47 s:
 e935:failure:interval:property:ssucc, setmin, setmax
-e936:failure:interval:property:ssucc, size:noTL
+e936:failure:interval:property:ssucc, size:
