@@ -1,5 +1,6 @@
-# Content
+# Setlog files
 
-**This folder contains setlog files that are using across the project.**\
-Note1: `setlog.pl` is splited into setlog_linprog.pl and setlog_clpq.pl versions. The only difference between them is the library they are using.\
-Note2: Inside the project each version renames back to `setlog.pl`. This is done by compilators.
+This folder contains setlog sources used across the project.
+- The original `setlog.pl` is split into two variants: `setlog_linprog.pl` and `setlog_clpq.pl` versions. The only difference between them is the library (`clpq` / `linprog`) they are using.
+
+- Compilation scripts rename the selected variant back to `setlog.pl` during build.

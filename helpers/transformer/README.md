@@ -1,42 +1,47 @@
-# Transformer
+# Transformer usage
 
-## How to use (automatically)
+The transformer converts `.mps` problem files into Prolog files that can be executed by `clpq` or `linprog`.
 
-You can run automatically transformer on any folder. This means that it will tries to read all files ended with `.mps` and try to transform them into `.pl` format.
+## Usage
 
-### Usage
+### Automated
 
-`./run.sh <path-to-folder>`
+Run transformer on any folder; it reads all files ending with `.mps` and converts them to the `.pl` format.
 
-You will see something like:
+```bash
+$ ./run.sh <path-to-folder>
+```
 
-?\
-[RANGES]\
-[COLUMNS]\
-.....
+While running you will see progress like:
+```
+[NAME]
+[ROWS]
+[COLUMNS]
+..........
+..... (a dot every ~100 parsed lines)
+```
 
-It means, that [header] was read. And `.` is every 100 lines parser read.\
-?
+## Manual
 
-## How to use (manually)
+1. Enter *`transformer`* folder
 
-An instances belonging to a benchmark before it can be executed, it needs be translated from its standard representation to a valid SWI-Prolog predicate. To do this translation you should:
+2. Start SWI-Prolog
 
-**Remark**: we use the instance *dano3_3.mps* as an example.
+    ```bash
+    $ swipl
+    ```
 
-1. Go to the *`transformer`* folder
+3. Load transformer
 
-2. Start prolog
+    ```prolog
+    ?- consult('transformer.pl').
+    ```
 
-    `$ swipl`
+4. Translate a single file
 
-3. Consult the helper that implements the translation
+    ```prolog
+    ?- parse('/path/to/<file-mps>.mps',
+    '/any/path/<file>.pl').
+    ```
 
-    `?- consult('transformer.pl').`
-
-4. Perform the translation
-
-    `?- parse('/path/to/dano3_3.mps',
-    '/any/path/dano3_3.pl').`
-
-A new file named *dano3_3.pl'* should be available. This file can be used as indicated above as it is a valid SWI-Prolog instance.  
+This creates `<file>.pl`, which you can then `consult/1` from SWI-Prolog.

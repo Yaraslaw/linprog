@@ -26,8 +26,38 @@ fi
 TEST_NAME=$1
 EXT=$2
 
+
+# Copying setlog files
+if [[ -z "$3" ||  "$3" == "linprog" ]]; then
+  echo "linprog"
+  for f in ../setlog_files/setlog*; do
+    case "${f##*/}" in
+      setlog_clpq.pl|README.md) ;;        # skip
+      setlog_linprog.pl) cp "$f" ./setlog_files/setlog.pl ;;  # copy linprog version
+      *) cp "$f" ./setlog_files/ ;;        # copy everything else
+    esac
+  done
+else
+  echo "$3 -> clpq"
+  for f in ../setlog_files/setlog*; do
+    case "${f##*/}" in
+      setlog_linprog.pl|README.md) ;;        # skip
+      setlog_clpq.pl) cp "$f" ./setlog_files/setlog.pl ;;  # copy clpq version
+      *) cp "$f" ./setlog_files/ ;;        # copy everything else
+    esac
+  done
+fi
+
+
+cp ../setlog_files/ttf_sp.pl ./setlog_files/ttf_sp.pl
+cp ../setlog_files/size_solver.pl ./setlog_files/size_solver.pl
+
+
+
 # Compile the C implementation
-bash ./compile_c_setlog.sh "${3:-linprog}"
+# bash ./compile_c_setlog.sh "${3:-linprog}"
+bash ./../helpers/compilation/compile_to.sh ./../../tests/setlog_files
+
 
 # Define directories
 TEST_DIR="./test_cases/test_$TEST_NAME"  # Adjust this if your tests are in a different folder

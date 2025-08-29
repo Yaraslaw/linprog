@@ -16,6 +16,7 @@ before_script:
 ###################
 basicTests:
   stage: basicLogic
+  tags: [juno]
   script:
     - ./tests/RUN_PROLOG_test.sh clp clp
     - ./tests/RUN_SETLOG_test.sh abz18 abz
@@ -29,6 +30,7 @@ basicTests:
 ###################
 validate_after_basic:
   stage: validate1
+  tags: [juno]
   needs:
     - basicTests
   script:
@@ -93,7 +95,7 @@ push_release:
     - git config --global user.email "${GITHUB_MAIL}"
     - git config --global user.name "${GITHUB_USER}"
 
-    - git clone "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Yaraslaw/linprog-test.git" TMP-github_repo
+    - git clone "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Yaraslaw/linprog.git" TMP-github_repo
 
     - rsync -av --delete --exclude 'TMP-github_repo/' --exclude '**/.git/**' ./ ./TMP-github_repo/    
     - cd TMP-github_repo

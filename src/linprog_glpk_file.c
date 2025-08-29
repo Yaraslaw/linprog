@@ -380,7 +380,7 @@ foreign_t pl_expr(term_t cons, term_t ints, term_t obj, term_t _mn, term_t _ans,
     }
     const double EPS = intTolerance;
 
-    glp_term_out(GLP_ON); // turn off the output
+    glp_term_out(GLP_OFF); // turn off the output
     term_t head = PL_new_term_ref(); // The list (head) TODO: move to the functions
     term_t tail = PL_new_term_ref(); // The list (tail) TODO: move to the functions
     

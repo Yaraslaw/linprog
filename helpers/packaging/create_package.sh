@@ -28,21 +28,23 @@ cat > "$PKG_DIR/pack.pl" <<EOF
 name(${PKG_NAME}).
 version('${PKG_VER}').
 pack_version(2).
+title('Linear Programming with GLPK').
+author('Yaraslaw Akhramenka', 'yaroslav.akhramenko@gmail.com').
+author('Alfredo Capozucca', 'alfredo.capozucca@uni.lu').
+author('Maximiliano Cristiá', 'cristia@cifasis-conicet.gov.ar').
+% license('Simplified BSD License').
 EOF
 
 # --- write Makefile with SWI & GLPK detection + dummy check/install ---
 cat > "$PKG_DIR/Makefile" <<'EOF'
 # === SWI-Prolog include flags ===
-SWI_CFG_PKG   := $(shell pkg-config --cflags swipl 2>/dev/null)
-SWI_CFG_LD    := $(shell pkg-config --libs   swipl 2>/dev/null)
-SWI_INC_LD    := $(shell swipl --dump-runtime-variables \
-                   2>/dev/null | sed -n 's/.*SWIPL_CFLAGS=\(.*\)/\1/p')
-SWI_LD2       := $(shell swipl --dump-runtime-variables \
-                   2>/dev/null | sed -n 's/.*SWIPL_CFLAGS=\(.*\)/\1/p')
-SWI_FALLBACK  := -I/opt/local/lib/swipl/include -I/usr/local/include
 
-SWIPL_CFLAGS  := $(or $(SWI_CFG_PKG),$(SWI_INC_LD),$(SWI_FALLBACK))
-SWIPL_LDFLAGS := $(or $(SWI_CFG_LD),$(SWI_LD2))
+PLBASE   := $(shell swipl --dump-runtime-variables | awk -F\" '/PLBASE=/{print $$2}')
+PLLIBDIR := $(shell swipl --dump-runtime-variables | awk -F\" '/PLLIBDIR=/{print $$2}')
+PLLIB    := $(shell swipl --dump-runtime-variables | awk -F\" '/PLLIB=/{print $$2}')
+
+SWIPL_CFLAGS   := -I"$(PLBASE)/include"
+SWIPL_LDFLAGS  := -L"$(PLLIBDIR)" $(PLLIB)
 
 # === GLPK flags via pkg-config or fallback ===
 GLPK_CFLAGS   := $(shell pkg-config --cflags glpk 2>/dev/null || echo -I/usr/local/include)
@@ -66,7 +68,8 @@ foreign/linprog_glpk_file.o: $(SRC)
 	$(CC) $(SWIPL_CFLAGS) $(GLPK_CFLAGS) -fpic -c "$<" -o "$@"
 
 $(MODULE): $(OBJ)
-	@mkdir -p $(MODULE_DIR)
+	@echo "$(CC) -shared -o "$@" "$<" $(GLPK_LIBS) $(SWIPL_LDFLAGS)"
+	@[ -n "$(MODULE_DIR)" ] && mkdir -p -- "$(MODULE_DIR)"
 	$(CC) -shared -o "$@" "$<" $(GLPK_LIBS) $(SWIPL_LDFLAGS)
 
 # Dummy test target so `make check` won’t fail

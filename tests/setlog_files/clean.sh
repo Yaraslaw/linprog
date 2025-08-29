@@ -24,3 +24,4 @@ rm -f setlog*
 rm -f ttf_sp.pl
 rm -f size_solver.pl
 rm -f linprog.pl
+rm -f linprog_glpk_file.*

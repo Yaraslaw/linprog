@@ -11,7 +11,7 @@ fi
 
 # Check each results.txt file in the logs directory
 for result_file in tests/logs/log*/results.txt; do
-  if grep -q "BAD" "$result_file"; then
+  if grep -Eq 'BAD|ERROR' "$result_file"; then
     echo "A test has failed. Details can be found in $result_file."
     exit 1
   fi

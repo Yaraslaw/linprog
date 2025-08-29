@@ -1,53 +1,72 @@
-if [ "$#" -ne 1 ]; then
-  echo "Usage: $0 <output_directory>"
-  exit 1
-fi
+#!/usr/bin/env sh
+set -e
+
+INCLUDE_DIRS_GLPK="/usr/local/include /usr/include /opt/homebrew/include /opt/local/include /mingw64/include /msys64/mingw64/include"
+LIB_DIRS_GLPK="/usr/local/lib /usr/lib /opt/homebrew/lib /opt/local/lib /mingw64/lib /msys64/mingw64/lib"
+
+[ "$#" -eq 1 ] || { echo "Usage: $0 <output_directory>" >&2; exit 1; }
 
 outdir=$1
 minImpl="linprog_glpk_file"
 libName="linprog"
 
-SCRIPT_DIR="$(dirname "$0")"
-cd $SCRIPT_DIR
-echo $SCRIPT_DIR
-echo $outdir
-echo "copying files to from $(pwd) to $outdir"
-cp ../../src/$minImpl.c $outdir/$minImpl.c
-cp ../../src/$libName.pl $outdir/$libName.pl
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+cd "$SCRIPT_DIR"
 
+mkdir -p "$outdir"
+cp "../../src/$minImpl.c" "$outdir/$minImpl.c"
+cp "../../src/$libName.pl" "$outdir/$libName.pl"
 
-# Detect SWI-Prolog home directory
-SWIPL_HOME=$(swipl --home)
+command -v swipl >/dev/null 2>&1 || { echo "swipl not found"; exit 1; }
+eval "$(swipl --dump-runtime-variables)"
 
-# Determine system architecture
-ARCH_DIR=$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]')
+# Use ONLY what swipl gives us
+SWI_INCLUDE="${PLINCDIR:-${PLBASE:+$PLBASE/include}}"
+SWI_LIB="${PLLIBDIR:-}"
+[ -n "$SWI_INCLUDE" ] || { echo "No SWI include from swipl (PLINCDIR/PLBASE)."; exit 1; }
+[ -n "$SWI_LIB" ]     || { echo "No SWI lib dir from swipl (PLLIBDIR)."; exit 1; }
 
-# Construct SWI-Prolog include and library paths
-SWI_INCLUDE="$SWIPL_HOME/include"
-SWI_LIB="$SWIPL_HOME/lib/$ARCH_DIR"  
-
-# Detect GLPK library path
-GLPK_INCLUDE=$(find /usr/local/include -name "glpk.h" 2>/dev/null | head -n 1 | xargs dirname)
-GLPK_LIB=$(find /usr/local/lib -name "libglpk.*" 2>/dev/null | head -n 1 | xargs dirname)
-
-echo $SWI_INCLUDE
-echo $SWI_LIB
-echo $GLPK_INCLUDE
-echo $GLPK_LIB
-
-
-# Compile with detected paths
-gcc -I "$SWI_INCLUDE" -I "$GLPK_INCLUDE" -fpic -c "$outdir/$minImpl.c" -o "$outdir/$minImpl.o"
-if [ $? -ne 0 ]; then
-  echo "Compilation failed."
-  exit 1
+# Honor swipl's shared-object extension
+SOEXT="${PLSOEXT:-${SOEXT:-}}"
+if [ -z "$SOEXT" ]; then
+  case "$(uname -s)" in
+    Darwin) SOEXT="dylib" ;;
+    MINGW*|MSYS*|CYGWIN*) SOEXT="dll" ;;
+    *) SOEXT="so" ;;
+  esac
 fi
 
-# Link with detected paths
-gcc -shared -o "$outdir/$minImpl.so" "$outdir/$minImpl.o" -L"$GLPK_LIB" -lglpk -L"$SWI_LIB" -lswipl
-if [ $? -ne 0 ]; then
-  echo "Linking failed."
-  exit 1
-fi
+src="$outdir/$minImpl.c"
+obj="$outdir/$minImpl.o"
+outlib="$outdir/$minImpl.$SOEXT"
 
-echo "Compilation produced successfully."
+# Find GLPK (you can also set GLPK_INCLUDE/GLPK_LIB env vars)
+if [ -z "${GLPK_INCLUDE:-}" ]; then
+  for d in $INCLUDE_DIRS_GLPK; do
+    [ -f "$d/glpk.h" ] && GLPK_INCLUDE="$d" && break
+  done
+fi
+[ -n "${GLPK_INCLUDE:-}" ] || { echo "glpk.h not found. Set GLPK_INCLUDE=..."; exit 1; }
+
+if [ -z "${GLPK_LIB:-}" ]; then
+  for d in $LIB_DIRS_GLPK; do
+    ls "$d"/libglpk.* >/dev/null 2>&1 && GLPK_LIB="$d" && break
+  done
+fi
+# GLPK_LIB optional; linker may find -lglpk via system paths.
+
+CC=${CC:-cc}
+FPIC="-fPIC"; case "$SOEXT" in dll) FPIC="";; esac
+
+echo "Compiling..."
+$CC -O2 $FPIC -I"$SWI_INCLUDE" -I"$GLPK_INCLUDE" -c "$src" -o "$obj"
+
+echo "Linking -> $outlib"
+case "$SOEXT" in
+  dylib) $CC -dynamiclib -o "$outlib" "$obj" -L"$SWI_LIB" -lswipl ${GLPK_LIB:+-L"$GLPK_LIB"} -lglpk ;;
+  dll)   $CC -shared     -o "$outlib" "$obj" -L"$SWI_LIB" -lswipl ${GLPK_LIB:+-L"$GLPK_LIB"} -lglpk ;;
+  *)     $CC -shared     -o "$outlib" "$obj" -L"$SWI_LIB" -lswipl ${GLPK_LIB:+-L"$GLPK_LIB"} -lglpk ;;
+esac
+
+echo "✅ Built: $outlib"
+echo "Also copied: $outdir/$libName.pl"

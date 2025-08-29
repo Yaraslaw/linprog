@@ -1,46 +1,40 @@
 # Prolog Test Execution Scripts
 
-## Introduction
-This folder contains scripts designed to execute Prolog tests efficiently. These scripts facilitate the execution of individual tests or batches of tests, with the ability to log results and clean up temporary files generated during the process.
+## Scripts
+- `run.sh <test-name> <ext> <linprog|clpq>`
+  Run a single prepared Prolog test specified by `<test-name>.pl`. The execution results are logged in a file named `<test-name>.<ext>`. Additionally, it creates a temporary file `result_temp.txt` containing a description of the execution.
 
-## Contents
+- `run_all.sh <ext> [linprog|clpq]`
+  Apply `run.sh` to all Prolog test files in the current directory that start with `{ext}-t0`. The results of these executions are stored in a file named `results.txt`.
+    - Expected Output File:
+        If an expected.txt file is provided, lines formatted as `<test-name>:<answer>` are used to check outputs.
+    - Verification:
 
-### Scripts
-- **`run.sh <test-name>.pl <ext>`**  
-  This script runs a single Prolog test specified by `<test-name>.pl`. The execution results are logged in a file named `<test-name>.<ext>`. Additionally, it creates a temporary file `result_temp.txt` containing a description of the execution.
-
-- **`run_all.sh <ext>`**  
-  This script applies `run.sh` to all Prolog test files in the current directory that start with `t0`. The results of these executions are aggregated and stored in a single file named `result.txt`.
-    - **Expected Output File**:
-
-        If an expected.txt file is provided, it should contain expected answers for the tests, formatted as `<test-name>:<answer>`.
-    - **Verification**: 
-    
         After executing the tests, `run_all.sh` checks each test's output against the expected answers listed in `expected.txt`.
 
-        - If the expected answer is found in the log, the property `pass` in the file `result.txt` is set to **OK**.
+        - If the output answer is the same as expected the property `pass` is set to **OK**.
         
-        - If the expected answer is not found, the property `pass` in the file `result.txt` is set to **BAD**.
+        - If the output answer differs from expected the property `pass` is set to **BAD**.
 
-- **`clean.sh`**  
-  This script deletes all temporary and intermediate files generated during the execution of the above scripts, except for the final result files. Use this script to clean up the workspace and maintain only essential output.
+- `clean.sh [<ext>]` - remove generated files (omit `<ext>` to clean `t0*.pl` cases).
+
 
 ## Usage
 
-1. **Run a Single Test**
+1. Run a Single Test
    ```bash
-   ./run.sh <test-name>.pl <ext>
+   ./run.sh <test-name> <ext> [linprog|clpq]
    ```
-    Replace `<test-name>` with the name of the test you wish to execute and `<ext>` with the desired log file extension. This command will generate logs and a `result_temp.txt` file.
+    Replace `<test-name>` with the test name you want to execute and `<ext>` with the desired log file extension.
 
-2. **Run All Tests**
+2. Run All Tests
     ```bash
     ./run_all.sh <ext>
     ```
-    Replace `<ext>` with the desired log file extension. This command will run all test files starting with `t0` and store the results in `result.txt`.
+    Replace `<ext>` with the desired log file extension. This command will run all test files starting with `t0` and store the results in `results.txt`.
 
 3. Clean Up Temporary Files
     ```bash
-    ./clean.sh
+    ./clean.sh [<ext>]
     ```
-    Use this command to remove all temporary files created during the test executions, preserving only the main result files.
+    Use this command to remove generated files (omit `<ext>` to clean `t0*.pl` cases as well).

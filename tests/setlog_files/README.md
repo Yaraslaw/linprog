@@ -1,46 +1,29 @@
 # Setlog Test Execution Scripts
 
-## Introduction
-This folder contains scripts designed to execute Setlog tests efficiently. These scripts facilitate the execution of individual tests or batches of tests, with the ability to log results and clean up temporary files generated during the process.
+## Scripts
+- `run.sh <test-name> <ext>`
+  run a single prepared test; logs to `<test-name>.<ext>` and writes `result_temp.txt`.
 
-## Contents
+- `run_all.sh <ext>`
+  Run all `e*.pl` tests; aggregates into `results.txt`
+    - If an expected.txt file is provided, it should contain expected answers for the tests formatted like `<test-name>:<answer>`.
+    - If the expected answer is the same as output of corresponded test case, `pass` becomes **OK**; otherwise **BAD**
 
-### Scripts
-- **`run.sh <test-name>.pl <ext>`**  
-  This script runs a single Setlog test specified by `<test-name>.pl`. The execution results are logged in a file named `<test-name>.<ext>`. Additionally, it creates a temporary file `result_temp.txt` containing a description of the execution.
-
-- **`run_all.sh <ext>`**  
-  This script applies `run.sh` to all Setlog test files in the current directory that start with `t0`. The results of these executions are aggregated and stored in a single file named `result.txt`.
-    - **Expected Output File**:
-
-        If an expected.txt file is provided, it should contain expected answers for the tests, formatted as `<test-name>:<answer>`.
-    - **Verification**: 
-    
-        After executing the tests, `run_all.sh` checks each test's output against the expected answers listed in `expected.txt`.
-
-        - If the expected answer is found in the log, the property `pass` in the file `result.txt` is set to **OK**.
-        
-        - If the expected answer is not found, the property `pass` in the file `result.txt` is set to **BAD**.
-
-- **`clean.sh`**  
-  This script deletes all temporary and intermediate files generated during the execution of the above scripts, except for the final result files. Use this script to clean up the workspace and maintain only essential output.
+- `clean.sh [<ext>]` remove generated files.
 
 ## Usage
 
-1. **Run a Single Test**
+1. Run a Single Test
    ```bash
-   ./run.sh <test-name>.pl <ext>
+   ./run.sh <test-name> <ext>
    ```
-    Replace `<test-name>` with the name of the test you wish to execute and `<ext>` with the desired log file extension. This command will generate logs and a `result_temp.txt` file.
 
-2. **Run All Tests**
+2. Run All Tests
     ```bash
     ./run_all.sh <ext>
     ```
-    Replace `<ext>` with the desired log file extension. This command will run all test files starting with `t0` and store the results in `result.txt`.
 
-3. Clean Up Temporary Files
+3. Clean Up
     ```bash
-    ./clean.sh
+    ./clean.sh [<ext>]
     ```
-    Use this command to remove all temporary files created during the test executions, preserving only the main result files.

@@ -25,7 +25,8 @@ TEST_NAME=$1
 EXT=$2
 
 # Compile the C implementation
-bash ./compile_c_prolog.sh 
+# bash ./compile_c_prolog.sh 
+bash ../helpers/compilation/compile_to.sh ../../tests/prolog_files
 
 # Define directories
 TEST_DIR="./test_cases/test_$TEST_NAME"  # Adjust this if your tests are in a different folder

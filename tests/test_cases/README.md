@@ -1,49 +1,51 @@
-# Test suit creation
+# Test suite creation
 
-## Step 1
+## Step 1 - Make a suite directory
 
-Create a test suit you need to create a folder `test_<name>`\
+Create a folder `test_<name>` under `tests/test_cases`.
+
 Example `test_card`
 
-## Step 2
+## Step 2 - Choose Prolog or {log}
 
-Determine if your test cases will be written on prolog or **{log}** (setlog). Based on it. Your folder structure should be the following
+Determine if your test cases will be written in Prolog or **{log}** (setlog). Based on that choice, use the corresponding folder structure.
 
-### Step 2 prolog
+### Prolog suites
 
-You need to have `expected.txt` which will be used as a source of truth. Each test case should be in a single file that starts with `t0` and has extension with `.pl`\
-Example: `t001.pl`
+- Add test files named `t0*.pl` (e.g. `t001.pl`).
+- Provide `expected.txt` (the source of truth).
 
-### Step 2 {log}
+### {log} suites
 
-You need to have `expected.txt` which will be used as a source of truth. Each test case should be in a single file that starts with `e` and has extension with `.pl`\
-Example: `e001.pl`
+- Add test files named `e*.pl` (e.g. `e001.pl`).
+- Provide `expected.txt` (the source of truth).
 
-## expected format
+## Step 3 - `expected.txt` format
 
-Each line of `expected.txt` should be in format `<test_name>:<success/failure>:<any_comments>`
+Each line of `expected.txt` should be like:\
+`<test_name>:<success|failure>[:<comments>]`
 
-- <test_name> - name of test case file without `.pl` extensions.
+- <test_name> - filename without `.pl`.
 - <success/failure>
   
-  - success - if test case should ended with returning `true` from SWI-Prolog
-  - failure if test case should ended with returning `false` from SWI-Prolog
+  - success - the query should yield `true.`.
+  - failure - the query should yield `false.`.
 
-- <any_comments> - you may add comments to test case.
+- <comments> - optional (timings, memory, notes).
 
 Example: `e001:success:32s:256MB:slow_test_case`\
 Example: `t001:failure`
 
 ## Clpq failing test cases
 
-failing test cases for clpq:
+Known failing test cases for clpq:
 
-t003, t004, t006 - t009 - clpq consumes too much memory on simple examples and falls into ERROR.
+t003, t004, t006 - t009 - clpq consumes too much memory on simple examples and raises an ERROR.
 
-t066 - t070 - even though, clpq finds a solution, it's incorrect one.
+t066 - t070 - even though, clpq finds a solution, it is incorrect.
 You can see in comments, what solution is expected and what was the outcome of clpq.
 
-Example [t070](./test_clp/t070.pl)
+Example [t070.pl](./test_clp/t070.pl)
 
 ```prolog
 /*
@@ -60,8 +62,8 @@ Y >= 1
 */
 ```
 
-This means, that a solution that is expected can be `I=1, V=[1, 1]`. But clpq gives `V=[1,0]`, which is incorrect according to `Y >= 1` bound.
+This means the expected solution can be `I=1, V=[1, 1]`, but clpq gives `V=[1,0]` which is incorrect according to `Y >= 1` bound.
 
-### Assumption about why clpq is wrong
-
-It seems like if a variable is not participating in the objective function, then it will be 0 as default regarding any constraints that are not leading to infeasibility of the whole system.
+> ### Assumption about why clpq is wrong
+>
+> It seems like if a variable is not participating in the objective function, then it will be 0 as default regarding any constraints that are not leading to infeasibility of the whole system.
