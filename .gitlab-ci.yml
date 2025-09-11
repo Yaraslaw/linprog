@@ -118,10 +118,9 @@ push_release:
 
 
     - git push origin main
-    - git push -o ci.skip gitlab main
 
     - git tag -a "v${VERSION}" -m "Release ${VERSION}"
     - git push origin "v${VERSION}"
-    - git push -o ci.skip gitlab "v${VERSION}"
+    - git push -o ci.skip gitlab "refs/tags/v${VERSION}:refs/tags/v${VERSION}"
     - git remote -v
     - git status -s
