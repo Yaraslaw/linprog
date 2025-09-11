@@ -113,7 +113,7 @@ git_push:
     - echo "${VERSION}" > dist/VERSION.txt
     - cp -a package/linprog "dist/linprog-${VERSION}"
     - cd dist && zip -r "linprog-${VERSION}.zip" "linprog-${VERSION}"
-    - rm -rf dist/"linprog-${VERSION}"
+    - rm -rf "linprog-${VERSION}"
     - ls -la 
     - cd .. 
     
@@ -153,16 +153,13 @@ release_push:
       artifacts: true 
   when: manual
   script:
-    - apt-get update && apt-get install -y curl jq
+    - apt-get update && apt-get install -y curl jq ca-certificates
 
-    - curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-      | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null
-      chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
-      | tee /etc/apt/sources.list.d/github-cli.list >/dev/null
-
+    - curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null
+    - chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+    - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list >/dev/null
     - apt-get update && apt-get install -y gh
-
+    
     - gh --version
 
     - VERSION="$(< dist/VERSION.txt)"
