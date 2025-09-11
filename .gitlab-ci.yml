@@ -83,7 +83,7 @@ validate_after_medium:
 ###################
 # Stage 7: Push release to github
 ###################
-push_release:
+git_push:
   stage: release
   when: manual
   variables:
@@ -105,14 +105,27 @@ push_release:
     - rsync -av --delete --exclude 'TMP-github_repo/' --exclude '**/.git/**' --exclude '/tests/test_cases/test_abz18/**' ./ ./TMP-github_repo/
     - rm -rf TMP-github_repo/tests/test_cases/test_abz18 # delete abz18 if it was there before
 
-    - ls -la 
+    - ls -la
     - ./helpers/packaging/create_package.sh
+    # Create release archive and artifact
+    - rm -rf dist 
+    - mkdir -p dist
+    - echo "${VERSION}" > dist/VERSION.txt
+    - cp -a package/linprog "dist/linprog-${VERSION}"
+    - cd dist && zip -r "linprog-${VERSION}.zip" "linprog-${VERSION}"
+    - rm -rf dist/"linprog-${VERSION}"
     - ls -la 
+    - cd .. 
+    
+    # package to github
     - mv package TMP-github_repo/
     - cd TMP-github_repo
-    - ls -la 
+    - ls -la
     - git add -A
     - git add -f package/ # add package only for github
+
+
+
     - git commit -m "Release ${VERSION}" || echo "No changes to commit"
 
     - git remote add gitlab "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/uniluxembourg/fstm/dcs/veridex/setlog/clpq.git"
@@ -125,3 +138,30 @@ push_release:
     - git push -o ci.skip gitlab "refs/tags/v${VERSION}:refs/tags/v${VERSION}"
     - git remote -v
     - git status -s
+
+
+  artifacts:
+    paths:
+      - dist/                            # contains VERSION.txt + linprog-${VERSION}.zip
+    expire_in: 1 week
+
+
+release_push:
+  stage: release
+  needs:
+    - job: git_push
+      artifacts: true 
+  when: manual
+  script:
+    - apt-get update && apt-get install -y curl jq gh
+
+    - VERSION="$(< dist/VERSION.txt)"
+    - TAG="v${VERSION}"
+    - OWNER="Yaraslaw"
+    - REPO="linprog"
+    - ASSET="dist/linprog-${VERSION}.zip"
+
+    - export GH_TOKEN="${GITHUB_TOKEN}"
+
+    - gh release create "$TAG" --repo "$OWNER/$REPO" --generate-notes --target main --title "$TAG" || true
+    - gh release upload "$TAG" "$ASSET" --repo "$OWNER/$REPO" --clobber
