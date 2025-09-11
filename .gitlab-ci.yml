@@ -111,8 +111,17 @@ push_release:
     - cd TMP-github_repo
     - ls -la 
     - git add -A
+    - git add -f package/ # add package only for github
     - git commit -m "Release ${VERSION}" || echo "No changes to commit"
+
+    - git remote add gitlab "https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/uniluxembourg/fstm/dcs/veridex/setlog/clpq.git"
+
+
     - git push origin main
+    - git push -o ci.skip gitlab main
 
     - git tag -a "v${VERSION}" -m "Release ${VERSION}"
     - git push origin "v${VERSION}"
+    - git push -o ci.skip gitlab "v${VERSION}"
+    - git remote -v
+    - git status -s

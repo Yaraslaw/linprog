@@ -65,10 +65,11 @@ The following example executes the **card** test suite using the Linprog library
 ./RUN_SETLOG_test.sh card log 
 ```
 
-
 ## Results post-processing
 
-Inside the folder `tests/` there are scripts that may help to process the results generated as result of having executed a test suite.
+We provide scripts to help process the results obtained after executing a test suite.
+
+These scripts are located in the `/helpers/postprocessing/` folder.
 
 ### Decimal converter
 
