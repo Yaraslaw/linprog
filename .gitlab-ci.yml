@@ -102,7 +102,7 @@ push_release:
 
     - git clone "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Yaraslaw/linprog.git" TMP-github_repo
 
-    - rsync -av --delete --exclude 'TMP-github_repo/' --exclude '**/.git/**' ./ ./TMP-github_repo/
+    - rsync -av --delete --exclude 'TMP-github_repo/' --exclude '**/.git/**' --exclude './tests/test_cases/test_abz18/' ./ ./TMP-github_repo/
 
     - ls -la 
     - ./helpers/packaging/create_package.sh

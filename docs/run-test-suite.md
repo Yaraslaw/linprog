@@ -77,7 +77,7 @@ The library clpq.pl represents decimal number with the format `XrY`.
 
 Use
 ```bash
-./converter.sh </path/to/results> </path/to/output>
+./converter.sh </path/to/result/file-orig> </path/to/output/file-new>
 ```
 
 to convert numbers from the clpq.pl representation to standard decimal format (i.e., using a dot as the decimal separator).
@@ -86,7 +86,7 @@ to convert numbers from the clpq.pl representation to standard decimal format (i
 
 Use
 ```bash
-./generate-charts.sh <path-to-results-file>
+./generate-charts.sh </path/to/result/file>
 ```
 
 to create an `svg` file with a chart representation of the data from indicated file.
@@ -101,11 +101,11 @@ It combines in a single chart the results of two different files. This should ea
 To use it, do:
 
 ```bash
-./generate-comparison-charts.sh <path-to-file1> <path-to-file2>
+./generate-comparison-charts.sh </path/to/file1> </path/to/file2>
 ```
 
-where `<path-to-file1>` and `<path-to-file2>` are the paths to each result file.
+where `</path/to/file1>` and `</path/to/file2>` correspond to each result file.
 
-The `svg` file is generated inside the directory `graphs/`.
+The `svg` file is generated inside the directory `/graphs`.
 
 Results from `<file1>` are placed on top of results from `<file2>`.

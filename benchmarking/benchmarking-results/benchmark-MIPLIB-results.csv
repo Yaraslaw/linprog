@@ -1,0 +1,25 @@
+Instance           ; Result               ; Time (s); Result               ; Time (s)
+-------------------- ; -------------------- ; --------; -------------------- ; --------
+markshare_4_0        ;1;1188,945;1;465,484
+neos859080           ; false                ;16,548; false                ;2,175
+neos-3046615-murg    ; TIMEOUT              ;3001,007;484;131,044
+eil33-2              ; TIMEOUT              ;3001,029;934,007916000000;293,743
+qap10                ; TIMEOUT              ;3001,010; TIMEOUT              ;3001,011
+app1-1               ; TIMEOUT              ;3001,005; TIMEOUT              ;3001,006
+hypothyroid-k1       ; TIMEOUT              ;3001,024; TIMEOUT              ;3001,017
+swath1               ; Memory Limit         ;574,963; Memory Limit         ;663,705
+rmatr100-p10         ; TIMEOUT              ;3001,027; TIMEOUT              ;3001,024
+dano3_3              ; TIMEOUT              ;3001,012; TIMEOUT              ;3001,011
+dano3_5              ; TIMEOUT              ;3001,011; TIMEOUT              ;3001,015
+neos-3083819-nubu    ; TIMEOUT              ;3001,016; Memory Limit         ;996,328
+decomp2              ; TIMEOUT              ;3001,008; TIMEOUT              ;3001,009
+irp                  ; TIMEOUT              ;3001,052;12159,492836000000;985,057
+momentum1            ; TIMEOUT              ;3001,024; TIMEOUT              ;3001,016
+neos-1122047         ; TIMEOUT              ;3001,024; TIMEOUT              ;3001,024
+neos-827175          ; TIMEOUT              ;3001,017; TIMEOUT              ;3001,012
+neos-2987310-joes    ; TIMEOUT              ;3001,017; TIMEOUT              ;3001,016
+neos8                ; TIMEOUT              ;3001,074; TIMEOUT              ;3001,089
+neos-957323          ; Memory Limit         ;2610,112; TIMEOUT              ;3001,072
+neos-2746589-doon    ; Memory Limit         ;1469,687; Memory Limit         ;1914,659
+tbfp-network         ; Memory Limit         ;2140,047; Memory Limit         ;2228,784
+nw04                 ; Memory Limit         ;1082,653; Memory Limit         ;2956,000
