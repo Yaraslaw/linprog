@@ -11,7 +11,7 @@ SRC_C="$PROJECT_ROOT/src/linprog_glpk_file.c"
 
 # --- target pack directory ---
 PKG_NAME="linprog"
-PKG_VER="0.1.0"
+PKG_VER="0.1.2"
 PKG_DIR="$PROJECT_ROOT/package/$PKG_NAME"
 
 # --- clean & create structure ---
