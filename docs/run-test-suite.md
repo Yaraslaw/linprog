@@ -28,7 +28,7 @@ These scripts can be found in the folder `/test'.
   - time(s): the time (in seconds) taken to execute by the test case
   - expect: has a copy of the value indicated in the ``expected.txt`` file for the test case
   - pass: contains OK if the outcome of the test case matches the expected value. Otherwise, BAD.
-  - short description: exta notes related to the outcome of the test case.  
+  - short description: extra notes related to the outcome of the test case.  
 
 ## Usage
 

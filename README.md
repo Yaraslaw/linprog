@@ -86,17 +86,17 @@ Below are steps to build an image using the provided [Dockerfile](./Dockerfile) 
 
 **Remark:** You may need `sudo` rights to use docker.
 
-1) Build the image
+1- Build the image
 
     ```bash
     docker build -t linprog:dev .
     ```
-2) Run a container (basic)
+2- Run a container (basic)
 
     ```bash
     docker run -it --rm --name linprog -p 3000:3000 linprog:dev
     ```
-3) New a new terminal: inspect, logs, and shell
+3- New a new terminal: inspect, logs, and shell
 
     ```bash
     docker ps
@@ -115,7 +115,7 @@ If at some point you want to get rid of the container and image, then:
 
 ## Installation
 
-### Stable release 
+### Stable release
 
 Install released SWI-Prolog package :
 
@@ -128,21 +128,21 @@ TBC: The output should be `true.`.
 
 ### Development release
 
-Step 1. Clone this repository to your local machine.
+1- Clone this repository to your local machine.
 
-Step 2. Install the development release. You can do this in two ways: (i) by creating a local package from the latest source code, or (ii) by compiling the latest source code directly.
+2- Install the development release. You can do this in two ways: (i) by creating a local package from the latest source code, or (ii) by compiling the latest source code directly.
 
 
 #### Local package
 
-1- Run [packaging script](./helpers/packaging/create_package.sh) to create Linprog SWI-Prolog package.
-
+1- Go to the folder containing the provided packaging script, and run it.
 
 ```bash
+$ cd helpers/packaging
 $ ./create_package.sh
 ```
 
-If package creation was successfull, the folder `package/linprog` will appear in the root directory of the repository.
+Upon completion, the folder `package/linprog` appears in the root directory of the repository.
 
 2- Navigate to `package/linprog` folder and then
 
@@ -170,7 +170,8 @@ swipl pack remove linprog
 
 #### Compilation
 
-1- Go to the folder where the provided compilation script is place, and then indicate the output folder where the compilation output is to be placed.  
+1- Go to the folder containing the provided compilation script, and specify the output folder where the compilation results should be saved.
+
 ```bash
 $ cd helpers/compilation
 $ ./compile_to.sh <output_folder>
@@ -180,20 +181,25 @@ If compilation was successful, the you will see:
 
     Compilation produced successfully. 
 
-2- Launch SWI Prolog and load the library.
+2- Go to the <output_folder> indicated in the compilation and launch SWI Prolog.
 
 ```bash
+$ cd <output_folder>
 $ swipl
 ```
+
+
+3- Load Linprog library.
 ```prolog
 ?- consult(linprog).
 ```
 
 
-
 ## Usage
 
-Once the Linprog library is has been installed and loaded into the SWI Prolog environment it is ready to use. We show how to use it via a simple example consisting of the following constraints:
+Once the Linprog library has been installed and loaded into the SWI Prolog environment, it is ready for use.
+
+We show how to use it via a simple example consisting of the following constraints:
 
 1. X + Y ≥ 6
 2. X ≥ 2
@@ -203,7 +209,7 @@ Once the Linprog library is has been installed and loaded into the SWI Prolog en
 
 and having as objective function ``Minimize Z = 3X + 2Y``.
 
-This example is encoded into Linprog as follows:
+This example is encoded as follows:
 
 
 ```prolog

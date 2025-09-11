@@ -2,21 +2,37 @@
 
 ## Example
 
-The linear system consisitng of the following constraints:
+Consider the linear system consisitng of the following constraints:
 
 1. X ≥ 1
 2. Y ≥ 1
 
-and having as objective function ``Minimize Z = X`` is encoded in SWI Prolog as:
+and having as objective function ``Minimize Z = X``.
+
+To solve this system using CLP(Q) library, do:
+
+1- Launch SWI-Prolog,
+
+```bash
+$ swipl
+```
+
+2- Load the CLP(Q) library.
 
 ```prolog
-( {X >= 1, Y >= 1},
-  bb_inf([X,Y], X, I, V)).
+?- use_module(library(clpq)).
+```
+
+3- Encode the system into SWI-Prolog using the library's predicates and execute.
+
+
+```prolog
+?- ( {X >= 1, Y >= 1}, bb_inf([X,Y], X, I, V)).
 ```
 
 Recalling ``bb_inf/4`` predicate, the first parameter holds the list of constrained variables, the second one is the object function to be minimized, next one corresponds to the result of minimizing the objective function, and last one is the vertex where the objective function yields its minimal value.
 
-The solution produced by clpq is:
+The solution produced is:
 
 ```prolog
 I = 1,
