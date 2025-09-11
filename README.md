@@ -243,9 +243,13 @@ We rely on test cases to verify the correctness of Linprog. For that purpose we 
 | cardinality    | *{log}*     | 470    | ``./tests/test_cases/test_card`` |
 | intervals | *{log}*  | 748    | ``./tests/test_cases/test_intervals`` |
 
-We execute these test suites using both the CLP(Q,R) and Linprog libraries. The [results of these executions](./docs/testing.md) provide evidence that Linprog succeeds when CLP(Q,R) fails.
 
-**Important remarks**
+### Results
+
+The results of having executed these test suites are duly described in a [dedicated page](./docs/testing.md)
+
+
+**Remarks**
 
 - We provide [guidelines](./docs/run-test-suite.md) to run the provided test suites. These should ease the replicability of the results. 
 - You can [create your own test suites](./docs/create-test-suite.md). Your [contribution](./CONTRIBUTING.md) is very welcome!  
@@ -254,19 +258,28 @@ We execute these test suites using both the CLP(Q,R) and Linprog libraries. The 
 
 ## Performance
 
-We evaluate Linprog’s execution time performance against SWI-Prolog’s clpq library. The comparison relies on running standard benchmark instances from [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html)7 and [Netlib](https://www.netlib.org/lp/data/), which provide widely used test cases (aka instances) for linear programming solvers.
+We evaluate Linprog’s execution time performance against SWI-Prolog’s CLP(Q) library. 
 
+Besides comparing the performance of both libraries using the test suites, we also rely on running standard benchmark instances.
+
+We use [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html)7 and [Netlib](https://www.netlib.org/lp/data/), which provide widely instances for linear programming solvers.
 
 | Name | # Instances | Location |
 |----------|----------|----------|
-| MIPLIB 2017   | 23    | ``./benchmarking/MIPLIB`` |
-| Netlib        |  82    | ``./benchmarking/netlib`` |
+| MIPLIB 2017   | 23*    | ``./benchmarking/MIPLIB`` |
+| Netlib        |  82*    | ``./benchmarking/netlib`` |
 
-The results of having executed the benchmarks' instances, as well as the scripts used to execute them are duly described in a [dedicated page](./docs/benchmarking.md).
+(*) We retained only instances that run in an affordable time (i.e. less than one hour).
 
-**Important remarks**
+### Results
 
-- We retained only benchmarks' instances that run in an affordable time (i.e. less than one hour).
+The results of the benchmarking process are reported in a [dedicated page](./docs/benchmarking.md).
+
+
+### Reproducibility
+
+We provide guidelines to [reproduce](/docs/run-benchmark-instance.md) the benchmarking process.
+
 
 **************************************************************
 

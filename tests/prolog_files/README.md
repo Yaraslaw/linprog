@@ -2,21 +2,16 @@
 
 ## Scripts
 - `run.sh <test-name> <ext> <linprog|clpq>`
-  Run a single prepared Prolog test specified by `<test-name>.pl`. The execution results are logged in a file named `<test-name>.<ext>`. Additionally, it creates a temporary file `result_temp.txt` containing a description of the execution.
+  runs a single prepared SWI-Prolog test case specified by `<test-name>.pl`. The execution results are logged in a file named `<test-name>.<ext>`. Additionally, it creates a temporary file `result_temp.txt` containing a description of the execution.
 
 - `run_all.sh <ext> [linprog|clpq]`
-  Apply `run.sh` to all Prolog test files in the current directory that start with `{ext}-t0`. The results of these executions are stored in a file named `results.txt`.
+  applies `run.sh` to all SWI-Prolog test case files in the current directory that start with `{ext}-t0`. The results of these executions are stored in a file named `results.txt`.
     - Expected Output File:
         If an expected.txt file is provided, lines formatted as `<test-name>:<answer>` are used to check outputs.
     - Verification:
+        After executing the tests, `run_all.sh` checks each test's output against the expected answers listed in `expected.txt`. If the test's output is the same as expected, then the property `pass` is set to **OK**, otherwise is set to **BAD**.
 
-        After executing the tests, `run_all.sh` checks each test's output against the expected answers listed in `expected.txt`.
-
-        - If the output answer is the same as expected the property `pass` is set to **OK**.
-        
-        - If the output answer differs from expected the property `pass` is set to **BAD**.
-
-- `clean.sh [<ext>]` - remove generated files (omit `<ext>` to clean `t0*.pl` cases).
+- `clean.sh [<ext>]` removes generated files (omit `<ext>` to clean `t0*.pl` cases).
 
 
 ## Usage

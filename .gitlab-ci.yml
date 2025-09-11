@@ -104,9 +104,12 @@ push_release:
 
     - rsync -av --delete --exclude 'TMP-github_repo/' --exclude '**/.git/**' ./ ./TMP-github_repo/
 
+    - ls -la 
     - ./helpers/packaging/create_package.sh
+    - ls -la 
     - mv package TMP-github_repo/
     - cd TMP-github_repo
+    - ls -la 
     - git add -A
     - git commit -m "Release ${VERSION}" || echo "No changes to commit"
     - git push origin main

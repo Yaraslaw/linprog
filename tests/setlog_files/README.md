@@ -5,11 +5,11 @@
   runs a single prepared test; logs to `<test-name>.<ext>` and writes `result_temp.txt`.
 
 - `run_all.sh <ext>`
-  Run all `e*.pl` tests; aggregates into `results.txt`
+  runs all `e*.pl` tests; aggregates into `results.txt`
     - If an expected.txt file is provided, it should contain expected answers for the tests formatted like `<test-name>:<answer>`.
-    - If the expected answer is the same as output of corresponded test case, `pass` becomes **OK**; otherwise **BAD**
+    - If the expected answer is the same as output of corresponded test case, `pass` becomes **OK**, otherwise **BAD**
 
-- `clean.sh [<ext>]` remove generated files.
+- `clean.sh [<ext>]` removes generated files.
 
 ## Usage
 
