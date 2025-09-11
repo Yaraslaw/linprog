@@ -4,10 +4,10 @@ t002.pl;0;timeout;OK;
 t003.pl;0.001;success;OK;
 t004.pl;0.001;success;OK;
 t005.pl;0.001;failure;OK;
-t006.pl;0.001;success;OK;
-t007.pl;0.002;success;OK;
+t006.pl;0.002;success;OK;
+t007.pl;0.001;success;OK;
 t008.pl;0.001;success;OK;
-t009.pl;0.002;success;OK;
+t009.pl;0.001;success;OK;
 t010.pl;0.001;success;OK;
 t011.pl;0;timeout;OK;
 t012.pl;0.002;success;OK;
@@ -17,12 +17,12 @@ t015.pl;0.002;success;OK;
 t016.pl;0.001;failure;OK;
 t017.pl;0.002;success;OK;
 t018.pl;0.001;failure;OK;
-t019.pl;0.002;success;OK;
+t019.pl;0.003;success;OK;
 t020.pl;0.001;failure;OK;
 t021.pl;0.002;success;OK;
 t022.pl;0.001;failure;OK;
 t023.pl;0.001;failure;OK;
-t024.pl;0.001;success;OK;
+t024.pl;0.002;success;OK;
 t025.pl;0.001;failure;OK;
 t026.pl;0.001;failure;OK;
 t027.pl;0.001;failure;OK;
@@ -32,7 +32,7 @@ t030.pl;0.001;failure;OK;
 t031.pl;0.001;failure;OK;
 t032.pl;0.001;failure;OK;
 t033.pl;0.001;failure;OK;
-t034.pl;0.001;success;OK;
+t034.pl;0.002;success;OK;
 t035.pl;0.001;failure;OK;
 t037.pl;0.001;success;OK;
 t038.pl;0.001;failure;OK;
@@ -64,10 +64,13 @@ t063.pl;0.001;failure;OK;
 t064.pl;0.002;failure;OK;
 t065.pl;0.001;failure;OK;
 t066.pl;0.001;success;OK;
+t067.pl;0.001;success;OK;
+t068.pl;0.001;success;OK;
+t069.pl;0.001;success;OK;
+t070.pl;0.001;success;OK;
 
-Success: 28/28
+Success: 32/32
 Failure: 34/34
 Time_out: 0/0
 
-Total: 62/62  100% | Total time taken: 69s
-
+Total: 66/66  100% | Total time taken: 70s

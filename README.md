@@ -1,91 +1,90 @@
 # Linprog
 
-*A tool for solving linear inequalities.*
+*A tool for solving linear constraints over Q or R.*
 
-Linprog is a linear programming (LP) library designed to replace the existing CLP(Q,R) library for linear programming within SWI-Prolog environments. Unlike CLP(Q,R), Linprog leverages the GNU Linear Programming Kit (GLPK), offering improved computational reliability and flexibility.
+Linprog is a linear programming (LP) library designed to act as an alternative to the CLP(Q,R) libraries that come with SWI-Prolog. 
 
-A key feature of Linprog is its compatibility with the CLP(Q,R) interface, allowing it to be used as a direct replacement without requiring code rewrites, along with a modular architecture that enables seamless integration of alternative LP solvers.
+**Why?**
 
-## Software requirements
+We have identified [some scenarios](./docs/known-failures.md) where the libraries fail to produce the right expected output. Moreover, these libraries currently [are not being maintained](https://www.swi-prolog.org/man/clpqr.html).
 
-Linprog (so far) has been proven to work in unix-based environments.
 
-If you have a computer running a unix-based OS (e.g. Ubuntu, Debian, macOS), then you can go for the *[Set up](#set-up)
+**How?**
 
-If you do not have a unix-based environment or want to give it a try in an isolated environment you may want to use the provided sandbox. Follow instructions in *[Virtual installation](#virtual-installation) to go for this alternative.
+Linprog leverages the GNU Linear Programming Kit (GLPK), offering improved computational reliability and flexibility, while respecting compatibility with the CLP(Q,R) interface. This allows current users of the CLP(Q,R) libraries to replace them by Linprog without incurring in code rewrites.
 
-> **Remark for Windows users**
-> Nothing should forbid Linprog to work on Windows environments. However, as we have not yet tested it, we cannot guarantee its replicability nor correct behavior.
 
-You need to get installed:
+## Requirements
 
-- [GLPK $\geq$ v5.0](https://www.gnu.org/software/glpk/#TOCdownloading)
+Linprog (so far) has been proven to work in unix-based environments. 
 
-- [SWI-Prolog $\geq$ v9.0.x](https://www.swi-prolog.org/download/stable?show=all)
+If you do not have a unix-based environment or want to give it a try in an isolated environment we provided instructions how to create virtual sandboxes.
 
-- A C/C++ toolchain:
-  - Linux: [GCC (e.g., 11.x)](https://gcc.gnu.org/releases.html) if fine.
-  - macOS: [Apple Clang](https://opensource.apple.com/projects/llvm-clang/) works too, so no need to install GCC.
+**Note to Windows users**: nothing should forbid Linprog to work on Windows environments. However, as we have not yet tested it, we cannot guarantee its replicability nor correct behaviour.
 
-> macOS notes:
-> - Some scripts use timeout; on macOS install GNU `coreutils` to get `gtimeout`:
+To get Linprog working you need first to get installed:
 
-```bash 
-$ brew install coreutils
-```
+- [GLPK](https://www.gnu.org/software/glpk/#TOCdownloading) (v5.0 or higher)
 
-## Set up
+- [SWI-Prolog](https://www.swi-prolog.org/download/stable?show=all) (v9.0 or higher)
 
-### Install dependencies
+- A C compiler like [GCC](https://gcc.gnu.org/releases.html) (v11.x or later) or [Apple Clang](https://opensource.apple.com/projects/llvm-clang/) (for Mac users)
 
-#### Linux
+- [Make](https://www.gnu.org/software/make/) (v3.81 or later).
+
+### Linux
 
 Use apt-get to install the required software.
 
 ```bash
 $ sudo apt-get update
-$ sudo apt-get install -y gcc
 $ sudo apt-get install -y swi-prolog
-$ sudo apt-get install -y glpk-utils
+$ sudo apt-get install -y build-essential
+$ sudo apt-get install -y glpk-utils libglpk-dev
 ``` 
 
-#### MacOS
+### MacOS
 
-Use brew to install the required software.
+Install Xcode from the Mac App Store to get the required C compiler.
+Use [Homebrew](https://brew.sh/) to install the remaining required software.
 
 ```bash
 $ brew install swi-prolog
 $ brew install glpk
+$ brew install coreutils
+$ brew install make
 ```
 
 
-#### Virtual installation
+### Sandboxes
 
-##### Vagrant
+#### Vagrant
 
-To use Linprog in a sandbox, we need first to install:
+You need to install:
 
-- [VirtualBox V7.0](https://www.virtualbox.org/)
+- [VirtualBox](https://www.virtualbox.org/) (v7.0 or later)
 
-- [Vagrant v2.4.1](https://www.vagrantup.com/)
+- [Vagrant](https://www.vagrantup.com/) (v2.4.1 or later)
 
-Once you have installed the required software, open a terminal, go to the root folder where the file *Vagrantfile*  is located, and then execute the following commands:
+Once you have installed VirtualBox and Vagrant, open a terminal, go to the root folder where the provided [Vagrantfile](./Vagrantfile) file is located, and then execute the following commands:
+
 ```bash
 $ vagrant up
 $ vagrant ssh
 ```
+
 At this point, you will be inside a virtual machine already provisioned with the required software to compile the Linprog library. The final step is to go to the folder where the source files are. This is achieved by executing the following command:
+
 ```bash
 $ cd /vagrant_data
 ```
 
 
-##### Docker
+#### Docker
 
+Below are steps to build an image using the provided [Dockerfile](./Dockerfile) and then run a container out of it.
 
-Below are steps to build an image from your [Dockerfile](./Dockerfile) and run a container. 
-
-> You may need `sudo` rights to use docker.
+**Remark:** You may need `sudo` rights to use docker.
 
 1) Build the image
 
@@ -104,55 +103,55 @@ Below are steps to build an image from your [Dockerfile](./Dockerfile) and run a
     docker logs -f linprog
     docker exec -it linprog sh # or bash if available
     ```
-4) Stop and clean up
 
-    ```bash
+If at some point you want to get rid of the container and image, then:
+
+ ```bash
     docker stop linprog
     docker rm linprog # if any image left
     docker rmi linprog:dev # if any image left
-    ```
+ ```
 
 
+## Installation
 
+### Stable release 
 
-
-### Install linprog
-
-#### Native (recommended)
-
-Enter SWI-Prolog environment
+Install released SWI-Prolog package :
 
 ```bash
-$ swipl
+$ swipl pack install linprog
 ```
 
-Then install linprog:
+TBC: The output should be `true.`.
 
-```prolog
-?- pack_install(linprog).
-```
 
-The output should be `true.`.
+### Development release
 
-If pack installation is not available, you can build the pack locally and install it.
+Step 1. Clone this repository to your local machine.
 
-#### Via Packaging
+Step 2. Install the development release. You can do this in two ways: (i) by creating a local package from the latest source code, or (ii) by compiling the latest source code directly.
 
-First, run [packaging script](./helpers/packaging/create_package.sh) to compile linprog into an SWI-Prolog package. After this, `package/linprog` will appear in the root directory of the repository.
 
-Then navigate to `package/linprog`, then
+#### Local package
+
+1- Run [packaging script](./helpers/packaging/create_package.sh) to create Linprog SWI-Prolog package.
 
 
 ```bash
-$ swipl
-```
-```prolog
-?- pack_install('.').
+$ ./create_package.sh
 ```
 
-> It was tested only on MacOS, but it looks like you can install package without entering SWI-Prolog by calling `swipl pack install .`.
+If package creation was successfull, the folder `package/linprog` will appear in the root directory of the repository.
 
-To verify installation:
+2- Navigate to `package/linprog` folder and then
+
+
+```bash
+$ swipl pack install .
+```
+
+To verify the installation was successful:
 
 ```bash
 $ swipl
@@ -160,54 +159,114 @@ $ swipl
 ```prolog
 ?- use_module(library(linprog)).
 ```
+
 The output should be `true.`.
 
 
-> To uninstall linprog, enter `swipl`, then run `pack_remove(linprog).` 
-> or you can use `swipl pack remove linprog` (tested only on MacOS).
+To uninstall Linprog library.
+```bash
+swipl pack remove linprog
+```
 
-#### Alternative: local compilation
+#### Compilation
 
-You can compile linprog directly and load it locally.
-
+1- Go to the folder where the provided compilation script is place, and then indicate the output folder where the compilation output is to be placed.  
 ```bash
 $ cd helpers/compilation
 $ ./compile_to.sh <output_folder>
 ```
 
-If everything was compiled without errors, you will see:
+If compilation was successful, the you will see:
 
     Compilation produced successfully. 
 
-When using a local build inside SWI-Prolog ( `swipl`), load with: 
+2- Launch SWI Prolog and load the library.
 
+```bash
+$ swipl
+```
 ```prolog
 ?- consult(linprog).
 ```
 
+
+
 ## Usage
 
-After successful installation you can use [Manual](./docs/manual.md) to see examples, available predicates and how to use them.
+Once the Linprog library is has been installed and loaded into the SWI Prolog environment it is ready to use. We show how to use it via a simple example consisting of the following constraints:
 
-## Correctness
+1. X + Y ≥ 6
+2. X ≥ 2
+3. Y ≥ 2
+4. X ≤ 10
+5. Y ≤ 10
 
-To make sure Linprog behaves as expected we have created several test suites. One part of them contains test cases implemented in SWI-Prolog, whereas others contain test cases implemented using [{log}](https://www.clpset.unipr.it/setlog.Home.html) constraint programming language, which relies on SWI-Prolog's clpq library as dedicated solver to deal with constraints over the rational numbers. This is the main motivation why {log} has been selected to assess Linprog.
+and having as objective function ``Minimize Z = 3X + 2Y``.
+
+This example is encoded into Linprog as follows:
+
+
+```prolog
+ ({ X + Y >= 6 },
+  { X >= 2 },
+  { Y >= 2 },
+  { X =< 10 },
+  { Y =< 10 }, 
+  bb_inf([X, Y], 3*X + 2*Y, Z, V)).
+```
+
+Variables Z and V represent the value of the objective function when replaced with the vertex V (i.e. the found values for each variable). 
+
+The expected output is:
+
+```prolog
+Z = 14,
+V = [2, 4].
+```
+
+which means that the minimal value of the objective function is 14, and this happens when X and Y are replaced by 2 and 4, respectively.
+
+This example shows how to use the ``{}/1`` and ``bb_inf/4`` predicates. The [User Manual](./docs/manual.md) documents each predicate provided by Linprog along with examples.
+
+
+## Verification
+
+We rely on test cases to verify the correctness of Linprog. For that purpose we have created several test suites. Apart from a test suite containing SWI-Prolog test cases, we have also implemented test cases in [{log}](https://www.clpset.unipr.it/setlog.Home.html).
+
+*{log}* is a constraint programming language that comes equipped with a solver to decide whether a given formula is satisfiable or not. *{log}* solver is implemented in SWI-Prolog and relies on clpq library to check the satisfiability of formulas that deal with finite integer intervals or the cardinality of a set. Examples of such formulas and their satisfiability checks are provided in Sections 8 and 9 of the [*{log}*'s user manual](https://www.clpset.unipr.it/SETLOG/setlog-man.pdf), respectively.
 
 ### Test suites
 
-- Location: All correctness test suites are located inside folder `tests`.
-- How to run them: See guidelines about runners for Prolog and {log} test suites [link](./tests/correctness.md).
-- How to create your own test suites: See [test suite creation guideline](./tests/test_cases/README.md).
+| Name | Type | # Test cases | Location |
+|----------|----------|----------|----------|
+| clp    | SWI-Prolog | 69    | ``./tests/test_cases/test_clp`` |
+| cardinality    | *{log}*     | 470    | ``./tests/test_cases/test_card`` |
+| intervals | *{log}*  | 748    | ``./tests/test_cases/test_intervals`` |
 
-> Known test cases where clpq produces incorrect results (while Linprog passes) are documented [here](./tests/test_cases/README.md#clpq-failing-test-cases).
+We execute these test suites using both the CLP(Q,R) and Linprog libraries. The [results of these executions](./docs/testing.md) provide evidence that Linprog succeeds when CLP(Q,R) fails.
+
+**Important remarks**
+
+- We provide [guidelines](./docs/run-test-suite.md) to run the provided test suites. These should ease the replicability of the results. 
+- You can [create your own test suites](./docs/create-test-suite.md). Your [contribution](./CONTRIBUTING.md) is very welcome!  
+
+
 
 ## Performance
 
-We want to know how Linprog stands vs. SWI-Prolog's implementation of clpq library in terms of execution time. This assessment is done using tests borrowed from the [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html) and [netlib](https://www.netlib.org/lp/data/) benchmarks.
-
-For more information about results of executing benchmarks, and scripts to run benchmarks read [benchmarking.md](./benchmarking/benchmarking.md).
+We evaluate Linprog’s execution time performance against SWI-Prolog’s clpq library. The comparison relies on running standard benchmark instances from [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html)7 and [Netlib](https://www.netlib.org/lp/data/), which provide widely used test cases (aka instances) for linear programming solvers.
 
 
+| Name | # Instances | Location |
+|----------|----------|----------|
+| MIPLIB 2017   | 23    | ``./benchmarking/MIPLIB`` |
+| Netlib        |  82    | ``./benchmarking/netlib`` |
+
+The results of having executed the benchmarks' instances, as well as the scripts used to execute them are duly described in a [dedicated page](./docs/benchmarking.md).
+
+**Important remarks**
+
+- We retained only benchmarks' instances that run in an affordable time (i.e. less than one hour).
 
 **************************************************************
 
@@ -215,8 +274,10 @@ For more information about results of executing benchmarks, and scripts to run b
 
 Linprog was created by Yaraslaw Akhramenka, Alfredo Capozucca, and Maximiliano Cristía.
 
-It is licensed under [Simplified BSD license](https://opensource.org/license/BSD-2-Clause).
+It is licensed under [BSD 2-Clause](https://opensource.org/license/BSD-2-Clause).
 
-It is currently maintained by *yaraslaw.akhramenka.001@student.uni.lu*.
+It is currently maintained by *Yaraslaw Akhramenka*.
 
-See CONTRIBUTING.md to know how you can contribute to the project.
+Support email for questions: *linprog [AT] uni.lu*.
+
+See [CONTRIBUTING](./CONTRIBUTING.md) to know how you can contribute to the project.

@@ -20,8 +20,7 @@ trim() {
 
 compute_dp() {
   local X=$1 Y=$2 D=$3
-  echo "scale=$D; $X / $Y" | bc -l \
-    | sed -E 's/(\.[0-9]*[1-9])0+$/\1/; s/\.0+$//'
+  awk "BEGIN {result = $X / $Y; formatted = sprintf(\"%.${D}f\", result); sub(/0+$/, \"\", formatted); sub(/\.$/, \"\", formatted); print formatted}"
 }
 
 while IFS=':' read -r col1 col2 col3; do
@@ -40,7 +39,7 @@ while IFS=':' read -r col1 col2 col3; do
     X=${BASH_REMATCH[1]}
     Y=${BASH_REMATCH[2]}
 
-    raw_full=$(echo "scale=$MAX_SCALE; $X / $Y" | bc -l)
+    raw_full=$(awk "BEGIN {printf \"%.${MAX_SCALE}f\", $X / $Y}")
     raw_trim=$(printf '%s' "$raw_full" \
                 | sed -E 's/(\.[0-9]*[1-9])0+$/\1/; s/\.0+$//')
 

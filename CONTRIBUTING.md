@@ -48,7 +48,7 @@ If you would like to contribute code to linprog, the first you need to do is to 
 2. Clone your forked repository to your local machine.
 3. Make your changes in fork version, directly to the main branch. We do not use separate branches for development or for upcoming releases. We do our best to keep main in good shape, with all tests passing.
 4. Any significant changes should be accompanied by tests.
-5. All contributions must be licensed *??AGPL v3??*.
+5. All contributions must be licensed *BSD 2-Clause*.
 6. Submit a pull request to original repository of linprog project.
 
 Before submitting a pull request, please locally run your code against provided tests to ensure that it meets our standards.
@@ -65,9 +65,9 @@ If the actual state of `main` branch cannot be merged automatically with your co
 
 ## License
 
-By contributing to linprog, you agree that your contributions will be licensed under its [Simplified BSD license]().
+By contributing to linprog, you agree that your contributions will be licensed under its [BSD 2-Clause]().
 
-[Simplified BSD license]: https://opensource.org/license/bsd-2-clause
+[BSD 2-Clause]: https://opensource.org/license/bsd-2-clause
 
 ## Conclusion
 

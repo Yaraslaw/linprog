@@ -21,5 +21,5 @@ rm -f out.out
 rm -f results_temp.txt
 rm -f linprog_glpk_file.c
 rm -f linprog_glpk_file.o
-rm -f linprog_glpk_file.so
+rm -f linprog_glpk_file.*
 rm -f linprog.pl

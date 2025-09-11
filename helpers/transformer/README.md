@@ -1,12 +1,46 @@
-# Transformer usage
+# Transformer
 
-The transformer converts `.mps` problem files into Prolog files that can be executed by `clpq` or `linprog`.
+We provide a SWI-Prolog program that transforms mathematical optimization problems described in [MPS format](https://en.wikipedia.org/wiki/MPS_(format)).
+
+This transformer converts a `.mps` file into a SWI-Prolog file that can be solved using either `CLP(Q,R)` or `Linprog`.
+
+This transformer has been used to convert the .mps files available in the [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html) and [netlib](https://www.netlib.org/lp/data/) benchmarks.
+
+Nothing should forbid you to use this transformer to convert any other .mps file into a SWI-Prolog file.
 
 ## Usage
 
-### Automated
+### Interactive mode
 
-Run transformer on any folder; it reads all files ending with `.mps` and converts them to the `.pl` format.
+1. Go to *`transformer`* folder
+
+2. Start SWI-Prolog
+
+    ```bash
+    $ swipl
+    ```
+
+3. Load transformer
+
+    ```prolog
+    ?- consult('transformer.pl').
+    ```
+
+4. Translate `<file>.mps` 
+
+    ```prolog
+    ?- parse('/path/to/<file>.mps','/any/path/<file>.pl').
+    ```
+
+This creates `<file>.pl`, which you can then consult from SWI-Prolog.
+ ```prolog
+?- consult('<file>.pl').
+```
+
+
+### Batch mode
+
+It translates all `.mps` files placed in a same folder. 
 
 ```bash
 $ ./run.sh <path-to-folder>
@@ -21,27 +55,5 @@ While running you will see progress like:
 ..... (a dot every ~100 parsed lines)
 ```
 
-## Manual
 
-1. Enter *`transformer`* folder
-
-2. Start SWI-Prolog
-
-    ```bash
-    $ swipl
-    ```
-
-3. Load transformer
-
-    ```prolog
-    ?- consult('transformer.pl').
-    ```
-
-4. Translate a single file
-
-    ```prolog
-    ?- parse('/path/to/<file-mps>.mps',
-    '/any/path/<file>.pl').
-    ```
-
-This creates `<file>.pl`, which you can then `consult/1` from SWI-Prolog.
+Once the process ends, you will find a `.pl` file for each available `.mps`.

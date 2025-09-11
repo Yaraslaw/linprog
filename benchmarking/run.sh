@@ -199,4 +199,4 @@ echo "All done. Results in $output_file"
 rm -f ./linprog.pl
 rm -f ./linprog_glpk_file.c
 rm -f ./linprog_clpq_file.o
-rm -f ./linprog_clpq_file.so
+rm -f ./linprog_clpq_file.*

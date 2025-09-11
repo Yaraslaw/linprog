@@ -1,4 +1,4 @@
-# Benchmarks
+# Benchmarking
 
 <!-- /*
 Move to benchmarking 

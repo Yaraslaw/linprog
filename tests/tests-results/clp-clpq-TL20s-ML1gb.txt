@@ -1,26 +1,26 @@
 Experiment;time(s);expect;pass;short description
-t001.pl;10.068;timeout;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
-t002.pl;13.469;timeout;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
-t003.pl;9.937;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
-t004.pl;15.388;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t001.pl;9.904;timeout;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t002.pl;13.315;timeout;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t003.pl;9.784;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t004.pl;15.086;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
 t005.pl;0.001;failure;OK;
-t006.pl;15.494;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
-t007.pl;9.785;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
-t008.pl;16.302;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
-t009.pl;17.868;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t006.pl;15.321;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t007.pl;9.614;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t008.pl;16.206;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t009.pl;17.645;success;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
 t010.pl;0.001;success;OK;
-t011.pl;9.734;timeout;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
-t012.pl;0.002;success;OK;
+t011.pl;9.514;timeout;BAD;ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+t012.pl;0.001;success;OK;
 t013.pl;0.001;failure;OK;
 t014.pl;0.001;failure;OK;
 t015.pl;0.002;success;OK;
 t016.pl;0.001;failure;OK;
-t017.pl;0.002;success;OK;
+t017.pl;0.001;success;OK;
 t018.pl;0.001;failure;OK;
 t019.pl;0.002;success;OK;
 t020.pl;0.001;failure;OK;
-t021.pl;0.002;success;OK;
-t022.pl;0.000;failure;OK;
+t021.pl;0.001;success;OK;
+t022.pl;0.001;failure;OK;
 t023.pl;0.001;failure;OK;
 t024.pl;0.001;success;OK;
 t025.pl;0.000;failure;OK;
@@ -28,7 +28,7 @@ t026.pl;0.001;failure;OK;
 t027.pl;0.001;failure;OK;
 t028.pl;0.001;failure;OK;
 t029.pl;0.001;failure;OK;
-t030.pl;0.000;failure;OK;
+t030.pl;0.001;failure;OK;
 t031.pl;0.001;failure;OK;
 t032.pl;0.001;failure;OK;
 t033.pl;0.001;failure;OK;
@@ -56,18 +56,21 @@ t055.pl;0.001;failure;OK;
 t056.pl;0.002;success;OK;
 t057.pl;0.004;success;OK;
 t058.pl;0.002;success;OK;
-t059.pl;0.004;success;OK;
+t059.pl;0.003;success;OK;
 t060.pl;0.004;success;OK;
-t061.pl;0.005;success;OK;
+t061.pl;0.003;success;OK;
 t062.pl;0.006;success;OK;
 t063.pl;0.001;failure;OK;
 t064.pl;0.001;failure;OK;
 t065.pl;0.001;failure;OK;
 t066.pl;0.001;success;OK;
+t067.pl;0.001;success;OK;
+t068.pl;0.001;success;OK;
+t069.pl;0.001;success;OK;
+t070.pl;0.000;success;OK;
 
-Success: 22/28
+Success: 26/32
 Failure: 34/34
 Time_out: 0/0
 
-Total: 56/62  90% | Total time taken: 127s
-
+Total: 60/66  90% | Total time taken: 126s

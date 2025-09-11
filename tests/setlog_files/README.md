@@ -1,8 +1,8 @@
-# Setlog Test Execution Scripts
+# *{log}* test execution scripts
 
 ## Scripts
 - `run.sh <test-name> <ext>`
-  run a single prepared test; logs to `<test-name>.<ext>` and writes `result_temp.txt`.
+  runs a single prepared test; logs to `<test-name>.<ext>` and writes `result_temp.txt`.
 
 - `run_all.sh <ext>`
   Run all `e*.pl` tests; aggregates into `results.txt`

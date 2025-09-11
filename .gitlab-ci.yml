@@ -86,8 +86,13 @@ validate_after_medium:
 push_release:
   stage: release
   when: manual
+  variables:
+    VERSION: ""      # <-- Version number
   # tags: [juno]
   script:
+    
+    - '[ -n "$VERSION" ] || { echo "Set VERSION in the form."; exit 1; }'
+
     - apt-get install -y git
     - apt-get update && apt-get install -y rsync
     - DATE_SUFFIX=$(date +'_%Y-%m-%d-%H%M%S')
@@ -97,11 +102,14 @@ push_release:
 
     - git clone "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/Yaraslaw/linprog.git" TMP-github_repo
 
-    - rsync -av --delete --exclude 'TMP-github_repo/' --exclude '**/.git/**' ./ ./TMP-github_repo/    
+    - ./helpers/packaging/create_package.sh
+    - mv package TMP-github_repo/
+    - rsync -av --delete --exclude 'TMP-github_repo/' --exclude '**/.git/**' ./ ./TMP-github_repo/
+
     - cd TMP-github_repo
     - git add -A
-
-    - git commit -m "Release ${DATE_SUFFIX}" || echo "No changes to commit"
+    - git commit -m "Release ${VERSION}" || echo "No changes to commit"
     - git push origin main
 
-    
+    - git tag -a "v${VERSION}" -m "Release ${VERSION}"
+    - git push origin "v${VERSION}"

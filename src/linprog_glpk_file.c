@@ -1081,7 +1081,7 @@ term_t get_answer(term_t ints, glp_prob *lp, int isIntOpt) {
 
 
 install_t install() {
-    PL_register_foreign("linprog_glpk", 9, pl_expr, 0);
+    PL_register_foreign("linprog_glpk", 9, (pl_function_t)pl_expr, 0);
 }
 
 

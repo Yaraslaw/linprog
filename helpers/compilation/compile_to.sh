@@ -28,6 +28,7 @@ SWI_LIB="${PLLIBDIR:-}"
 
 # Honor swipl's shared-object extension
 SOEXT="${PLSOEXT:-${SOEXT:-}}"
+# Use the fallback if PLSOEXT is defined but empty
 if [ -z "$SOEXT" ]; then
   case "$(uname -s)" in
     Darwin) SOEXT="dylib" ;;
@@ -46,25 +47,39 @@ if [ -z "${GLPK_INCLUDE:-}" ]; then
     [ -f "$d/glpk.h" ] && GLPK_INCLUDE="$d" && break
   done
 fi
-[ -n "${GLPK_INCLUDE:-}" ] || { echo "glpk.h not found. Set GLPK_INCLUDE=..."; exit 1; }
+[ -n "${GLPK_INCLUDE:-}" ] || { echo "glpk.h not found. Set GLPK_INCLUDE=... or update the list of directories to search INCLUDE_DIRS_GLPK=.. and LIB_DIRS_GLPK=.."; exit 1; }
 
 if [ -z "${GLPK_LIB:-}" ]; then
   for d in $LIB_DIRS_GLPK; do
-    ls "$d"/libglpk.* >/dev/null 2>&1 && GLPK_LIB="$d" && break
+    # Look for the static library specifically
+    [ -f "$d/libglpk.a" ] && GLPK_LIB="$d" && break
   done
 fi
 # GLPK_LIB optional; linker may find -lglpk via system paths.
 
-CC=${CC:-cc}
-FPIC="-fPIC"; case "$SOEXT" in dll) FPIC="";; esac
+echo "GLPK was found in $GLPK_INCLUDE and executable was found in $GLPK_LIB"
+
+if [ -z "${CC:-}" ]; then
+  if command -v gcc >/dev/null 2>&1; then CC=gcc
+  elif command -v clang >/dev/null 2>&1; then CC=clang
+  else CC=swipl-ld
+  fi
+fi
+
+echo "Compiler used: $CC"
+# Explicitly check for Windows-like systems
+FPIC="-fPIC"
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*) FPIC="" ;; # Position Independent Code not needed on Windows
+esac
 
 echo "Compiling..."
 $CC -O2 $FPIC -I"$SWI_INCLUDE" -I"$GLPK_INCLUDE" -c "$src" -o "$obj"
 
 echo "Linking -> $outlib"
 case "$SOEXT" in
-  dylib) $CC -dynamiclib -o "$outlib" "$obj" -L"$SWI_LIB" -lswipl ${GLPK_LIB:+-L"$GLPK_LIB"} -lglpk ;;
-  dll)   $CC -shared     -o "$outlib" "$obj" -L"$SWI_LIB" -lswipl ${GLPK_LIB:+-L"$GLPK_LIB"} -lglpk ;;
+  dylib) $CC -dynamiclib -o "$outlib" "$obj" -L"$SWI_LIB" -lswipl ${GLPK_LIB:+-L"$GLPK_LIB"} -l:libglpk.a  ;;
+  dll)   $CC -shared     -o "$outlib" "$obj" -L"$SWI_LIB" -lswipl ${GLPK_LIB:+-L"$GLPK_LIB"} -l:libglpk.a -static-libgcc ;;
   *)     $CC -shared     -o "$outlib" "$obj" -L"$SWI_LIB" -lswipl ${GLPK_LIB:+-L"$GLPK_LIB"} -lglpk ;;
 esac
 

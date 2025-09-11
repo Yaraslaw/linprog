@@ -1,4 +1,4 @@
-# Prolog Test Execution Scripts
+# SWI-Prolog test execution scripts
 
 ## Scripts
 - `run.sh <test-name> <ext> <linprog|clpq>`

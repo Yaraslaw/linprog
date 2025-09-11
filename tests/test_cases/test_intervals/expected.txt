@@ -223,7 +223,6 @@ e408:failure:interval:un:first argument interval:test
 e409:failure:interval:un:first argument interval:test
 e410:failure:interval:un:first argument interval:test
 e411:success:interval:un:first argument interval:test
-% int(M,N)
 e412:success:interval:un:first argument interval:test
 e413:success:interval:un:first argument interval:test
 e414:success:interval:un:first argument interval:test
@@ -542,7 +541,6 @@ e725:failure:interval:equality:test
 e726:success:interval:equality:test
 e727:success:interval:equality:test
 e728:success:interval:equality:test
-% disj
 e729:success:interval:disj:test
 e730:success:interval:disj:test
 e731:success:interval:disj:test

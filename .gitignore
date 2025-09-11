@@ -4,6 +4,6 @@ testing_env/logs.txt
 .vscode/*
 *.DS_Store
 tests/log*
-benchmarking/MIPLIB/benchmark/*
 package
 *.idea
+*.vagrant
