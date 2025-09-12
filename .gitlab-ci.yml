@@ -145,13 +145,16 @@ git_push:
     - IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
     - NEXT_VERSION_NEXT="${MAJOR}.${MINOR}.$((PATCH + 1))"
     - echo "Updating NEXT_VERSION -> ${NEXT_VERSION_NEXT}"
-    - |
-      curl --request PUT \
-           --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
-           --header "Content-Type: application/json" \
-           --data "{\"value\":\"${NEXT_VERSION_NEXT}\"}" \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/NEXT_VERSION"
 
+    - '[ -n "$GITLAB_TOKEN" ] || { echo "GITLAB_TOKEN (with api scope) is required to update NEXT_VERSION"; exit 1; }'
+
+    - API="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/NEXT_VERSION"
+    - |
+      curl -sS --fail -X PUT \
+        -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+        --data-urlencode "value=${NEXT_VERSION_NEXT}" \
+        "${API}" \
+        -w "\nHTTP_STATUS:%{http_code}\n"
 
   artifacts:
     paths:
