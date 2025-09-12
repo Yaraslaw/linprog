@@ -87,14 +87,16 @@ git_push:
   stage: release
   when: manual
   variables:
-    VERSION: ""      # <-- Version number
+    VERSION: ""
   # tags: [juno]
   script:
     
-    - '[ -n "$VERSION" ] || { echo "Set VERSION in the form."; exit 1; }'
+    - VERSION="${NEXT_VERSION:-}"
+    - echo "$VERSION" | grep -Eq "^[0-9]+\.[0-9]+\.[0-9]+$" || { echo "Set NEXT_VERSION in the form X.Y.Z"; exit 1; }
+
 
     - apt-get install -y git
-    - apt-get update && apt-get install -y rsync
+    - apt-get update && apt-get install -y rsync curl
     - DATE_SUFFIX=$(date +'_%Y-%m-%d-%H%M%S')
 
     - git config --global user.email "${GITHUB_MAIL}"
@@ -138,6 +140,17 @@ git_push:
     - git push -o ci.skip gitlab "refs/tags/v${VERSION}:refs/tags/v${VERSION}"
     - git remote -v
     - git status -s
+
+
+    - IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+    - NEXT_VERSION_NEXT="${MAJOR}.${MINOR}.$((PATCH + 1))"
+    - echo "Updating NEXT_VERSION -> ${NEXT_VERSION_NEXT}"
+    - |
+      curl --request PUT \
+           --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+           --header "Content-Type: application/json" \
+           --data "{\"value\":\"${NEXT_VERSION_NEXT}\"}" \
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/variables/NEXT_VERSION"
 
 
   artifacts:

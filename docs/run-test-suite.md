@@ -1,12 +1,24 @@
 # Running test suites
 
-We created two bash scripts to ease the execution of the provided test suites.
-These scripts are:
+This section explains how to execute a test suite.
 
-- RUN_PROLOG_test.sh: meant to run a SWI-Prolog test suite
-- RUN_SETLOG_test.sh: meant to run a *{log} test suite.
+Its aim is to ease the reproduciability of the verification process.
+
+We created two scripts to automate the execution of a test suite:
+
+- RUN_PROLOG_test.sh: to run a SWI-Prolog test suite
+- RUN_SETLOG_test.sh: to run a `{log}` test suite.
 
 These scripts can be found in the folder `/test'.
+
+
+## Prerequisites
+
+- You must have the [required software](../README.md#requirements) installed.
+- Use [Linprog Development release](../README.md#development-release).
+- Install this release by [compiling Linprog](../README.md#compilation).
+
+## Usage
 
 **Good to know**
 
@@ -30,8 +42,6 @@ These scripts can be found in the folder `/test'.
   - pass: contains OK if the outcome of the test case matches the expected value. Otherwise, BAD.
   - short description: extra notes related to the outcome of the test case.  
 
-## Usage
-
 ### SWI-Prolog test suite
 
 `./RUN_PROLOG_test.sh <test-group> <ext> [linprog/clpq]`
@@ -42,7 +52,7 @@ These scripts can be found in the folder `/test'.
 
 **Example:**
 
-The following example executes the **clp** test suite using the clpq library that comes along with SWI-Prolog. 
+The following example executes the **clp** test suite using the clpq library that comes along with SWI-Prolog.
 
 ```bash
 ./RUN_PROLOG_test.sh clp log clpq
@@ -64,48 +74,3 @@ The following example executes the **card** test suite using the Linprog library
 ```bash
 ./RUN_SETLOG_test.sh card log 
 ```
-
-## Results post-processing
-
-We provide scripts to help process the results obtained after executing a test suite.
-
-These scripts are located in the `/helpers/postprocessing/` folder.
-
-### Decimal converter
-
-The library clpq.pl represents decimal number with the format `XrY`.
-
-Use
-```bash
-./converter.sh </path/to/result/file-orig> </path/to/output/file-new>
-```
-
-to convert numbers from the clpq.pl representation to standard decimal format (i.e., using a dot as the decimal separator).
-
-### Chart generator
-
-Use
-```bash
-./generate-charts.sh </path/to/result/file>
-```
-
-to create an `svg` file with a chart representation of the data from indicated file.
-
-The `svg` file is generated inside the directory `graphs/`.
-
-
-### Comparison chart generator
-
-It combines in a single chart the results of two different files. This should ease the comparison of results produced for similar executions using different libraries.
-
-To use it, do:
-
-```bash
-./generate-comparison-charts.sh </path/to/file1> </path/to/file2>
-```
-
-where `</path/to/file1>` and `</path/to/file2>` correspond to each result file.
-
-The `svg` file is generated inside the directory `/graphs`.
-
-Results from `<file1>` are placed on top of results from `<file2>`.

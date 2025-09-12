@@ -25,7 +25,6 @@ $ swipl
 
 3- Encode the system into SWI-Prolog using the library's predicates and execute.
 
-
 ```prolog
 ?- ( {X >= 1, Y >= 1}, bb_inf([X,Y], X, I, V)).
 ```
@@ -53,8 +52,42 @@ These test cases are located in the folder ``./tests/test_cases/test_clp/``.
 
 The example given above corresponds to the test case [t070.pl](../tests/test_cases/test_clp/t070.pl).
 
-Other failing test cases for clpq are:
+Other failing test cases for CLP(Q) are:
 
 - **t003**, **t004**, and **t006-t009**: clpq raises an ERROR.
 
 - **t066-t070**: the solution (vertex) found by clpq is incorrect.
+
+
+#### CLP(R) library
+
+- The identified failing test cases also occur when using CLP(R) and its exclusive predicate [``bb_inf/5``](https://www.swi-prolog.org/pldoc/man?predicate=bb_inf/5).
+
+- Next, the same example as above, but using CLP(R).
+
+1- Launch SWI-Prolog,
+
+```bash
+$ swipl
+```
+
+2- Load the CLP(R) library.
+
+```prolog
+?- use_module(library(clpr)).
+```
+
+3- Encode the system into SWI-Prolog using the library's predicates and execute.
+
+```prolog
+?- ( {X >= 1, Y >= 1}, bb_inf([X,Y], X, I, V, 0.001)).
+```
+
+It produces the same **incorrect** solution, but now with real values. 
+
+```prolog
+I = 1.0,
+V = [1, 0],
+{X>=1.0},
+{Y>=1.0}.
+```

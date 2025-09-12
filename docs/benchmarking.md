@@ -6,6 +6,13 @@ This page shows the **performance results** of CLP(Q) and Linprog based on the e
 
 The benchmarks' instances and test suites were run on a machine with [this specifications](./hardware.md)
 
+## Method
+The benchmarking process has been automated to ease its execution and replicability. 
+
+We provide [guidelines](../docs/run-benchmark-instance.md) to reproduce this process.
+
+The execution time of each instance is measured from the moment the SWI-Prolog process is invoked. This measurement therefore includes not only the start-up of SWI-Prolog itself but also the loading of the chosen library (e.g. clpq.pl or linprog) required to perform the computation of the instance.
+
 ## Results
 
 **Summary:** Linprog is either faster than CLP(Q) or of the same order of magnitude. This means there is no performance degradation when using Linprog.
@@ -144,8 +151,4 @@ qap15                | TIMEOUT              |3001,043| TIMEOUT              |300
 | clp | 69 | 126 | 70 | [Linprog vs. CLP(Q)](../tests/graphs/clp-linprog-vs-clp-clpq.svg) |
 | cardinality | 470 | 2410 | 2615 | [Linprog vs. CLP(Q)](../tests/graphs/card-linprog-vs-card-clpq.svg) |
 | intervals | 748 | 385 | 809 | [Linprog vs. CLP(Q)](../tests/graphs/int-linprog-vs-int-clpq.svg) |
-
-## Results post-processing
-
-The [same scripts](../docs/run-test-suite.md#results-post-processing) used to process the results obtained from executing a test suite can be used to process the bechmark results.
 

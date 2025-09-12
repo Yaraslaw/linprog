@@ -9,11 +9,19 @@ ext="${2:-out}"
 output_file="${e%pl}$ext"
 
 > test.pl
+> b4.pl
 
 if [ -z "$3" ] || [ $3 == "linprog" ]; then
   echo "consult('./$libName')." >> test.pl
-else
+elif [ $3 == "clpq" ]; then
   echo "consult(library(clpq))." >> test.pl
+elif [ $3 == "clpr" ]; then
+  echo "consult(library(clpr))." >> test.pl
+  echo "bb_inf(A, B, C, D) :- bb_inf(A, B, C, D, 0.001)." >> b4.pl
+  echo "consult('b4.pl')." >> test.pl
+else
+  echo "library must be [linprog/clpq/clpr]"
+  exit 1
 fi
 
 echo "time(once(" >> test.pl
@@ -31,7 +39,7 @@ timeout --foreground --kill-after=1s 20s swipl -q < test.pl 2>&1 | grep -v "Use 
 
 time=$(grep "^%" out.out | sed -e 's/^.*in //' -e 's/ seconds.*$//')
 
-
+rm -f b4.pl
 
 # # Check if the output file contains "ERROR"
 # if grep -q "ERROR" out.out; then

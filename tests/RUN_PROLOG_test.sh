@@ -8,14 +8,14 @@ cd ./tests || true
 # Check if the correct number of arguments are provided
 show_usage() {
   echo "Usage 1: $0 <test_name> <extension>"
-  echo "Usage 2: $0 <test_name> <extension> <linprog/clpq>"
+  echo "Usage 2: $0 <test_name> <extension> <linprog/clpq/clpr>"
 }
 if [ "$#" -ne 2 ]; then
   if [ "$#" -ne 3 ]; then
     show_usage
     exit 1
   fi
-  if [ "$3" != "linprog" ] && [ "$3" != "clpq" ]; then
+  if [ "$3" != "linprog" ] && [ "$3" != "clpq" ] && [ "$3" != "clpr" ]; then
     show_usage
     exit 1
   fi

@@ -24,19 +24,19 @@ Execute an individual instance from within the SWI-Prolog environmet.
 
 #### Using SWI-Prolog CLP(Q) library
 
-Step 1. Enter into SWI-Prolog environment.
+1- Enter into SWI-Prolog environment.
 
 ```bash
 $ swipl
 ```
 
-Step 2. Load clpq library.
+2- Load clpq library.
 
 ```prolog
 ?- consult(library(clpq)).
 ```
 
-Step 3. Load instance.
+3- Load instance.
 
 ```prolog
 ?- consult('./<path-to-instance>/<instance-name>.pl').
@@ -44,20 +44,19 @@ Step 3. Load instance.
 
 #### Using Linprog library
 
-
-Step 1. Enter into SWI-Prolog environment.
+1- Enter into SWI-Prolog environment.
 
 ```bash
 $ swipl
 ```
 
-Step 2. Load Linprog library.
+2- Load Linprog library.
 
 ```prolog
 ?- consult(linprog).
 ```
 
-Step 3. Load instance.
+3- Load instance.
 
 ```prolog
 ?- consult('./<path-to-instance>/<instance-name>.pl').
@@ -78,15 +77,76 @@ Step 3. Load instance.
 
 Execute all instances located into the `<benchmark>` folder using `<lib>` as library.
 
+1- Go to the folder containing the script
 
 ```bash
-$ ./run.sh <bechmark> <lib>
+$ cd benchmarking/
+```
+
+2- Run the script
+
+```bash
+$ ./run.sh <benchmark> <lib>
 ```
 
 where
-- `<bechmark>` := netlib | MIPLIB
+- `<benchmark>` := netlib | MIPLIB
 - `<lib>` := linprog | clpq
 
 **Output**
 
-The results appear in a file named like: `results-<benchmark>-<lib>-<timestamp>.txt`.
+The results are stored in a file named: `results-<benchmark>-<lib>-<timestamp>.txt`.
+
+This file is created in the same directory where the script was executed.
+
+## Results post-processing
+
+We provide scripts to help process the results obtained after executing the benchmarks
+
+These scripts are located in the `/helpers/postprocessing/` folder.
+
+### Decimal converter
+
+The library clpq.pl represents decimal number with the format `XrY`.
+
+Use
+```bash
+./converter.sh </path/to/result/file-orig> </path/to/output/file-new>
+```
+
+to convert numbers from the clpq.pl representation to standard decimal format (i.e., using a dot as the decimal separator).
+
+### Chart generators
+
+First, install [mermaid-cli](https://github.com/mermaid-js/mermaid-cli?tab=readme-ov-file).
+
+Once done, you can use the provided scripts to generate charts.
+
+
+
+#### Single bar chart
+
+Use
+```bash
+./generate-charts.sh </path/to/result/file>
+```
+
+to create an `svg` file with a chart representation of the data from indicated file.
+
+The `svg` file is generated inside the directory `graphs/`.
+
+#### Comparison bar chart
+
+It combines in a single chart the results of two different files. This should ease the comparison of results produced for similar executions using different libraries.
+
+To use it, do:
+
+```bash
+./generate-comparison-charts.sh </path/to/file1> </path/to/file2>
+```
+
+where `</path/to/file1>` and `</path/to/file2>` correspond to each result file.
+
+The `svg` file is generated inside the directory `/graphs`.
+
+Results from `<file1>` are placed on top of results from `<file2>`.

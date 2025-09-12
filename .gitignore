@@ -1,4 +1,3 @@
-testing_env/logs.txt
 *.so
 *.o
 .vscode/*
