@@ -1,7 +1,14 @@
 /*
-CLPQ - returns fail, while a solution is 
+A solution is 
 A=0, 39/50 <= B <= 35/44, C=-1
+
+but CLPR - returns fail. 
+
+
 */
+
+
+
 
 ({8*C =< -4, -33*B + 17*C =< 48},
     {-35*C =< 48},
