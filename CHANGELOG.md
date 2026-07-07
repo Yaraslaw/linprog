@@ -16,14 +16,15 @@ All notable changes to the **Linprog** project will be documented in this file.
 
 - TBC -->
 
-<!-- ## [0.1.5] - 2026-07-XX -->
-## [Unreleased]
+## [0.1.5] - 2026-07-07
 
 ### Added
 
 - Library to deal with real numbers (linprogr.pl)
 
 - Scenarios where CLP(Q) fails.
+
+- Add benchmark aggregated analysis for MIPLIB and Netlib
 
 ### Changed
 
