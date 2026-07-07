@@ -1,8 +1,23 @@
-/*
-TODO: when creating the interface other predicates are not available any more.
+/*  Linprog: Linear and Mixed-Integer Programming Library for SWI-Prolog
+
+    Author:        Yaraslaw Akhramenka
+                   Alfredo Capozucca
+                   Maximiliano Cristiá
+
+    Copyright (c) 2025-2026, Yaraslaw Akhramenka,
+                        Alfredo Capozucca,
+                        Maximiliano Cristiá
+    All rights reserved.
+
+    This file is part of Linprog package.
+
+    Linprogq is a SWI-Prolog library providing support for Linear Programming
+    (LP) and Mixed-Integer Linear Programming (MILP), with full compatibility
+    with the CLP(R) interface. It leverages the GNU Linear Programming Kit
+    (GLPK) as a backend solver to ensure robust and efficient optimisation.
 */
 
-:- module(linprog,
+:- module(linprogq,
 	  [ {}/1,
         entailed/1,
         inf/2, 
@@ -27,7 +42,199 @@ TODO: when creating the interface other predicates are not available any more.
 dbg() :- fail.
 
 
+/* entailed, inf/sup, minimize/maximize */
 
+negate(Rel,_) :-
+	var(Rel),
+	!,
+	instantiation_error(Rel).
+
+negate((A,B),(Na;Nb)) :-
+	!,
+	negate(A,Na),
+	negate(B,Nb).
+
+negate((A;B),(Na,Nb)) :-
+	!,
+	negate(A,Na),
+	negate(B,Nb).
+
+negate(A<B,A>=B) :- !.
+negate(A>B,A=<B) :- !.
+negate(A=<B,A>B) :- !.
+negate(A>=B,A<B) :- !.
+negate(A=:=B,A=\=B) :- !.
+negate(A=B,A=\=B) :- !.
+negate(A=\=B,A=:=B) :- !.
+negate(Rel,_) :-
+	type_error(clpq_constraint, Rel).
+
+linking([], []).
+linking([H|Tail], [Hn|Tn]) :-
+    (number(H), number(Hn) -> true
+    ;
+        % put_attr(H, clpqLUX, name_n_AllVars('nouni', _)), 
+        % H is Hn
+        {H =:= Hn}
+    ),
+    linking(Tail, Tn).
+
+minimize(E) :- 
+    findEmALL(E, IntsOrig),
+    prepareIntsToBB_INF(IntsOrig, Ints),
+    prepareObjToBB_INF(E, Obj, _),
+    get_exprs(Cons),
+    b_getval(timeLimit, TimeLimit),
+    b_getval(eps, Eps),
+    b_getval(solver, Solver),
+    call(Solver, Cons, Ints, Obj, _, _V, St, Eps, 0, TimeLimit),
+    % call for chechking for 4.9999 problem (todo list)
+    call(Solver, Cons, Ints, Obj, _, Vint, _, Eps, 1, TimeLimit),
+    % (V == Vint -> true; fail),
+    % linprog_glpk(Cons, Ints, Obj, _, V, St, Eps, 0, TimeLimit),
+    % adding comparation with minimize_glpk for ints 
+    (St == 4; St == 6 -> fail, !; true),
+    linking(IntsOrig, Vint).
+
+
+
+maximize(E) :- minimize((-1)*E).
+
+
+entailed(E) :- 
+    negate(E, En),
+    \+ {En}.
+
+
+findR([], [], _, _).
+findR([H|Tail], R, Ints, NewInts) :-
+    findR(Tail, OldR, Ints, NewInts),
+    (replaceEmAll(H, SingleR, Ints, NewInts) -> R = [SingleR|OldR]; R = OldR).
+
+
+
+dump(Ints, NewInts, R) :-
+    get_cons(Cons),
+    findR(Cons, R, Ints, NewInts).
+
+inf(E, I) :- bb_inf([], E, I).
+
+sup(E, I) :- 
+    bb_inf([], (-1)*E, PreI), 
+    I is (-1)*PreI.
+
+
+
+
+
+
+check(_, []) :- fail.
+
+check(X, [H|Tail]) :- % !,
+    (H == X -> true;check(X, Tail)). 
+
+
+unAtoB([], [], []) :- !.
+unAtoB(A, [], Res) :- !,
+    Res = A.
+unAtoB([], B, Res) :- !,
+    Res = B.
+
+unAtoB([H|Tail], B, Res) :- 
+    % !,
+    (check(H, B) 
+    ->
+        unAtoB(Tail, B, Res)
+    ;
+        unAtoB(Tail, B, ResN),
+
+        Res = [H|ResN]).
+
+
+
+findEmALL(X, Res) :- 
+    (integer(X);float(X)),
+	!,
+    Res = [].
+
+findEmALL(X, Res) :- 
+    var(X), \+ compound(X), 
+    !,
+    Res = [X].
+
+
+findEmALL(A+B, Res) :- 
+	!,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A*B, Res) :- 
+	!,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A-B, Res) :- 
+	!,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A=B, Res) :- 
+	!,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A=<B, Res) :- 
+	!,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).  
+
+findEmALL(A>=B, Res) :- 
+	!,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A>B, Res) :- 
+	!,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A<B, Res) :- 
+	!,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A=:=B, Res) :-
+    !,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A=\=B, Res) :-
+    !,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A/B, Res) :-
+    !,
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+    
+
+findEmALL((A, B), Res) :- 
+    !, 
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL((A; B), Res) :- 
+    !, 
+    findEmALL(A, ResA), findEmALL(B, ResB), 
+    unAtoB(ResA, ResB, Res).
+
+findEmALL(A, _) :-
+    write('ERROR -> findEmALL -> Unkown predicate in : '),
+    writeln(A).
+
+
+/* -------------- */
 
 
 user:message_hook(query(no), query, _C) :- !, fail.
@@ -35,7 +242,7 @@ user:message_hook(query(yes(A, B, [_C]-[])), query, _X) :- !,
     print_message(query, query(yes(A, B, []-[]))).
 
 
-/* No output for linprog attributes */
+/* No output for linprogq attributes */
 :- set_prolog_flag(write_attributes, ignore).
 
 
@@ -314,7 +521,7 @@ updatingStore(List, OrdSet) :-
 
 
 % no usage ({A};{B}) to optimize time
-:- use_module(library(clpq), [{}/1 as cons, inf/2, sup/2, minimize/1, maximize/1, entailed/1, dump/3]).
+:- use_module(library(clpq), [{}/1 as cons]).
 
 {A, B} :-
     !,
@@ -341,7 +548,7 @@ updatingStore(List, OrdSet) :-
     append_to_file('logs.txt', 'BoundStr ended. '), 
 
 
-    call(cons(Bound)), % Calling CLPQ to check satisfiability of the constraint
+    call(cons(Bound)), % Calling CLP(Q) to check satisfiability of the constraint
 
     (BoundStr == '' -> append_to_file('logs.txt', 'GOODNIGHT'), true; 
 
@@ -873,3 +1080,5 @@ store_vars(Var) :-
     b_getval(store_vars, Store),
     b_setval(store_vars, [Var|Store]).
     
+get_cons(Cons) :-
+    b_getval(store_advensed, Cons).

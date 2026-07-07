@@ -1,6 +1,6 @@
 Simplified BSD license
 
-Copyright (c) 2025, Yaraslaw Akhramenka, Alfredo Capozucca, and Maximiliano Cristía.
+Copyright (c) 2025, Yaraslaw Akhramenka, Alfredo Capozucca, and Maximiliano Cristiá.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
 CONTRIBUTORS 

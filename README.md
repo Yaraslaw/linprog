@@ -2,11 +2,13 @@
 
 *A tool for solving linear constraints over Q or R.*
 
-Linprog is a linear programming (LP) library designed to act as an alternative to the CLP(Q,R) libraries that come with SWI-Prolog. 
+Linprog is a linear programming (LP) system designed to act as an alternative to the CLP(Q,R) system that come with SWI-Prolog. 
+
+As the CLP(Q,R) system, Linprog also consists of two components: the *linprogq.pl* library for handling constraints over the rational numbers (i.e. Q) and the *linprogr.pl* for handling constraints over the real numbers (i.e. R).
 
 **Why?**
 
-We have identified [some scenarios](./docs/known-failures.md) where the libraries fail to produce the right expected output. Moreover, these libraries currently [are not being maintained](https://www.swi-prolog.org/man/clpqr.html).
+We have identified [some scenarios](./docs/known-failures.md) where the CLP(Q,R) system fails to produce the right expected output. Moreover, CLP(Q,R) currently [is not being maintained](https://www.swi-prolog.org/man/clpqr.html).
 
 **How?**
 
@@ -23,9 +25,9 @@ Linprog leverages the GNU Linear Programming Kit (GLPK), offering improved compu
 
 ## Requirements
 
-Linprog (so far) has been proven to work in unix-based environments. 
+Linprog (so far) has been proven to work in unix-based and macOS environments.
 
-If you do not have a unix-based environment or want to give it a try in an isolated environment we provided instructions how to create virtual sandboxes.
+If you do not have such environments or want to give it a try in an isolated environment, we provide on instructions on how to create virtual sandboxes.
 
 **Note to Windows users**: nothing should forbid Linprog to work on Windows environments. However, as we have not yet tested it, we cannot guarantee its replicability nor correct behaviour.
 
@@ -87,7 +89,7 @@ $ cd /vagrant_data
 
 #### Docker
 
-Below are steps to build an image using the provided [Dockerfile](./Dockerfile) and then run a container out of it.
+Below are the steps to build an image using the provided [Dockerfile](./Dockerfile) and then run a container out of it.
 
 **Remark:** You may need `sudo` rights to use docker.
 
@@ -115,7 +117,7 @@ $ docker exec -it linprog sh # or bash if available
 
 ```bash
 $ docker stop linprog
-$ docker rm linprog # if any image left
+$ docker rm linprog # if any container left
 $ docker rmi linprog:dev # if any image left
  ```
 
@@ -139,18 +141,18 @@ $ swipl
 
 Follow the instructions to complete the installation.
 
-3- To verify the installation was successful, load the library.
+3- To verify the installation was successful, load one of the available libraries. For example, load linprogq.
 
 ```prolog
-?- use_module(library(linprog)).
+?- use_module(library(linprogq)).
 ```
 
-You should get `true.`.
+You should get `true.`
 
-Great! You are all set to use Linprog. Try the [example](#usage).
+Great! You are all set to use Linprog. Try this [example](#usage).
 
 **Remark**
-- if you want to remove the library, then do:
+- if you want to remove the package, then do:
 
 ```prolog
 ?- pack_remove(linprog).
@@ -165,7 +167,7 @@ Great! You are all set to use Linprog. Try the [example](#usage).
 
 #### Local package
 
-1- Go to folder `helpers/packaging`, and run packaging script.
+1- Go to folder `helpers/packaging`, and run the packaging script.
 
 ```bash
 $ cd helpers/packaging
@@ -187,19 +189,27 @@ $ swipl
 ?- pack_install('.').
 ```
 
-4- To verify the installation was successful:
+4- To verify the installation was successful, load one of the available libraries, e.g. linprogq:
 
 ```prolog
-?- use_module(library(linprog)).
+?- use_module(library(linprogq)).
 ```
 
-The output should be `true.`.
+The output should be `true.`
 
-Great! You are all set to use Linprog. Try the [example](#usage).
+Great! You are all set to use the linprogq library. Try this [example](#usage).
 
 **Remark**
 
-- if you want to remove the library, then do:
+- if you want to use the linprogr library, then do:
+  
+```prolog
+?- use_module(library(linprogr)).
+```
+  
+- only one single library can be loaded at the time.
+
+- if you want to remove the package, then do:
 
 ```prolog
 ?- pack_remove('linprog').
@@ -207,14 +217,14 @@ Great! You are all set to use Linprog. Try the [example](#usage).
 
 #### Compilation
 
-1- Go to the folder containing the provided compilation script, and specify the output folder where the compilation results should be saved.
+1- Go to the folder containing the provided compilation script, and specify (1) the output folder where the compilation results should be saved, and (2) the library you want to create: i.e, either **linprogq** or **linprogr**. When no library is indicated, then it creates **linprogq**  
 
 ```bash
 $ cd helpers/compilation
-$ ./compile_to.sh <output_folder>
+$ ./compile_to.sh <output_folder> <linprogq|linprogr>
 ```
 
-If compilation was successful, the you will see:
+If the compilation was successful, the you will see something like:
 
 ```
 Compiling...
@@ -229,19 +239,26 @@ $ cd <output_folder>
 $ swipl
 ```
 
-2.2- Load the library.
+2.2- Load the created library. Assuming you have created **linprogq**, then do:
 
 ```prolog
-?- consult(linprog).
+?- consult(linprogq).
 ```
 
 The output should be `true.`.
 
-Great! You are all set to use Linprog. Try the [example](#usage).
+Great! You are all set to use the just created library (either **linprogq** or **linprogr**). Try this [example](#usage).
+
+**Remark**
+
+- Repeat the same process to create the other library (i.e **linprogq**  or **linprogr**).
+
 
 ## Usage
 
-Once the Linprog library has been installed and loaded into the SWI-Prolog environment, it is ready for use.
+Once the Linprog package has been installed and one of its libraries loaded into the SWI-Prolog environment, it is ready for use. 
+
+We assume the **linprogq** library has already been loaded.
 
 We show how to use it via a simple example consisting of the following constraints:
 
@@ -255,17 +272,16 @@ and having as objective function ``Minimize Z = 3X + 2Y``.
 
 This example is encoded as follows:
 
-
 ```prolog
- ({ X + Y >= 6 },
+ { X + Y >= 6 },
   { X >= 2 },
   { Y >= 2 },
   { X =< 10 },
   { Y =< 10 }, 
-  bb_inf([X, Y], 3*X + 2*Y, Z, V)).
+  bb_inf([X, Y], 3*X + 2*Y, Z, V).
 ```
 
-Variables Z and V represent the value of the objective function when replaced with the vertex V (i.e. the found values for each variable). 
+Variables Z and V represent the value of the objective function when replaced with the vertex V (i.e. the found values for each variable).
 
 The expected output is:
 
@@ -282,7 +298,7 @@ This example shows how to use the ``{}/1`` and ``bb_inf/4`` predicates. The [Use
 
 We rely on test cases to verify the correctness of Linprog. For that purpose we have created several test suites. Apart from a test suite containing SWI-Prolog test cases, we have also implemented test cases in [{log}](https://www.clpset.unipr.it/setlog.Home.html).
 
-*{log}* is a constraint programming language that comes equipped with a solver to decide whether a given formula is satisfiable or not. *{log}* solver is implemented in SWI-Prolog and relies on clpq library to check the satisfiability of formulas that deal with finite integer intervals or the cardinality of a set. Examples of such formulas and their satisfiability checks are provided in Sections 8 and 9 of the [*{log}*'s user manual](https://www.clpset.unipr.it/SETLOG/setlog-man.pdf), respectively.
+*{log}* is a constraint logic programming language that comes equipped with a solver to decide whether a given formula is satisfiable or not. The *{log}* solver is implemented in SWI-Prolog and relies on the clpq library to check the satisfiability of formulas that deal with finite integer intervals or the cardinality of a set. Examples of such formulas and their satisfiability checks are provided in Sections 8 and 9 of the [*{log}*'s user manual](https://www.clpset.unipr.it/SETLOG/setlog-man.pdf), respectively.
 
 ### Test suites
 
@@ -307,11 +323,11 @@ The results of having executed these test suites are duly described in a [dedica
 
 ## Performance
 
-We evaluate Linprog’s execution time performance against SWI-Prolog’s CLP(Q) library. 
+We evaluate the performance of Linprog against SWI-Prolog CLP(Q,R) libraries. 
 
-Besides comparing the performance of both libraries using the test suites, we also rely on running standard benchmark instances.
+Besides evaluating the performance using our own the test suites, we also rely on standard benchmarks.
 
-We use [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html)7 and [Netlib](https://www.netlib.org/lp/data/), which provide widely instances for linear programming solvers.
+We use [MIPLIB 2017](https://miplib.zib.de/tag_benchmark.html) and [Netlib](https://www.netlib.org/lp/data/), which provide widely used instances for linear programming solvers.
 
 | Name | # Instances | Location |
 |----------|----------|----------|
@@ -331,7 +347,7 @@ We provide guidelines to [reproduce](/docs/run-benchmark-instance.md) the benchm
 
 ## Notice
 
-Linprog was created by Yaraslaw Akhramenka, Alfredo Capozucca, and Maximiliano Cristía.
+Linprog was created by Yaraslaw Akhramenka, Alfredo Capozucca, and Maximiliano Cristiá.
 
 It is licensed under [BSD 2-Clause](https://opensource.org/license/BSD-2-Clause).
 

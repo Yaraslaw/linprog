@@ -1,3 +1,20 @@
+/*  Linprog: Linear and Mixed-Integer Programming Library for SWI-Prolog
+
+    Author:        Yaraslaw Akhramenka
+                   Alfredo Capozucca
+                   Maximiliano Cristiá
+
+    Copyright (c) 2025-2026, Yaraslaw Akhramenka,
+                        Alfredo Capozucca,
+                        Maximiliano Cristiá
+    All rights reserved.
+
+    This file is part of Linprog package.
+
+    linprog_glpk_file is the C interface that connects the SWI-Prolog libraries linprogq and linprogr with the GNU Linear Programming Kit
+    (GLPK), which serves as a backend solver to ensure robust and efficient optimisation.
+*/
+
 #include <SWI-Prolog.h>
 #include <stdio.h>
 #include <string.h>

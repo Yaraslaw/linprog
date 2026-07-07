@@ -2,7 +2,7 @@
 # run.sh — run all tests in a given test suit with a given library.
 
 if [[ $# -ne 2 ]]; then
-    echo "Usage: $0 <tests_folder> <library(glpk|linprog|clpq)>"
+    echo "Usage: $0 <tests_folder> <library(glpk|linprogq|linprogr|clpq|clpr)>"
     exit 1
 fi
 
@@ -15,11 +15,11 @@ if [[ ! -d "$tests_folder" ]]; then
 fi
 
 case "$library" in
-    glpk|linprog|clpq)
+    glpk|linprogq|linprogr|clpq|clpr)
         echo "Running tests from folder '$tests_folder' using library '$library'..."
         ;;
     *)
-        echo "Unknown library: $library. Use 'glpk', 'linprog', or 'clpq'."
+        echo "Unknown library: $library. Use 'glpk', 'linprogq', 'linprogr', 'clpq' or 'clpr'."
         exit 1
         ;;
 esac
@@ -27,8 +27,8 @@ esac
 cd "$tests_folder" || exit 1
 
 # Compiling linprog if needed
-if [[ $library == "linprog" ]]; then
-    bash ./../../helpers/compilation/compile_to.sh ./../../benchmarking/"$tests_folder"
+if [[ $library == "linprogq"  || $library == "linprogr" ]]; then
+    bash ./../../helpers/compilation/compile_to.sh ./../../benchmarking/"$tests_folder" $library
 fi
 
 
@@ -83,7 +83,7 @@ fi
 unset IFS  # Reset IFS to default
 
 for file in "${sorted_files[@]}"; do
-    if [[ -f "$file" && $file != "linprog.pl" && $file != "$tmp_test" ]]; then
+    if [[ -f "$file" && $file != "linprogq.pl" && $file != "linprogr.pl" && $file != "$tmp_test" ]]; then
 
         test_name="${file%.pl}"
 
@@ -92,8 +92,12 @@ for file in "${sorted_files[@]}"; do
 
         if [[ $library == "clpq" ]]; then
             echo "use_module(library(clpq))." >> "$tmp_test"
-        elif [[ $library == "linprog" ]]; then
-            echo "use_module(library(linprog))." >> "$tmp_test"
+        elif [[ $library == "clpr" ]]; then
+            echo "use_module(library(clpr))." >> "$tmp_test"
+        elif [[ $library == "linprogq" ]]; then
+            echo "use_module(library(linprogq))." >> "$tmp_test"
+        elif [[ $library == "linprogr" ]]; then
+            echo "use_module(library(linprogr))." >> "$tmp_test"
         fi
         if [[ $library != "glpk" ]]; then
             echo "set_prolog_flag(stack_limit, 50_000_000_000)." >> "$tmp_test"
@@ -196,7 +200,8 @@ done
 echo "All done. Results in $output_file"
 
 # Cleanup linprog files
-rm -f ./linprog.pl
+rm -f ./linprogq.pl
+rm -f ./linprogr.pl
 rm -f ./linprog_glpk_file.c
 rm -f ./linprog_clpq_file.o
 rm -f ./linprog_clpq_file.*

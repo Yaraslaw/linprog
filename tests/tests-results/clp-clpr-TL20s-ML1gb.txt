@@ -68,9 +68,3 @@ t067.pl;0.001;success;OK;
 t068.pl;0.001;success;OK;
 t069.pl;0.001;success;OK;
 t070.pl;0.001;success;OK;
-
-Success: 25/32
-Failure: 34/34
-Time_out: 0/0
-
-Total: 59/66  89% | Total time taken: 115s

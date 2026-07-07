@@ -9024,7 +9024,7 @@ nat_num(N,M) :-
 %%%%%%%%%%%%%%%%     clp(Q) constraints
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-:- use_module(library(clpq)).
+:- use_module(library(clpr)).
 % AC: change to GLPK 
 % :- use_module('linprog').
 
@@ -9111,9 +9111,7 @@ qconstr_app((C1),B,(C1,B)).
 
 check_int_solutions(C,LIntVars) :-
     collect_integer(C,LIntVars),
-    % bb_inf_all(LIntVars,LIntVars,_,_).
-    % writeln('right version'),
-    all_int_solutions(LIntVars).
+    bb_inf_all(LIntVars,LIntVars,_,_).
 
 collect_integer(C,LIntVars) :-             %to collect in LIntVars all attributed variables
     memberrest(integer(X),C,CRest),!,      %that are constrained to be of sort integer
@@ -9124,31 +9122,6 @@ collect_integer(_,[]).
 collect_integer_test(X,LIntVars,[X|LIntVars]) :-
     attvar(X),!.
 collect_integer_test(_X,LIntVars,LIntVars).
-
-
-all_int_solutions(L) :-
-    (get_min_max(L, Bounds) -> 
-        assign_from_bounds(L, Bounds)
-    ; true % ??
-    ).
-
-get_min_max([], []).
-get_min_max([V|Vs], [B|Bs]) :- 
-    bb_inf([V], V, Min),
-    bb_inf([V], -V, -Max),
-    B = dom(Min,Max),
-    get_min_max(Vs, Bs).
-
-
-assign_from_bounds([], []).
-assign_from_bounds([X|Xs], [dom(Min,Max)|Ds]) :-
-    between(Min, Max, Val),
-    { X = Val },
-    assign_from_bounds(Xs, Ds).
-
-
-
-
 
 %bb_inf_all([],_) :- !.
 %bb_inf_all(L,_X) :-

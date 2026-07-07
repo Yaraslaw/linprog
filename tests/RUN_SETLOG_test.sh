@@ -1,8 +1,11 @@
 #!/bin/bash
-# RUN_SETLOG_test.sh <test_name> <extension> [linprog/clpq]
+# RUN_SETLOG_test.sh <test_name> <extension> [linprogq/linprogr/clpq/clpr]
 
 minImpl="linprog_glpk_file"
-libName="linprog.pl"
+libName="linprogq"
+if [ "$3" == "linprogr" ]; then
+  libName="linprogr"
+fi
 
 SCRIPT_DIR="$(dirname "$0")"
 cd $SCRIPT_DIR
@@ -17,7 +20,7 @@ if [ "$#" -ne 2 ]; then
     show_usage
     exit 1
   fi
-  if [ "$3" != "linprog" ] && [ "$3" != "clpq" ]; then
+  if [ "$3" != "linprogq" ] && [ "$3" != "linprogr" ]&& [ "$3" != "clpq" ] && [ "$3" != "clpr" ]; then
     show_usage
     exit 1
   fi
@@ -28,35 +31,38 @@ EXT=$2
 
 
 # Copying setlog files
-if [[ -z "$3" ||  "$3" == "linprog" ]]; then
-  echo "linprog"
-  for f in ../setlog_files/setlog*; do
+for f in ../setlog_files/setlog*; do
     case "${f##*/}" in
-      setlog_clpq.pl|README.md) ;;        # skip
-      setlog_linprog.pl) cp "$f" ./setlog_files/setlog.pl ;;  # copy linprog version
+      setlog_linprogq.pl|setlog_linprogr.pl|setlog_clpq.pl|setlog_clpr.pl|README.md) ;;        # skip
       *) cp "$f" ./setlog_files/ ;;        # copy everything else
     esac
   done
-else
-  echo "$3 -> clpq"
-  for f in ../setlog_files/setlog*; do
-    case "${f##*/}" in
-      setlog_linprog.pl|README.md) ;;        # skip
-      setlog_clpq.pl) cp "$f" ./setlog_files/setlog.pl ;;  # copy clpq version
-      *) cp "$f" ./setlog_files/ ;;        # copy everything else
-    esac
-  done
+cp ../setlog_files/ttf_sp.pl ./setlog_files/ttf_sp.pl
+cp ../setlog_files/size_solver.pl ./setlog_files/size_solver.pl
+
+
+# Coping needed version
+if [[ -z "$3" ||  "$3" == "linprogq" ]]; then
+  cp "../setlog_files/setlog_linprogq.pl" ./setlog_files/setlog.pl
+elif [[ "$3" == "linprogr" ]]; then
+  libName="linprogr"
+  cp "../setlog_files/setlog_linprogr.pl" ./setlog_files/setlog.pl
+elif [[ "$3" == "clpq" ]]; then
+  cp "../setlog_files/setlog_clpq.pl" ./setlog_files/setlog.pl
+elif [[ "$3" == "clpr" ]]; then
+  cp "../setlog_files/setlog_clpr.pl" ./setlog_files/setlog.pl
+else 
+  echo "Unknown library is used. Try linprogq/linprogr/clpq/clpr"
 fi
 
 
-cp ../setlog_files/ttf_sp.pl ./setlog_files/ttf_sp.pl
-cp ../setlog_files/size_solver.pl ./setlog_files/size_solver.pl
+
 
 
 
 # Compile the C implementation
 # bash ./compile_c_setlog.sh "${3:-linprog}"
-bash ./../helpers/compilation/compile_to.sh ./../../tests/setlog_files
+bash ./../helpers/compilation/compile_to.sh ./../../tests/setlog_files $libName
 
 
 # Define directories

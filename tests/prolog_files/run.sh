@@ -1,8 +1,12 @@
 #!/bin/bash
-# run <test_name> <extension> [<linprog/clpq>]
+# run <test_name> <extension> [<linprogq/linprogr/clpq/clpr>]
 
 
-libName="linprog.pl"
+libName="linprogq"
+if [ $3 == "linprogr" ]; then 
+  libName="linprogr"
+fi
+
 
 e="$1"
 ext="${2:-out}"
@@ -11,7 +15,7 @@ output_file="${e%pl}$ext"
 > test.pl
 > b4.pl
 
-if [ -z "$3" ] || [ $3 == "linprog" ]; then
+if [ -z "$3" ] || [ $3 == "linprogq" ] || [ $3 == "linprogr" ]; then
   echo "consult('./$libName')." >> test.pl
 elif [ $3 == "clpq" ]; then
   echo "consult(library(clpq))." >> test.pl
@@ -20,7 +24,7 @@ elif [ $3 == "clpr" ]; then
   echo "bb_inf(A, B, C, D) :- bb_inf(A, B, C, D, 0.001)." >> b4.pl
   echo "consult('b4.pl')." >> test.pl
 else
-  echo "library must be [linprog/clpq/clpr]"
+  echo "library must be [linprogq/linprogr/clpq/clpr]"
   exit 1
 fi
 

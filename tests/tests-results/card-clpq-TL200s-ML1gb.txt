@@ -469,10 +469,3 @@ e594.pl;0.003;failure;OK;
 e595.pl;0.006;failure;OK;
 e596.pl;0.002;failure;OK;
 e597.pl;0.011;failure;OK;
-
-Success: 259/259
-Failure: 202/202
-Time_out: 0/0
-
-Total: 461/461  100% | Total time taken: 2410s
-

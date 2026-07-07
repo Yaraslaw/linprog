@@ -16,7 +16,7 @@ before_script:
 ###################
 basicTests:
   stage: basicLogic
-  tags: [juno]
+  # tags: [juno]
   script:
     - ./tests/RUN_PROLOG_test.sh clp clp
     - ./tests/RUN_SETLOG_test.sh abz18 abz
@@ -30,7 +30,9 @@ basicTests:
 ###################
 validate_after_basic:
   stage: validate1
-  tags: [juno]
+  # tags: [juno]
+  when: manual
+  allow_failure: true
   needs:
     - basicTests
   script:

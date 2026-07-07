@@ -23,5 +23,6 @@ rm -f results_temp.txt
 rm -f setlog*
 rm -f ttf_sp.pl
 rm -f size_solver.pl
-rm -f linprog.pl
+rm -f linprogq.pl
+rm -f linprogr.pl
 rm -f linprog_glpk_file.*

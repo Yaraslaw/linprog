@@ -1,7 +1,10 @@
 # User manual
 
 Here we presented all available predicates in Linprog and how each of them can be used. 
-> For now, predicates entailed, inf, sup, minimize, maximize, dump are taken from clpq
+
+Unless explicitly stated, each predicate is available both in **linprogq** and **linprogr** libraries. 
+
+Note: The examples assume that library **linprogq** is loaded.
 
 ## Predicates
 
@@ -138,7 +141,7 @@ Here we presented all available predicates in Linprog and how each of them can b
      ```
 
 - **set_time_limit(+TL)** :
-       Changes the time limit for a solver to TL (expressed in milliseconds). By default time limit is 300s.
+       Changes the time limit for a solver to TL (expressed in milliseconds). By default time limit is 1000s.
 
      ```prolog
      ?- set_time_limit(100).

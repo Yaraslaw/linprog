@@ -747,10 +747,3 @@ e933.pl;0.001;failure;OK;
 e934.pl;1.106;failure;OK;
 e935.pl;0.006;failure;OK;
 e936.pl;0.028;failure;OK;
-
-Success: 362/362
-Failure: 384/384
-Time_out: 0/0
-
-Total: 746/746  100% | Total time taken: 385s
-

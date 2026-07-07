@@ -9026,7 +9026,7 @@ nat_num(N,M) :-
 
 % :- use_module(library(clpq)).
 % AC: change to GLPK 
-:- use_module('linprog').
+:- use_module('linprogq').
 
 solve_Q(Constr,NewC) :-             % solve the constraint 'Constr' using the CLP(Q) solver
     %%%DBG write(solve_Q(Constr)),nl,

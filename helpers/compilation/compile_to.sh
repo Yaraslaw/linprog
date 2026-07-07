@@ -1,14 +1,20 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+# usage: ./compile_to <output-dir> <linprogq/linprogr>
+# $2 by default is linprogq
 set -e
 
 INCLUDE_DIRS_GLPK="/usr/local/include /usr/include /opt/homebrew/include /opt/local/include /mingw64/include /msys64/mingw64/include"
 LIB_DIRS_GLPK="/usr/local/lib /usr/lib /opt/homebrew/lib /opt/local/lib /mingw64/lib /msys64/mingw64/lib"
 
-[ "$#" -eq 1 ] || { echo "Usage: $0 <output_directory>" >&2; exit 1; }
+[ "$#" -eq 1 ] || [ "$#" -eq 2 ]|| { echo "Usage: $0 <output_directory>" >&2; exit 1; }
 
 outdir=$1
 minImpl="linprog_glpk_file"
-libName="linprog"
+libName="linprogq"
+
+if [[ $2 == "linprogr" ]]; then
+  libName="linprogr"
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 cd "$SCRIPT_DIR"

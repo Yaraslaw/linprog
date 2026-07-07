@@ -6,7 +6,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # --- source files ---
-SRC_PL="$PROJECT_ROOT/src/linprog.pl"
+SRC_PLQ="$PROJECT_ROOT/src/linprogq.pl"
+SRC_PLR="$PROJECT_ROOT/src/linprogr.pl"
 SRC_C="$PROJECT_ROOT/src/linprog_glpk_file.c"
 
 # --- target pack directory ---
@@ -19,7 +20,8 @@ rm -rf "$PKG_DIR"
 mkdir -p "$PKG_DIR/prolog" "$PKG_DIR/foreign"
 
 # --- copy sources ---
-cp "$SRC_PL" "$PKG_DIR/prolog/"
+cp "$SRC_PLQ" "$PKG_DIR/prolog/"
+cp "$SRC_PLR" "$PKG_DIR/prolog/"
 cp "$SRC_C" "$PKG_DIR/foreign/"
 
 # --- write pack metadata ---

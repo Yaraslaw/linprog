@@ -22,7 +22,7 @@ Its aim is to ease the reproduciability of the benchmarking process.
 
 Execute an individual instance from within the SWI-Prolog environmet.
 
-#### Using SWI-Prolog CLP(Q) library
+#### Using SWI-Prolog CLP(Q,R)
 
 1- Enter into SWI-Prolog environment.
 
@@ -30,7 +30,7 @@ Execute an individual instance from within the SWI-Prolog environmet.
 $ swipl
 ```
 
-2- Load clpq library.
+2- Load the CLP(Q,R) library of interest. For exampple, if you want to use clpq.pl, then do:
 
 ```prolog
 ?- consult(library(clpq)).
@@ -40,9 +40,10 @@ $ swipl
 
 ```prolog
 ?- consult('./<path-to-instance>/<instance-name>.pl').
+
 ```
 
-#### Using Linprog library
+#### Using Linprog 
 
 1- Enter into SWI-Prolog environment.
 
@@ -50,10 +51,10 @@ $ swipl
 $ swipl
 ```
 
-2- Load Linprog library.
+2- Load the Linprog library of interest. For exampple, if you want to use linprogq.pl, then do:
 
 ```prolog
-?- consult(linprog).
+?- consult(linprogq).
 ```
 
 3- Load instance.
@@ -90,8 +91,8 @@ $ ./run.sh <benchmark> <lib>
 ```
 
 where
-- `<benchmark>` := netlib | MIPLIB
-- `<lib>` := linprog | clpq
+- `<benchmark>` := MIPLIB | netlib
+- `<lib>` := clpq | linprogq | clpr | linprogr
 
 **Output**
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# run_all.sh <extension> [<linprog/clpq>]
+# run_all.sh <extension> [<linprogq/linprogr/clpq/clpr>]
 
 # Initialize temporary results file
 > results_temp.txt

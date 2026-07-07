@@ -1,0 +1,84 @@
+Test name            : Result               : Time (s)
+-------------------- : -------------------- : --------
+afiro                : -464.7531428571429   : 0.167
+kb2                  : false                : 0.167
+sc50a                : -64.57507705856453   : 0.148
+sc50b                : -70                  : 0.136
+adlittle             : 225494.96316237803   : 0.530
+share2b              : -415.73224074141876  : 0.919
+sc105                : -52.202061211707225  : 0.210
+stocfor1             : -41131.976987374204  : 0.632
+scagr7               : -2331389.8243309893  : 0.249
+israel               : false                : 24.694
+recipelp             : -266.616             : 0.284
+share1b              : -76589.31857918565   : 16.935
+sc205                : -52.202061211707225  : 0.429
+beaconfd             : false                : 0.437
+lotfi                : -25.264706280400016  : 0.390
+vtp-base             : 129831.46246136139   : 0.212
+brandy               : false                : 8.488
+e226                 : false                : 571.402
+bore3d               : false                : 1.941
+grow7                : false                : 34.764
+capri                : 2690.0128547983786   : 21.361
+scorpion             : 1878.1248227381059   : 0.424
+bandm                : false                : 640.426
+sctap1               : 1412.25              : 0.891
+scfxm1               : false                : 407.083
+agg2                 : false                : 277.467
+agg3                 : false                : 126.467
+stair                : false                : 316.958
+scsd1                : 8.666669541522367    : 4.420
+scagr25              : false                : 0.433
+degen2               : false                : 89.551
+finnis               : false                : 1317.008
+etamacro             : false                : 869.231
+fffff800             : TIMEOUT              : 3001.007
+standata             : 1257.6995            : 1.389
+grow15               : Memory Limit         : 1229.793
+pilot4               : false                : 5.485
+scfxm2               : TIMEOUT              : 3001.007
+standmps             : 1406.0175000000002   : 5.284
+standgub             : 1257.6995            : 1.429
+scrs8                : TIMEOUT              : 3001.007
+bnl1                 : Memory Limit         : 410.932
+ship04s              : 1798715.83699473     : 2.295
+fit1d                : Memory Limit         : 397.773
+perold               : false                : 14.800
+grow22               : Memory Limit         : 2242.368
+maros                : false                : 111.066
+modszk1              : TIMEOUT              : 3001.015
+scfxm3               : false                : 574.215
+25fv47               : TIMEOUT              : 3001.007
+shell                : 1208825346           : 2.070
+ship04l              : 1793324.9239750316   : 5.826
+wood1p               : Memory Limit         : 446.297
+sctap2               : TIMEOUT              : 3001.008
+scsd8                : 904.9999925464408    : 14.551
+ship08s              : 1920096.661406591    : 5.467
+pilot-ja             : false                : 3.359
+degen3               : Memory Limit         : 519.537
+ganges               : -109585.73612927829  : 3.075
+pilotnov             : false                : 39.977
+pilot-we             : false                : 9.081
+ship12s              : 1489247.281782113    : 4.486
+sctap3               : TIMEOUT              : 3001.008
+stocfor2             : TIMEOUT              : 3001.016
+czprob               : 2185196.6988565773   : 148.111
+cycle                : TIMEOUT              : 3001.011
+ship08l              : 1909053.793353505    : 24.465
+bnl2                 : Memory Limit         : 430.317
+pilot                : false                : 160.501
+ship12l              : 1470199.040143467    : 27.126
+d6cube               : TIMEOUT              : 336.930
+d2q06c               : TIMEOUT              : 3001.012
+greenbeb             : false                : 145.402
+greenbea             : TIMEOUT              : 3001.010
+pilot87              : false                : 1035.610
+woodw                : Memory Limit         : 711.232
+truss                : 458815.84718561696   : 875.908
+maros-r7             : TIMEOUT              : 3001.017
+80bau3b              : TIMEOUT              : 3001.010
+fit2d                : Memory Limit         : 595.770
+fit2p                : TIMEOUT              : 3001.009
+qap15                : TIMEOUT              : 3001.015

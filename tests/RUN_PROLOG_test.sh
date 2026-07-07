@@ -1,21 +1,26 @@
 #!/bin/bash
+# usage: ./RUN_PROLOG <test-group> <ext> <linprogq|linprogr|clpq|clpr>
 
 minImpl="linprog_glpk_file"
-libName="linprog.pl"
+libName="linprogq" # by default linprogq
+
+if [ "$3" == "linprogr" ]; then
+  libName="linprogr"
+fi
 
 cd ./tests || true
 
 # Check if the correct number of arguments are provided
 show_usage() {
   echo "Usage 1: $0 <test_name> <extension>"
-  echo "Usage 2: $0 <test_name> <extension> <linprog/clpq/clpr>"
+  echo "Usage 2: $0 <test_name> <extension> <linprogq/linprogr/clpq/clpr>"
 }
 if [ "$#" -ne 2 ]; then
   if [ "$#" -ne 3 ]; then
     show_usage
     exit 1
   fi
-  if [ "$3" != "linprog" ] && [ "$3" != "clpq" ] && [ "$3" != "clpr" ]; then
+  if [ "$3" != "linprogq" ] && [ "$3" != "linprogr" ]&& [ "$3" != "clpq" ] && [ "$3" != "clpr" ]; then
     show_usage
     exit 1
   fi
@@ -26,7 +31,7 @@ EXT=$2
 
 # Compile the C implementation
 # bash ./compile_c_prolog.sh 
-bash ../helpers/compilation/compile_to.sh ../../tests/prolog_files
+bash ../helpers/compilation/compile_to.sh ../../tests/prolog_files $libName
 
 # Define directories
 TEST_DIR="./test_cases/test_$TEST_NAME"  # Adjust this if your tests are in a different folder
@@ -68,7 +73,7 @@ fi
 
 # Run the tests in the setlog_files directory
 cd $PROLOG_DIR
-bash ./run_all.sh $EXT "${3:-linprog}"
+bash ./run_all.sh $EXT "${3:-linprogq}"
 
 cd ..
 
